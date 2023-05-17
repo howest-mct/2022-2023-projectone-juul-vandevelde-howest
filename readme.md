@@ -1,9 +1,9 @@
-# Titel van project
+# DeliverEase Mailbox
 
-**VOORNAAM NAAM:** A B
+**VOORNAAM NAAM:** Juul Van de Velde
 
-**Sparringpartner:** C D
+**Sparringpartner:** Maxim Ravich
 
-**Projectsamenvatting in max 10 woorden:** E
+**Projectsamenvatting in max 10 woorden:** Een slimme brievenbus die zowel brieven als pakketjes kan ontvangen
 
-**Projecttitel:** F
+**Projecttitel:** DeliverEase Mailbox
