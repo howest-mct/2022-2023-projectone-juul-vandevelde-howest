@@ -29,7 +29,7 @@ def all_out():
                     'status': "lampen uit"})
         socketio.emit('B2F_status_lampen', {'lampen': status})
         # save our last run time
-        last_time_alles_uit = now
+        # last_time_alles_uit = now
         time.sleep(30)
 
 
