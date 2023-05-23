@@ -51,12 +51,18 @@ def get_devices():
     if request.method == 'GET':
         data = DataRepository.read_devices()
         return jsonify(devices=data), 200
+    
+@app.route(endpoint + '/history/<device_id>/', methods=['GET'])
+def get_history(device_id):
+    if request.method == 'GET':
+        data = DataRepository.read_history_by_device(device_id)
+        return jsonify(history=data), 200
 
 
 # SOCKET IO
-@socketio.on('connect')
-def initial_connection():
-    print('A new client connect')
+# @socketio.on('connect')
+# def initial_connection():
+#     print('A new client connect')
 #     # # Send to the client!
 #     # vraag de status op van de lampen uit de DB
 #     status = DataRepository.read_status_lampen()

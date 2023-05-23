@@ -14,6 +14,12 @@ class DataRepository:
     def read_devices():
         sql = "SELECT * from device"
         return Database.get_rows(sql)
+    
+    @staticmethod
+    def read_history_by_device(device_id):
+        sql = "SELECT * from history WHERE device_id = %s"
+        params = [device_id]
+        return Database.get_rows(sql, params)
 
     # @staticmethod
     # def read_status_lamp_by_id(id):
