@@ -34,28 +34,27 @@
 
 ## Gesprek 1 (Datum: 24/05/2023)
 
-Lector:
+Lector: Geert Desloovere & Dieter Roobrouck
+
+Dit is de feedback.
+
+- feedback 1: boek een consult om het fritzing schema na te laten kijken (zeker het deel van de transistor!)
+- feedback 2: zorg voor een doos zodat de schakeling eenvoudig verplaatst kan worden zonder af te breken
+- feedback 3: zorg dat de leerkrachten mijn volledig gebouwde schakeling kunnen zien (alles in 1 schakeling, niet alles apart)
+
+## Gesprek 2 (Datum: 24/05/2023)
+
+Lector: Stijn Walcarius
 
 Vragen voor dit gesprek:
 
-- vraag 1: Betere manier om RGB's aan te sluiten?
-- vraag 2: Hoe wachtwoord veilig opslaan in database?
+- vraag 1: Hoe wachtwoord veilig opslaan in database?
+- vraag 2: Welk datatype gebruiken voor 'value'?
 
 Dit is de feedback op mijn vragen.
 
 - feedback 1: G
-
-## Gesprek 2 (Datum: xx/xx/2023)
-
-Lector:
-
-Vragen voor dit gesprek:
-
--  vraag 1: V
-
-Dit is de feedback op mijn vragen.
-
-- feedback 1: G
+- feedback 2: G
 
 ## Gesprek 3 (Datum: xx/xx/2023)
 
@@ -63,7 +62,8 @@ Lector:
 
 Vragen voor dit gesprek:
 
-- [x] vraag 1: V
+- vraag 1: Is mijn fritzing schema correct? Geen grote fouten die kortsluiting veroorzaken?
+- vraag 2: Betere manier om (meer) RGB's aan te sluiten?
 
 Dit is de feedback op mijn vragen.
 

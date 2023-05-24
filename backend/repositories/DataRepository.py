@@ -14,12 +14,20 @@ class DataRepository:
     def read_devices():
         sql = "SELECT * from device"
         return Database.get_rows(sql)
-    
+
     @staticmethod
     def read_history_by_device(device_id):
         sql = "SELECT * from history WHERE device_id = %s"
         params = [device_id]
         return Database.get_rows(sql, params)
+
+    @staticmethod
+    def add_history(history_id, device_id, action_id, datetime, value, comment):
+        # insert statement eens goed nakijken
+        # sql = "INSERT INTO history (history_id, device_id, action_id, datetime, value, comment) VALUES (%s, %s, %s, %s, %s, %s)"
+        sql = ""
+        params = [history_id, device_id, action_id, datetime, value, comment]
+        return Database.execute_sql(sql, params)
 
     # @staticmethod
     # def read_status_lamp_by_id(id):
