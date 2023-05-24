@@ -55,7 +55,7 @@ const listenToBtns = function () {
   for (const btn of btns) {
     btn.addEventListener('click', function () {
       console.info('klik');
-      getHistory(btn.getAttribute('data-device_id'));
+      socketio.emit('F2B_get_history', { device_id: btn.getAttribute('data-device_id')});
       htmlSensorName.innerHTML = btn.innerHTML;
     });
   }
@@ -69,6 +69,11 @@ const listenToSocket = function () {
   socketio.on('B2F_devices', function (jsonObject) {
     console.info(jsonObject);
     showDevices(jsonObject);
+  });
+
+  socketio.on('B2F_history', function (jsonObject) {
+    console.info(jsonObject);
+    showHistory(jsonObject);
   });
 };
 // #endregion

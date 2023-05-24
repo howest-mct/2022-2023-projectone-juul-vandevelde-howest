@@ -1,5 +1,6 @@
 import threading
 import time
+import json
 from repositories.DataRepository import DataRepository
 from flask import Flask, jsonify, request
 from flask_socketio import SocketIO, emit
@@ -14,11 +15,14 @@ def setup_gpio():
     GPIO.setmode(GPIO.BCM)
     reed1.on_both(lees_knop)
 
+
 def lees_knop(pin):
     if reed1.pressed:
         print("**** door closed ****")
+        # DataRepository.add_history(6, 2, 1)
     else:
         print("**** door open ****")
+        # DataRepository.add_history(6, 1, 0)
             
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'y8L3uH&qUC3U7$1*^LfYQnj7%wm$3w'
@@ -64,9 +68,12 @@ def initial_connection():
     emit('B2F_devices', {'devices': devices}, broadcast=False)
 
 # get realtime data from the sensor
-# @socketio.on('F2B')
-# def get_data():
-#     pass
+@socketio.on('F2B_get_history')
+def get_history(jsonObject):
+    history = DataRepository.read_history_by_device(jsonObject["device_id"])
+    # probleem door datetime
+    # TypeError: Object of type datetime is not JSON serializable
+    emit('B2F_history', {'history': history}, broadcast=False)
 
 
 if __name__ == '__main__':

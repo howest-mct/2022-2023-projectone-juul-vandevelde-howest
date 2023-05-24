@@ -22,11 +22,9 @@ class DataRepository:
         return Database.get_rows(sql, params)
 
     @staticmethod
-    def add_history(history_id, device_id, action_id, datetime, value, comment):
-        # insert statement eens goed nakijken
-        # sql = "INSERT INTO history (history_id, device_id, action_id, datetime, value, comment) VALUES (%s, %s, %s, %s, %s, %s)"
-        sql = ""
-        params = [history_id, device_id, action_id, datetime, value, comment]
+    def add_history(device_id, action_id, value):
+        sql = "INSERT INTO history (device_id, action_id, value) VALUES (%s, %s, %s)"
+        params = [device_id, action_id, value]
         return Database.execute_sql(sql, params)
 
     # @staticmethod
