@@ -1,12 +1,12 @@
-# Projectgegevens
+# DeliverEase Mailbox
 
-**VOORNAAM NAAM:** A B
+**VOORNAAM NAAM:** Juul Van de Velde
 
-**Sparringpartner:** C D
+**Sparringpartner:** Maxim Ravich
 
-**Projectsamenvatting in max 10 woorden:** E
+**Projectsamenvatting in max 10 woorden:** Een slimme brievenbus die zowel brieven als pakketjes kan ontvangen
 
-**Projecttitel:** F
+**Projecttitel:** DeliverEase Mailbox
 
 # Tips voor feedbackgesprekken
 
@@ -32,13 +32,14 @@
 
 # Feedforward gesprekken
 
-## Gesprek 1 (Datum: xx/xx/2023)
+## Gesprek 1 (Datum: 24/05/2023)
 
 Lector:
 
 Vragen voor dit gesprek:
 
-- vraag 1: V
+- vraag 1: Betere manier om RGB's aan te sluiten?
+- vraag 2: Hoe wachtwoord veilig opslaan in database?
 
 Dit is de feedback op mijn vragen.
 
