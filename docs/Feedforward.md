@@ -53,8 +53,8 @@ Vragen voor dit gesprek:
 
 Dit is de feedback op mijn vragen.
 
-- feedback 1: G
-- feedback 2: G
+- feedback 1: Dit is redelijk moeilijk, voorlopig gewoon opslaan als een str. (Indien tijd over kan ik hier meer informatie over vragen)
+- feedback 2: Varchar is goed, de lengte hangt af van de langste waarde. In de meeste gevallen is dit de data van een RFID sensor.
 
 ## Gesprek 3 (Datum: xx/xx/2023)
 
