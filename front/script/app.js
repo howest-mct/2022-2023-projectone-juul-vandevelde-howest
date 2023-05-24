@@ -10,7 +10,6 @@ const showError = function () {
 };
 
 const showDevices = function (jsonObject) {
-  console.info(jsonObject);
   const btnsHtml = document.querySelector('.js-btns');
   let html = '';
   for (const device of jsonObject.devices) {
@@ -43,10 +42,10 @@ const getHistory = function (device_id) {
   handleData(url, showHistory, showError);
 };
 
-const getDevices = function () {
-  const url = 'http://' + lanIP + `/api/v1/devices/`;
-  handleData(url, showDevices, showError);
-};
+// const getDevices = function () {
+//   const url = 'http://' + lanIP + `/api/v1/devices/`;
+//   handleData(url, showDevices, showError);
+// };
 // #endregion
 
 // #region ***  Event Listeners - listenTo___            ***********
@@ -66,6 +65,11 @@ const listenToSocket = function () {
   socketio.on('connect', function () {
     console.info('Verbonden met socket webserver');
   });
+
+  socketio.on('B2F_devices', function (jsonObject) {
+    console.info(jsonObject);
+    showDevices(jsonObject);
+  });
 };
 // #endregion
 
@@ -73,7 +77,6 @@ const listenToSocket = function () {
 const init = function () {
   console.info('DOM geladen');
   listenToSocket();
-  getDevices();
 };
 
 document.addEventListener('DOMContentLoaded', init);
