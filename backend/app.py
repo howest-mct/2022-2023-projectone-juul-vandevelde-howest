@@ -60,15 +60,15 @@ def get_history(device_id):
 
 
 # SOCKET IO
-# @socketio.on('connect')
-# def initial_connection():
-#     print('A new client connect')
-#     # # Send to the client!
-#     # vraag de status op van de lampen uit de DB
-#     status = DataRepository.read_status_lampen()
-#     # socketio.emit('B2F_status_lampen', {'lampen': status})
-#     # Beter is het om enkel naar de client te sturen die de verbinding heeft gemaakt.
-#     emit('B2F_status_lampen', {'lampen': status}, broadcast=False)
+@socketio.on('connect')
+def initial_connection():
+    print('A new client connect')
+    # # Send to the client!
+    # # vraag de status op van de lampen uit de DB
+    # status = DataRepository.read_status_lampen()
+    # # socketio.emit('B2F_status_lampen', {'lampen': status})
+    # # Beter is het om enkel naar de client te sturen die de verbinding heeft gemaakt.
+    # emit('B2F_status_lampen', {'lampen': status}, broadcast=False)
 
 
 # @socketio.on('F2B_switch_light')
