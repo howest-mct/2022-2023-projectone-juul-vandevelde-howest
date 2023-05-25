@@ -56,7 +56,19 @@ Dit is de feedback op mijn vragen.
 - feedback 1: Dit is redelijk moeilijk, voorlopig gewoon opslaan als een str. (Indien tijd over kan ik hier meer informatie over vragen)
 - feedback 2: Varchar is goed, de lengte hangt af van de langste waarde. In de meeste gevallen is dit de data van een RFID sensor.
 
-## Gesprek 3 (Datum: xx/xx/2023)
+## Gesprek 3 (Datum: 25/05/2023)
+
+Lector: Christophe Laprudence 
+
+Vragen voor dit gesprek:
+
+- vraag 1: TypeError: Object of type datetime is not JSON serializable
+
+Dit is de feedback op mijn vragen.
+
+- feedback 1: Je kan beter eerst je data opvragen via een route, als er dan nieuwe data is kan je deze toevoegen via een websocket.
+
+## Gesprek 4 (Datum: xx/xx/2023)
 
 Lector:
 
