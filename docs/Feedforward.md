@@ -68,9 +68,9 @@ Dit is de feedback op mijn vragen.
 
 - feedback 1: Je kan beter eerst je data opvragen via een route, als er dan nieuwe data is kan je deze toevoegen via een websocket.
 
-## Gesprek 4 (Datum: xx/xx/2023)
+## Gesprek 4 (Datum: 25/05/2023)
 
-Lector:
+Lector: Pieter-Jan Beeckman
 
 Vragen voor dit gesprek:
 
@@ -79,4 +79,5 @@ Vragen voor dit gesprek:
 
 Dit is de feedback op mijn vragen.
 
-- feedback 1: G
+- feedback 1: Ziet er al veel beter uit, wel nog kleuren van de + veranderen, 3.3V = oranje en 5V = rood (zijn nu beiden rood). Ook in de breadboard view misschien wat meer witruimte toevoegen zodat draadjes eenvoudiger te volgen zijn.
+- feedback 2: Het eenvoudigste zou zijn om een neopixel led strip/ring te kopen. Deze kan je later ook nog goed gebruiken en geeft meer licht terwijl het minder GPIO pinnen in gebruik neemt.
