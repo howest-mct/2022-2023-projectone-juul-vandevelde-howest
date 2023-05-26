@@ -19,12 +19,12 @@ def setup_gpio():
 def lees_knop(pin):
     if reed1.pressed:
         print("**** door closed ****")
-        DataRepository.add_history(6, 2, 1)
+        # DataRepository.add_history(6, 2, 1)
         # socketio.emit('B2F_change_reed1',  {
                         #   'reed1': {'device_id': 6, 'action_id': 2,'status': 1}})
     else:
         print("**** door open ****")
-        DataRepository.add_history(6, 1, 0)
+        # DataRepository.add_history(6, 1, 0)
         # socketio.emit('B2F_change_reed1',  {
                         #   'reed1': {'device_id': 6, 'action_id': 1,'status': 0}})
             
