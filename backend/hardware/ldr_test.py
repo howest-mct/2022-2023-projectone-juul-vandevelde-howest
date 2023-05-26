@@ -3,7 +3,7 @@ import time
 import spidev
 
 class Mcp:
-    def __init__(self, bus=0, device=0):
+    def __init__(self, bus=0, device=1):
         self.bus = bus
         self.device = device
         self.spi = spidev.SpiDev()
@@ -30,9 +30,8 @@ def setup():
 try:
     setup()
     while True:
-        light_intensity = 100 - ((mcpObject.read_channel(1) / 1023) * 100)
+        light_intensity = 100 - ((mcpObject.read_channel(0) / 1023) * 100)
 
-        # Druk elke seconde de waarden af zonder dat de servo trager reageert.
         current_time = time.monotonic()
         if current_time - previous_time >= 1:
             print(f"{light_intensity:.2f}%")
