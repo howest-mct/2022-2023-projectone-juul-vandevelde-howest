@@ -15,6 +15,7 @@ class Mcp:
         MSB = (bytes_in[1] & 0b00000011) << 8
         RES = MSB | LSB
         return RES
+        self.closespi()
 
     def closespi(self):
         self.spi.close()

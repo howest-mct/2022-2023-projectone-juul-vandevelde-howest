@@ -9,7 +9,6 @@ class Lcd:
         self.e = e
         self.i2c = SMBus()
         self.i2c.open(1)
-        self.printed = False
     
     def init_GPIO(self):
         GPIO.setup((self.rs, self.e), GPIO.OUT)
@@ -65,23 +64,13 @@ class Lcd:
         self.i2c.close()
     
     def show_ip(self):
-        all_out_last_run = time.time()
-        while True:
-            now = time.time()
-            if (now >= all_out_last_run + 15):
-                    output = check_output(['hostname', '--all-ip-addresses'])
-                    str_ips = str(output)
-                    str_ips = str_ips.replace("b'", "")
-                    str_ips = str_ips.replace(" \\n'", "")
-                    ips = str_ips.split(' ')
-                    self.clear_screen()
-                    self.write_message(ips[0])
-                    self.go_to_second_row()
-                    self.write_message(ips[1])
-                    self.printed = False
-                    time.sleep(5)
-                    all_out_last_run = now
-            elif self.printed == False:
-                self.clear_screen()
-                self.write_message('Waiting ...')
-                self.printed = True
+        self.disable_cursor()
+        output = check_output(['hostname', '--all-ip-addresses'])
+        str_ips = str(output)
+        str_ips = str_ips.replace("b'", "")
+        str_ips = str_ips.replace(" \\n'", "")
+        ips = str_ips.split(' ')
+        self.clear_screen()
+        self.write_message(ips[0])
+        self.go_to_second_row()
+        self.write_message(ips[1])

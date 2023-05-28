@@ -15,9 +15,11 @@ mcp_object = Mcp()
 DS18B20_object = DS18B20()
 lcdObject = Lcd()
 
-reed_1 = Button(12, 5)
+reed_1 = Button(12, 20)
 break_beam_1 = Button(20, 5)
 shutdown_btn = Button(21)
+
+printed = False
 
 
 def setup():
@@ -61,35 +63,68 @@ def read_ldr():
 
 
 def read_rfid():
-    print("Hold a tag near the reader")
-    id, text = rfid_reader.read()
-    print("ID: %s\nText: %s" % (id, text))
+    last_runtime = time.time()
+    while True:
+        if (time.time() - last_runtime) > 5:
+            print("Hold a tag near the reader")
+            id, text = rfid_reader.read()
+            print("ID: %s\nText: %s" % (id, text))
+            last_runtime = time.time()
 
 
 def write_rfid():
-    rfid_reader.write("Hallo ;)")
+    message = str(input("New data: "))
+    rfid_reader.write(message)
 
 
 def read_temperature():
     print(f"De temperatuur is {DS18B20_object.get_temperature():.2f} °Celcius")
 
-def show_ip():
-    lcdObject.show_ip()
 
-# def start_thread():
-#     t = threading.Thread(target=read_rfid, daemon=True)
-#     t.start()
-#     print("thread started")
+def show_ip():
+    all_out_last_run = time.time()
+    while True:
+        now = time.time()
+        if (now >= all_out_last_run + 15):
+            lcdObject.show_ip()
+
+
+def start_thread():
+    t1 = threading.Thread(target=read_rfid, daemon=True)
+    t1.start()
+    print("thread started")
 
 
 try:
     setup()
-    show_ip()
-    # start_thread()
+    start_thread()
+    last_runtime_setup = time.time()
+    last_ldr_runtime = last_runtime_setup
+    last_temperature_runtime = last_runtime_setup
+    last_ip_runtime = last_runtime_setup
     while True:
-        # read_temperature()
-        read_rfid()
-        # read_ldr()
+        if (time.time() - last_ldr_runtime) > 15:
+            read_ldr()
+            print("ldr", time.time())
+            last_ldr_runtime = time.time()
+
+        if (time.time() - last_temperature_runtime) > 15:
+            read_temperature()
+            print("temp", time.time())
+            last_temperature_runtime = time.time()
+
+        if (time.time() - last_ip_runtime) > 15:
+            if printed == True:
+                lcdObject.show_ip()
+                printed = False
+            if (time.time() - last_ip_runtime) > (15 + 10):
+                last_ip_runtime = time.time()
+        elif printed == False:
+            lcdObject.disable_cursor()
+            lcdObject.clear_screen()
+            lcdObject.write_message('Nuttige info')
+            printed = True
+        time.sleep((0.001))
 
 except KeyboardInterrupt:
     print(' KeyboardInterrupt exception is caught')
