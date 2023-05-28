@@ -55,6 +55,7 @@ def read_switch(pin):
 def read_beam(pin):
     if break_beam_1.pressed:
         print("**** you received a letter/parcel ****")
+        # de ene break beam zal voor pakketjes zijn de andere voor brieven
 
 
 def read_ldr():
@@ -70,23 +71,17 @@ def read_rfid():
             id, text = rfid_reader.read()
             print("ID: %s\nText: %s" % (id, text))
             last_runtime = time.time()
+            # hier dan nakijken of een tag rechten heeft om de solenoid te activeren
 
 
 def write_rfid():
-    message = str(input("New data: "))
+    message = "very strong password"
     rfid_reader.write(message)
+    # nodig als een gebruiker een tag wilt toevoegen
 
 
 def read_temperature():
     print(f"De temperatuur is {DS18B20_object.get_temperature():.2f} °Celcius")
-
-
-def show_ip():
-    all_out_last_run = time.time()
-    while True:
-        now = time.time()
-        if (now >= all_out_last_run + 15):
-            lcdObject.show_ip()
 
 
 def start_thread():
@@ -105,17 +100,16 @@ try:
     while True:
         if (time.time() - last_ldr_runtime) > 15:
             read_ldr()
-            print("ldr", time.time())
             last_ldr_runtime = time.time()
 
         if (time.time() - last_temperature_runtime) > 15:
             read_temperature()
-            print("temp", time.time())
             last_temperature_runtime = time.time()
 
         if (time.time() - last_ip_runtime) > 15:
             if printed == True:
                 lcdObject.show_ip()
+                # show_ip nog dynamisch maken ipv 2 fixed ip adressen
                 printed = False
             if (time.time() - last_ip_runtime) > (15 + 10):
                 last_ip_runtime = time.time()
@@ -123,6 +117,7 @@ try:
             lcdObject.disable_cursor()
             lcdObject.clear_screen()
             lcdObject.write_message('Nuttige info')
+            # het schermpje nog nuttiger maken
             printed = True
         time.sleep((0.001))
 
