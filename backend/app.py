@@ -6,7 +6,7 @@ from flask import Flask, jsonify, request
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
 from RPi import GPIO
-from helpers.klasseknop import Button
+from helpers.Button import Button
 
 reed1 = Button(12)
 

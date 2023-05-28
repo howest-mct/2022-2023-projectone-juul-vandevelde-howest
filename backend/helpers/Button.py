@@ -11,8 +11,8 @@ class Button:
 
     @property
     def pressed(self):
-        ingedrukt = GPIO.input(self.pin)
-        return not ingedrukt
+        pressed = GPIO.input(self.pin)
+        return not pressed
 
     def on_press(self, call_method):
         GPIO.add_event_detect(self.pin, GPIO.FALLING,
