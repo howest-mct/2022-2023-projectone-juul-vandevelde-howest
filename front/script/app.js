@@ -79,7 +79,7 @@ const listenToSocket = function () {
     console.info('Verbonden met socket webserver');
   });
 
-  socketio.on('B2F_data_changed', function (jsonObject) {
+  socketio.on('B2F_new_data', function (jsonObject) {
     if (jsonObject.device_id == currentDeviceId) {
       getHistory(currentDeviceId);
     }

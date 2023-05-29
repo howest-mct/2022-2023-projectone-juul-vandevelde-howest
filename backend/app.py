@@ -48,6 +48,9 @@ def shutdown(pin):
     shutdown_initiated = False
     while shutdown_btn.pressed:
         if (time.time() - start_time) > 10 and shutdown_initiated == False:
+            DataRepository.add_device_history(11, None, None, None)
+            if current_device == 11:
+                socketio.emit('B2F_new_data', {'device_id': 11})
             shutdown_initiated = True
             print("**** shutdown ****")
 
@@ -55,25 +58,31 @@ def shutdown(pin):
 def read_switch(pin):
     if reed_1.pressed:
         print("**** door closed ****")
-        DataRepository.add_device_history(6, 2, 1, None)
+        DataRepository.add_device_history(6, None, 1, None)
         if current_device == 6:
-            socketio.emit('B2F_data_changed', {'device_id': 6})
+            socketio.emit('B2F_new_data', {'device_id': 6})
     else:
         print("**** door open ****")
-        DataRepository.add_device_history(6, 2, 0, None)
+        DataRepository.add_device_history(6, None, 0, None)
         if current_device == 6:
-            socketio.emit('B2F_data_changed', {'device_id': 6})
+            socketio.emit('B2F_new_data', {'device_id': 6})
 
 
 def read_beam(pin):
     if break_beam_1.pressed:
         print("**** you received a letter/parcel ****")
         # de ene break beam zal voor pakketjes zijn de andere voor brieven
+        DataRepository.add_device_history(4, None, 1, None)
+        if current_device == 4:
+            socketio.emit('B2F_new_data', {'device_id': 4})
 
 
 def read_ldr():
     light_intensity = 100 - ((mcp_object.read_channel(0) / 1023) * 100)
     print(f"{light_intensity:.2f}%")
+    DataRepository.add_device_history(1, None, light_intensity, None)
+    if current_device == 1:
+        socketio.emit('B2F_new_data', {'device_id': 1})
 
 
 def read_rfid():
@@ -82,6 +91,9 @@ def read_rfid():
         if (time.time() - last_runtime) > 5:
             print("Hold a tag near the reader")
             id, text = rfid_reader.read()
+            DataRepository.add_device_history(2, None, id, None)
+            if current_device == 2:
+                socketio.emit('B2F_new_data', {'device_id': 2})
             print("ID: %s\nText: %s" % (id, text))
             last_runtime = time.time()
             # hier dan nakijken of een tag rechten heeft om de solenoid te activeren
@@ -94,7 +106,11 @@ def write_rfid():
 
 
 def read_temperature():
-    print(f"De temperatuur is {DS18B20_object.get_temperature():.2f} °Celcius")
+    temperature = DS18B20_object.get_temperature()
+    print(f"De temperatuur is {temperature:.2f} °Celcius")
+    DataRepository.add_device_history(3, None, temperature, None)
+    if current_device == 3:
+        socketio.emit('B2F_new_data', {'device_id': 3})
 
 
 def start_threads():
