@@ -56,11 +56,13 @@ def read_switch(pin):
     if reed_1.pressed:
         print("**** door closed ****")
         DataRepository.add_device_history(6, 2, 1, None)
-        send_most_recent_device_history(6)
+        if current_device == 6:
+            socketio.emit('B2F_data_changed', {'device_id': 6})
     else:
         print("**** door open ****")
         DataRepository.add_device_history(6, 2, 0, None)
-        send_most_recent_device_history(6)
+        if current_device == 6:
+            socketio.emit('B2F_data_changed', {'device_id': 6})
 
 
 def read_beam(pin):
@@ -101,18 +103,6 @@ def start_threads():
     socketio_thread = threading.Thread(target=start_socketio, daemon=True)
     socketio_thread.start()
     print("threads started")
-
-
-def send_most_recent_device_history(device_id):
-    if current_device == device_id:
-        history = DataRepository.read_most_recent_device_history(device_id)
-        history = convert_datetime_to_str(history)
-        socketio.emit('B2F_data_changed', {'history': history})
-
-
-def convert_datetime_to_str(dict):
-    dict['datetime'] = str(dict['datetime'])
-    return dict
 
 
 app = Flask(__name__)

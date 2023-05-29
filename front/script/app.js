@@ -80,9 +80,8 @@ const listenToSocket = function () {
   });
 
   socketio.on('B2F_data_changed', function (jsonObject) {
-    if (jsonObject.history.device_id == currentDeviceId) {
-      console.info(jsonObject);
-      showNewestHistory(jsonObject);
+    if (jsonObject.device_id == currentDeviceId) {
+      getHistory(currentDeviceId);
     }
   });
 };
