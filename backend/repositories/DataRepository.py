@@ -12,17 +12,23 @@ class DataRepository:
 
     @staticmethod
     def read_devices():
-        sql = "SELECT * from device"
+        sql = "SELECT * FROM device"
         return Database.get_rows(sql)
 
     @staticmethod
-    def read_history_by_device(device_id):
-        sql = "SELECT * from history WHERE device_id = %s"
+    def read_device_history(device_id):
+        sql = "SELECT * FROM history WHERE device_id = %s"
         params = [device_id]
         return Database.get_rows(sql, params)
 
     @staticmethod
-    def add_history(device_id, action_id, value, comment):
+    def read_most_recent_device_history(device_id):
+        sql = "SELECT * FROM history WHERE device_id = %s ORDER BY history_id DESC LIMIT 1"
+        params = [device_id]
+        return Database.get_one_row(sql, params)
+
+    @staticmethod
+    def add_device_history(device_id, action_id, value, comment):
         sql = "INSERT INTO history (device_id, action_id, value, comment) VALUES (%s, %s, %s, %s)"
         params = [device_id, action_id, value, comment]
         return Database.execute_sql(sql, params)

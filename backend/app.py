@@ -25,6 +25,7 @@ break_beam_1 = Button(20, 5)
 shutdown_btn = Button(21)
 
 printed = False
+current_device = None
 
 
 def setup():
@@ -54,11 +55,12 @@ def shutdown(pin):
 def read_switch(pin):
     if reed_1.pressed:
         print("**** door closed ****")
-        # DataRepository.add_history(6, 2, 1)
-        # socketio.emit('B2F_change_reed1',  {
-        #   'reed1': {'device_id': 6, 'action_id': 2,'status': 1}})
+        DataRepository.add_device_history(6, 2, 1, None)
+        send_most_recent_device_history(6)
     else:
         print("**** door open ****")
+        DataRepository.add_device_history(6, 2, 0, None)
+        send_most_recent_device_history(6)
 
 
 def read_beam(pin):
@@ -101,6 +103,18 @@ def start_threads():
     print("threads started")
 
 
+def send_most_recent_device_history(device_id):
+    if current_device == device_id:
+        history = DataRepository.read_most_recent_device_history(device_id)
+        history = convert_datetime_to_str(history)
+        socketio.emit('B2F_data_changed', {'history': history})
+
+
+def convert_datetime_to_str(dict):
+    dict['datetime'] = str(dict['datetime'])
+    return dict
+
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'y8L3uH&qUC3U7$1*^LfYQnj7%wm$3w'
 
@@ -117,26 +131,33 @@ def info():
     return jsonify(info='Please go to the endpoint ' + endpoint)
 
 
-# @app.route(endpoint + '/devices/', methods=['GET'])
-# def get_devices():
-#     if request.method == 'GET':
-#         data = DataRepository.read_devices()
-#         return jsonify(devices=data), 200
+@app.route(endpoint + '/devices/', methods=['GET'])
+def get_devices():
+    if request.method == 'GET':
+        data = DataRepository.read_devices()
+        return jsonify(devices=data), 200
 
 
-# @app.route(endpoint + '/history/<device_id>/', methods=['GET'])
-# def get_history(device_id):
-#     if request.method == 'GET':
-#         data = DataRepository.read_history_by_device(device_id)
-#         return jsonify(history=data), 200
+@app.route(endpoint + '/history/<device_id>/', methods=['GET'])
+def get_history(device_id):
+    if request.method == 'GET':
+        data = DataRepository.read_device_history(device_id)
+        return jsonify(history=data), 200
 
 
 # SOCKET IO
-# @socketio.on('connect')
-# def initial_connection():
-#     print('A new client connect')
+@socketio.on('connect')
+def initial_connection():
+    print('A new client connect')
 #     devices = DataRepository.read_devices()
 #     emit('B2F_devices', {'devices': devices}, broadcast=False)
+
+
+@socketio.on('F2B_current_device')
+def set_current_device(jsonObject):
+    global current_device
+    current_device = int(jsonObject['device_id'])
+
 
 # # get realtime data from the sensor
 # @socketio.on('F2B_get_history')
@@ -146,6 +167,7 @@ def info():
 #     for i in range(len(history)):
 #         history[i]['datetime'] = str(history[i]['datetime'])
 #     emit('B2F_history', {'history': history}, broadcast=False)
+
 
 def start_socketio():
     print("**** Starting APP ****")
@@ -185,7 +207,7 @@ if __name__ == '__main__':
             time.sleep((0.001))
 
     except KeyboardInterrupt:
-        print('KeyboardInterrupt exception is caught')
+        print(' KeyboardInterrupt exception is caught')
 
     finally:
         mcp_object.closespi()

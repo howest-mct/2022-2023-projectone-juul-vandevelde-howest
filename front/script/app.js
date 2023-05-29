@@ -1,5 +1,6 @@
 const lanIP = `${window.location.hostname}:5000`;
 const socketio = io(lanIP);
+let currentDeviceId;
 
 // #region ***  DOM references                           ***********
 // #endregion
@@ -31,21 +32,31 @@ const showHistory = function (jsonObject) {
   }
   dataHtml.innerHTML = html;
 };
+
+const showNewestHistory = function (jsonObject) {
+  console.info(jsonObject);
+  const dataHtml = document.querySelector('.js-data');
+  const html = `<tr>
+    <td>${jsonObject.history.datetime}</td>
+    <td>${jsonObject.history.value}</td>
+  </tr>`;
+  dataHtml.innerHTML += html;
+};
 // #endregion
 
 // #region ***  Callback-No Visualisation - callback___  ***********
 // #endregion
 
 // #region ***  Data Access - get___                     ***********
+const getDevices = function () {
+  const url = 'http://' + lanIP + `/api/v1/devices/`;
+  handleData(url, showDevices, showError);
+};
+
 const getHistory = function (device_id) {
   const url = 'http://' + lanIP + `/api/v1/history/${device_id}/`;
   handleData(url, showHistory, showError);
 };
-
-// const getDevices = function () {
-//   const url = 'http://' + lanIP + `/api/v1/devices/`;
-//   handleData(url, showDevices, showError);
-// };
 // #endregion
 
 // #region ***  Event Listeners - listenTo___            ***********
@@ -55,7 +66,9 @@ const listenToBtns = function () {
   for (const btn of btns) {
     btn.addEventListener('click', function () {
       console.info('klik');
-      socketio.emit('F2B_get_history', { device_id: btn.getAttribute('data-device_id')});
+      currentDeviceId = btn.getAttribute('data-device_id');
+      socketio.emit('F2B_current_device', { device_id: currentDeviceId });
+      getHistory(currentDeviceId);
       htmlSensorName.innerHTML = btn.innerHTML;
     });
   }
@@ -66,14 +79,11 @@ const listenToSocket = function () {
     console.info('Verbonden met socket webserver');
   });
 
-  socketio.on('B2F_devices', function (jsonObject) {
-    console.info(jsonObject);
-    showDevices(jsonObject);
-  });
-
-  socketio.on('B2F_history', function (jsonObject) {
-    console.info(jsonObject);
-    showHistory(jsonObject);
+  socketio.on('B2F_data_changed', function (jsonObject) {
+    if (jsonObject.history.device_id == currentDeviceId) {
+      console.info(jsonObject);
+      showNewestHistory(jsonObject);
+    }
   });
 };
 // #endregion
@@ -81,6 +91,7 @@ const listenToSocket = function () {
 // #region ***  Init / DOMContentLoaded                  ***********
 const init = function () {
   console.info('DOM geladen');
+  getDevices();
   listenToSocket();
 };
 
