@@ -11,24 +11,36 @@ class DataRepository:
         return gegevens
 
     @staticmethod
-    def read_status_lampen():
-        sql = "SELECT * from lampen"
+    def read_devices():
+        sql = "SELECT * from device"
         return Database.get_rows(sql)
 
     @staticmethod
-    def read_status_lamp_by_id(id):
-        sql = "SELECT * from lampen WHERE id = %s"
-        params = [id]
-        return Database.get_one_row(sql, params)
+    def read_history_by_device(device_id):
+        sql = "SELECT * from history WHERE device_id = %s"
+        params = [device_id]
+        return Database.get_rows(sql, params)
 
     @staticmethod
-    def update_status_lamp(id, status):
-        sql = "UPDATE lampen SET status = %s WHERE id = %s"
-        params = [status, id]
+    def add_history(device_id, action_id, value):
+        sql = "INSERT INTO history (device_id, action_id, value) VALUES (%s, %s, %s)"
+        params = [device_id, action_id, value]
         return Database.execute_sql(sql, params)
 
-    @staticmethod
-    def update_status_alle_lampen(status):
-        sql = "UPDATE lampen SET status = %s"
-        params = [status]
-        return Database.execute_sql(sql, params)
+    # @staticmethod
+    # def read_status_lamp_by_id(id):
+    #     sql = "SELECT * from lampen WHERE id = %s"
+    #     params = [id]
+    #     return Database.get_one_row(sql, params)
+
+    # @staticmethod
+    # def update_status_lamp(id, status):
+    #     sql = "UPDATE lampen SET status = %s WHERE id = %s"
+    #     params = [status, id]
+    #     return Database.execute_sql(sql, params)
+
+    # @staticmethod
+    # def update_status_alle_lampen(status):
+    #     sql = "UPDATE lampen SET status = %s"
+    #     params = [status]
+    #     return Database.execute_sql(sql, params)

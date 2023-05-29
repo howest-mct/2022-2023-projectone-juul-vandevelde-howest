@@ -1,12 +1,12 @@
-# Projectgegevens
+# DeliverEase Mailbox
 
-**VOORNAAM NAAM:** A B
+**VOORNAAM NAAM:** Juul Van de Velde
 
-**Sparringpartner:** C D
+**Sparringpartner:** Maxim Ravich
 
-**Projectsamenvatting in max 10 woorden:** E
+**Projectsamenvatting in max 10 woorden:** Een slimme brievenbus die zowel brieven als pakketjes kan ontvangen
 
-**Projecttitel:** F
+**Projecttitel:** DeliverEase Mailbox
 
 # Tips voor feedbackgesprekken
 
@@ -32,38 +32,52 @@
 
 # Feedforward gesprekken
 
-## Gesprek 1 (Datum: xx/xx/2023)
+## Gesprek 1 (Datum: 24/05/2023)
 
-Lector:
+Lector: Geert Desloovere & Dieter Roobrouck
 
-Vragen voor dit gesprek:
+Dit is de feedback.
 
-- vraag 1: V
+- feedback 1: boek een consult om het fritzing schema na te laten kijken (zeker het deel van de transistor!)
+- feedback 2: zorg voor een doos zodat de schakeling eenvoudig verplaatst kan worden zonder af te breken
+- feedback 3: zorg dat de leerkrachten mijn volledig gebouwde schakeling kunnen zien (alles in 1 schakeling, niet alles apart)
 
-Dit is de feedback op mijn vragen.
+## Gesprek 2 (Datum: 24/05/2023)
 
-- feedback 1: G
-
-## Gesprek 2 (Datum: xx/xx/2023)
-
-Lector:
+Lector: Stijn Walcarius
 
 Vragen voor dit gesprek:
 
--  vraag 1: V
+- vraag 1: Hoe wachtwoord veilig opslaan in database?
+- vraag 2: Welk datatype gebruiken voor 'value'?
 
 Dit is de feedback op mijn vragen.
 
-- feedback 1: G
+- feedback 1: Dit is redelijk moeilijk, voorlopig gewoon opslaan als een str. (Indien tijd over kan ik hier meer informatie over vragen)
+- feedback 2: Varchar is goed, de lengte hangt af van de langste waarde. In de meeste gevallen is dit de data van een RFID sensor.
 
-## Gesprek 3 (Datum: xx/xx/2023)
+## Gesprek 3 (Datum: 25/05/2023)
 
-Lector:
+Lector: Christophe Laprudence 
 
 Vragen voor dit gesprek:
 
-- [x] vraag 1: V
+- vraag 1: TypeError: Object of type datetime is not JSON serializable
 
 Dit is de feedback op mijn vragen.
 
-- feedback 1: G
+- feedback 1: Je kan beter eerst je data opvragen via een route, als er dan nieuwe data is kan je deze toevoegen via een websocket.
+
+## Gesprek 4 (Datum: 25/05/2023)
+
+Lector: Pieter-Jan Beeckman
+
+Vragen voor dit gesprek:
+
+- vraag 1: Is mijn fritzing schema correct? Geen grote fouten die kortsluiting veroorzaken?
+- vraag 2: Betere manier om (meer) RGB's aan te sluiten?
+
+Dit is de feedback op mijn vragen.
+
+- feedback 1: Ziet er al veel beter uit, wel nog kleuren van de + veranderen, 3.3V = oranje en 5V = rood (zijn nu beiden rood). Ook in de breadboard view misschien wat meer witruimte toevoegen zodat draadjes eenvoudiger te volgen zijn.
+- feedback 2: Het eenvoudigste zou zijn om een neopixel led strip/ring te kopen. Deze kan je later ook nog goed gebruiken en geeft meer licht terwijl het minder GPIO pinnen in gebruik neemt.
