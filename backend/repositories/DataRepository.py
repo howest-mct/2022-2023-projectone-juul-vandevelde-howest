@@ -33,6 +33,12 @@ class DataRepository:
         params = [device_id, action_id, value, comment]
         return Database.execute_sql(sql, params)
 
+    @staticmethod
+    def check_rfid(id, password):
+        sql = "SELECT COUNT(*) AS 'user_exists' FROM user WHERE rfid_id = %s AND rfid_password = %s"
+        params = [id, password]
+        return Database.get_one_row(sql, params)
+
     # @staticmethod
     # def read_status_lamp_by_id(id):
     #     sql = "SELECT * from lampen WHERE id = %s"
