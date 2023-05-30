@@ -81,3 +81,15 @@ Dit is de feedback op mijn vragen.
 
 - feedback 1: Ziet er al veel beter uit, wel nog kleuren van de + veranderen, 3.3V = oranje en 5V = rood (zijn nu beiden rood). Ook in de breadboard view misschien wat meer witruimte toevoegen zodat draadjes eenvoudiger te volgen zijn.
 - feedback 2: Het eenvoudigste zou zijn om een neopixel led strip/ring te kopen. Deze kan je later ook nog goed gebruiken en geeft meer licht terwijl het minder GPIO pinnen in gebruik neemt.
+
+## Gesprek 5 (Datum: 30/05/2023)
+
+Lector: Geert Desloovere, Claudia Eeckhout, Dieter Roobrouck
+
+Dit is de feedback.
+
+- feedback 1: Github kan beter, maar 1 feature commit per branch. Als je tussentijds commits doet, begin dan niet met 'feat:'.
+- feedback 2: Denk nog wat extra na over de behuizing.
+- feedback 3: Begin misschien ook al aan de UX.
+- feedback 4: Op tijd komen voor de toer momenten (8u30).
+
