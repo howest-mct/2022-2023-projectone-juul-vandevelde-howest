@@ -50,7 +50,7 @@ def shutdown(pin):
     start_time = time.time()
     shutdown_initiated = False
     while shutdown_btn.pressed:
-        if (time.time() - start_time) > 10 and shutdown_initiated == False:
+        if (time.time() - start_time) > 5 and shutdown_initiated == False:
             DataRepository.add_device_history(11, None, None, None)
             if current_device == 11:
                 socketio.emit('B2F_new_data', {'device_id': 11})
