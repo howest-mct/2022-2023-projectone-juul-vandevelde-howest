@@ -42,6 +42,10 @@ const showNewestHistory = function (jsonObject) {
   </tr>`;
   dataHtml.innerHTML += html;
 };
+
+const showLogin = function () {
+  console.info('login succesvol :)');
+};
 // #endregion
 
 // #region ***  Callback-No Visualisation - callback___  ***********
@@ -85,12 +89,30 @@ const listenToSocket = function () {
     }
   });
 };
+
+const listenToLogin = function () {
+  console.info('login');
+  document.querySelector('.js-login-btn').addEventListener('click', function () {
+    const body = JSON.stringify({
+      username: document.querySelector('.js-username').value,
+      password: document.querySelector('.js-password').value,
+    });
+    const url = 'http://' + lanIP + `/api/v1/login/`;
+    handleData(url, showLogin, showError, 'POST', body);
+  });
+};
 // #endregion
 
 // #region ***  Init / DOMContentLoaded                  ***********
 const init = function () {
   console.info('DOM geladen');
-  getDevices();
+  const htmlLogin = document.querySelector('.js-html-login');
+  const htmlHistory = document.querySelector('.js-html-history');
+  if (htmlLogin) {
+    listenToLogin();
+  } else if (htmlHistory) {
+    getDevices();
+  }
   listenToSocket();
 };
 
