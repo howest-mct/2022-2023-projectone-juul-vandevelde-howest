@@ -39,6 +39,12 @@ class DataRepository:
         params = [id, password]
         return Database.get_one_row(sql, params)
 
+    @staticmethod
+    def check_login(username, password):
+        sql = "SELECT COUNT(*) AS 'login_status' FROM user WHERE username = %s AND BINARY password = %s"
+        params = [username, password]
+        return Database.get_one_row(sql, params)
+
     # @staticmethod
     # def read_status_lamp_by_id(id):
     #     sql = "SELECT * from lampen WHERE id = %s"

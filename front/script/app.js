@@ -43,8 +43,15 @@ const showNewestHistory = function (jsonObject) {
   dataHtml.innerHTML += html;
 };
 
-const showLogin = function () {
-  console.info('login succesvol :)');
+const showLogin = function (jsonObject) {
+  console.info(jsonObject);
+  if (jsonObject.login_status == 1) {
+    console.info('login succes');
+    localStorage.setItem('login', 1);
+    window.location.href = 'http://192.168.168.169:5500/front/history.html';
+  } else if (jsonObject.login_status == 0) {
+    console.info('login failed');
+  }
 };
 // #endregion
 
@@ -101,6 +108,13 @@ const listenToLogin = function () {
     handleData(url, showLogin, showError, 'POST', body);
   });
 };
+
+const listenToLogout = function () {
+  document.querySelector('.js-logout-btn').addEventListener('click', function () {
+    localStorage.removeItem('login');
+    location.reload();
+  });
+};
 // #endregion
 
 // #region ***  Init / DOMContentLoaded                  ***********
@@ -109,8 +123,15 @@ const init = function () {
   const htmlLogin = document.querySelector('.js-html-login');
   const htmlHistory = document.querySelector('.js-html-history');
   if (htmlLogin) {
+    if (localStorage.getItem('login') == 1) {
+      window.location.href = 'http://192.168.168.169:5500/front/history.html';
+    }
     listenToLogin();
   } else if (htmlHistory) {
+    if (localStorage.getItem('login') != 1) {
+      window.location.href = 'http://192.168.168.169:5500/front/login.html';
+    }
+    listenToLogout();
     getDevices();
   }
   listenToSocket();

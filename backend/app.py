@@ -31,7 +31,7 @@ current_device = None
 
 def setup():
     GPIO.setup(solenoid, GPIO.OUT)
-    
+
     lcdObject.init_LCD()
     lcdObject.write_message('Nuttige info')
 
@@ -158,6 +158,14 @@ def get_history(device_id):
     if request.method == 'GET':
         data = DataRepository.read_device_history(device_id)
         return jsonify(history=data), 200
+
+
+@app.route(endpoint + '/login/', methods=['POST'])
+def check_login():
+    if request.method == 'POST':
+        input = DataRepository.json_or_formdata(request)
+        data = DataRepository.check_login(input['username'], input['password'])
+        return jsonify(data), 200
 
 
 # SOCKET IO
