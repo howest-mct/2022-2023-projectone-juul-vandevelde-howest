@@ -20,8 +20,8 @@ mcp_object = Mcp()
 DS18B20_object = DS18B20()
 lcdObject = Lcd()
 
-reed_1 = Button(12, 20)
-break_beam_1 = Button(20, 5)
+reed_1 = Button(12)
+break_beam_1 = Button(20)
 shutdown_btn = Button(21)
 solenoid = 24
 
@@ -60,12 +60,12 @@ def shutdown(pin):
 
 def read_switch(pin):
     if reed_1.pressed:
-        print("**** door closed ****")
+        print("door closed")
         DataRepository.add_device_history(6, None, 1, None)
         if current_device == 6:
             socketio.emit('B2F_new_data', {'device_id': 6})
     else:
-        print("**** door open ****")
+        print("door open")
         DataRepository.add_device_history(6, None, 0, None)
         if current_device == 6:
             socketio.emit('B2F_new_data', {'device_id': 6})
@@ -73,7 +73,7 @@ def read_switch(pin):
 
 def read_beam(pin):
     if break_beam_1.pressed:
-        print("**** you received a letter/parcel ****")
+        print("letter/parcel detected")
         # de ene break beam zal voor pakketjes zijn de andere voor brieven
         DataRepository.add_device_history(4, None, 1, None)
         if current_device == 4:
@@ -92,7 +92,7 @@ def read_rfid():
     last_runtime = time.time()
     while True:
         if (time.time() - last_runtime) > 5:
-            print("Hold a tag near the reader")
+            print("**** Hold a tag near the reader ****")
             id, password = rfid_reader.read()
             DataRepository.add_device_history(2, None, id, None)
             if current_device == 2:
@@ -100,7 +100,7 @@ def read_rfid():
             # print("ID: %s\nPassword: %s" % (id, password))
             last_runtime = time.time()
             if (DataRepository.check_rfid(id, password))['user_exists'] == 1:
-                print("Door opened")
+                print("Door unlocked by rfid")
                 GPIO.output(solenoid, GPIO.HIGH)
                 time.sleep(1)
                 GPIO.output(solenoid, GPIO.LOW)
