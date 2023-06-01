@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>users</title>
+    <title>dashboard</title>
     <link rel="stylesheet" href="style/screen.css">
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
     <script src="script/datahandler.js"></script>
     <script src="script/app.js"></script>
 </head>
 
-<body class="js-html-users">
+<body class="js-html-dashboard">
     <header class="o-row o-row--primary o-row--xs o-row--header">
         <div class="c-header">
             <button class="o-button-reset c-header__menu-button c-icon-button js-toggle-menu">
@@ -30,13 +30,13 @@
             </h2>
             <nav class="c-nav c-nav--header">
                 <ul class="o-list-reset c-nav__list">
-                    <li class="c-nav__item">
+                    <li class="c-nav__item c-nav__item--active">
                         <a class="c-nav__link" href="index.html">Dashboard</a>
                     </li>
                     <li class="c-nav__item">
                         <a class="c-nav__link" href="history.html">History</a>
                     </li>
-                    <li class="c-nav__item c-nav__item--active">
+                    <li class="c-nav__item">
                         <a class="c-nav__link" href="users.html">Users</a>
                     </li>
                 </ul>
@@ -44,28 +44,6 @@
             <button class="c-header__logout js-logout-btn">Log out</button>
         </div>
     </header>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email Address</th>
-                <th>Password</th>
-                <th>Admin</th>
-                <th>NFC tag</th>
-            </tr>
-        </thead>
-        <tbody class="js-data">
-            <tr>
-                <td>...</td>
-                <td>...</td>
-                <td>...</td>
-                <td>...</td>
-                <td>...</td>
-                <td>...</td>
-            </tr>
-        </tbody>
-    </table>
 </body>
 
 </html>

@@ -66,7 +66,7 @@ const showLogin = function (jsonObject) {
   if (jsonObject.login_status == 1) {
     console.info('login succes');
     localStorage.setItem('login', 1);
-    window.location.href = 'http://192.168.168.169:5500/front/history.html';
+    window.location.href = 'index.html';
   } else if (jsonObject.login_status == 0) {
     console.info('login failed');
   }
@@ -144,22 +144,28 @@ const listenToLogout = function () {
 const init = function () {
   console.info('DOM geladen');
   const htmlLogin = document.querySelector('.js-html-login');
+  const htmlDashboard = document.querySelector('.js-html-dashboard');
   const htmlHistory = document.querySelector('.js-html-history');
   const htmlUsers = document.querySelector('.js-html-users');
   if (htmlLogin) {
     if (localStorage.getItem('login') == 1) {
-      window.location.href = 'http://192.168.168.169:5500/front/history.html';
+      window.location.href = 'history.html';
     }
     listenToLogin();
+  } else if (htmlDashboard) {
+    if (localStorage.getItem('login') != 1) {
+      window.location.href = 'login.html';
+    }
+    listenToLogout();
   } else if (htmlHistory) {
     if (localStorage.getItem('login') != 1) {
-      window.location.href = 'http://192.168.168.169:5500/front/login.html';
+      window.location.href = 'login.html';
     }
     listenToLogout();
     getDevices();
   } else if (htmlUsers) {
     if (localStorage.getItem('login') != 1) {
-      window.location.href = 'http://192.168.168.169:5500/front/login.html';
+      window.location.href = 'login.html';
     }
     listenToLogout();
     getUsers();
