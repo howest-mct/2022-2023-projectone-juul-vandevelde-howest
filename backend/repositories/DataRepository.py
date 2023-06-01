@@ -11,6 +11,11 @@ class DataRepository:
         return gegevens
 
     @staticmethod
+    def read_users():
+        sql = "SELECT * FROM user"
+        return Database.get_rows(sql)
+
+    @staticmethod
     def read_devices():
         sql = "SELECT * FROM device"
         return Database.get_rows(sql)

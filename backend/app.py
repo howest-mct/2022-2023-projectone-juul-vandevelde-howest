@@ -151,6 +151,12 @@ def get_devices():
     if request.method == 'GET':
         data = DataRepository.read_devices()
         return jsonify(devices=data), 200
+    
+@app.route(endpoint + '/users/', methods=['GET'])
+def get_users():
+    if request.method == 'GET':
+        data = DataRepository.read_users()
+        return jsonify(users=data), 200
 
 
 @app.route(endpoint + '/history/<device_id>/', methods=['GET'])
