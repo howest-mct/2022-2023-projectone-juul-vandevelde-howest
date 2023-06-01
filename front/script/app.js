@@ -42,6 +42,17 @@ const showNewestHistory = function (jsonObject) {
   </tr>`;
   dataHtml.innerHTML += html;
 };
+
+const showLogin = function (jsonObject) {
+  console.info(jsonObject);
+  if (jsonObject.login_status == 1) {
+    console.info('login succes');
+    localStorage.setItem('login', 1);
+    window.location.href = 'http://192.168.168.169:5500/front/history.html';
+  } else if (jsonObject.login_status == 0) {
+    console.info('login failed');
+  }
+};
 // #endregion
 
 // #region ***  Callback-No Visualisation - callback___  ***********
@@ -85,12 +96,44 @@ const listenToSocket = function () {
     }
   });
 };
+
+const listenToLogin = function () {
+  console.info('login');
+  document.querySelector('.js-login-btn').addEventListener('click', function () {
+    const body = JSON.stringify({
+      username: document.querySelector('.js-username').value,
+      password: document.querySelector('.js-password').value,
+    });
+    const url = 'http://' + lanIP + `/api/v1/login/`;
+    handleData(url, showLogin, showError, 'POST', body);
+  });
+};
+
+const listenToLogout = function () {
+  document.querySelector('.js-logout-btn').addEventListener('click', function () {
+    localStorage.removeItem('login');
+    location.reload();
+  });
+};
 // #endregion
 
 // #region ***  Init / DOMContentLoaded                  ***********
 const init = function () {
   console.info('DOM geladen');
-  getDevices();
+  const htmlLogin = document.querySelector('.js-html-login');
+  const htmlHistory = document.querySelector('.js-html-history');
+  if (htmlLogin) {
+    if (localStorage.getItem('login') == 1) {
+      window.location.href = 'http://192.168.168.169:5500/front/history.html';
+    }
+    listenToLogin();
+  } else if (htmlHistory) {
+    if (localStorage.getItem('login') != 1) {
+      window.location.href = 'http://192.168.168.169:5500/front/login.html';
+    }
+    listenToLogout();
+    getDevices();
+  }
   listenToSocket();
 };
 
