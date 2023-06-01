@@ -138,6 +138,14 @@ const listenToLogout = function () {
     location.reload();
   });
 };
+
+const listenToMobileMenu = function () {
+  document.querySelectorAll('.js-toggle-menu').forEach(function (el) {
+    el.addEventListener('click', function () {
+      document.body.classList.toggle('has-mobile-nav');
+    });
+  });
+};
 // #endregion
 
 // #region ***  Init / DOMContentLoaded                  ***********
@@ -157,17 +165,20 @@ const init = function () {
       window.location.href = 'login.html';
     }
     listenToLogout();
+    listenToMobileMenu();
   } else if (htmlHistory) {
     if (localStorage.getItem('login') != 1) {
       window.location.href = 'login.html';
     }
     listenToLogout();
+    listenToMobileMenu();
     getDevices();
   } else if (htmlUsers) {
     if (localStorage.getItem('login') != 1) {
       window.location.href = 'login.html';
     }
     listenToLogout();
+    listenToMobileMenu();
     getUsers();
   }
   listenToSocket();
