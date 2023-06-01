@@ -16,7 +16,7 @@ class Lcd:
     def set_byte(self, value):
         self.i2c.write_byte(0x20, value)
         GPIO.output(self.e,GPIO.HIGH)
-        time.sleep(0.1)
+        time.sleep(2*10**-3)
         GPIO.output(self.e,GPIO.LOW)
         
 
@@ -55,7 +55,7 @@ class Lcd:
     
     def scroll_screen(self):
         self.send_instruction(0b00011000)
-        time.sleep(0.1)
+        time.sleep(2*10**-3)
     
     def disable_cursor(self):
         self.send_instruction(0b00001100)
