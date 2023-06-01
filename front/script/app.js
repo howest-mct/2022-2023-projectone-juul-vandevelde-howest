@@ -10,6 +10,24 @@ const showError = function () {
   console.error('Oeps er ging iets mis');
 };
 
+const showUsers = function (jsonObject) {
+  const dataHtml = document.querySelector('.js-data');
+  let html = '';
+  for (const user of jsonObject.users) {
+    html += `
+    <tr>
+        <td>${user.first_name}</td>
+        <td>${user.last_name}</td>
+        <td>${user.email}</td>
+        <td>${user.password}</td>
+        <td>${user.admin}</td>
+        <td>${user.rfid_id}</td>
+    </tr>
+    `;
+  }
+  dataHtml.innerHTML = html;
+};
+
 const showDevices = function (jsonObject) {
   const btnsHtml = document.querySelector('.js-btns');
   let html = '';
@@ -59,6 +77,11 @@ const showLogin = function (jsonObject) {
 // #endregion
 
 // #region ***  Data Access - get___                     ***********
+const getUsers = function () {
+  const url = 'http://' + lanIP + `/api/v1/users/`;
+  handleData(url, showUsers, showError);
+};
+
 const getDevices = function () {
   const url = 'http://' + lanIP + `/api/v1/devices/`;
   handleData(url, showDevices, showError);
@@ -122,6 +145,7 @@ const init = function () {
   console.info('DOM geladen');
   const htmlLogin = document.querySelector('.js-html-login');
   const htmlHistory = document.querySelector('.js-html-history');
+  const htmlUsers = document.querySelector('.js-html-users');
   if (htmlLogin) {
     if (localStorage.getItem('login') == 1) {
       window.location.href = 'http://192.168.168.169:5500/front/history.html';
@@ -133,6 +157,12 @@ const init = function () {
     }
     listenToLogout();
     getDevices();
+  } else if (htmlUsers) {
+    if (localStorage.getItem('login') != 1) {
+      window.location.href = 'http://192.168.168.169:5500/front/login.html';
+    }
+    listenToLogout();
+    getUsers();
   }
   listenToSocket();
 };
