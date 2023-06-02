@@ -82,7 +82,19 @@ Dit is de feedback op mijn vragen.
 - feedback 1: Ziet er al veel beter uit, wel nog kleuren van de + veranderen, 3.3V = oranje en 5V = rood (zijn nu beiden rood). Ook in de breadboard view misschien wat meer witruimte toevoegen zodat draadjes eenvoudiger te volgen zijn.
 - feedback 2: Het eenvoudigste zou zijn om een neopixel led strip/ring te kopen. Deze kan je later ook nog goed gebruiken en geeft meer licht terwijl het minder GPIO pinnen in gebruik neemt.
 
-## Gesprek 5 (Datum: 30/05/2023)
+## Gesprek 5 (Datum: 26/05/2023)
+
+Lector: Christophe Laprudence
+
+Vragen voor dit gesprek:
+
+- vraag 1: Wat wordt er juist bedoeld met real time data tonen?
+
+Dit is de feedback op mijn vragen.
+
+- feedback 1: Je moet je afvragen welke data je graag 'live' zou zien op je website. Dit is bijvoorbeeld het sturen van een melding als je post hebt ontvangen. Vermijd wel dat je elke x seconden een socket emit verstuurd. Dit komt de performantie van de website/server niet ten goede. Probeer eerder een socketio te sturen naar gelang de data die je inleest met je sensoren; als het deurtje opent dan stuur je een emit om de verandering weer te geven.
+
+## Gesprek 6 (Datum: 30/05/2023)
 
 Lector: Geert Desloovere, Claudia Eeckhout, Dieter Roobrouck
 
@@ -93,7 +105,7 @@ Dit is de feedback.
 - feedback 3: Begin misschien ook al aan de UX.
 - feedback 4: Op tijd komen voor de toer momenten (8u30).
 
-## Gesprek 6 (Datum: 02/06/2023)
+## Gesprek 7 (Datum: 02/06/2023)
 
 Lector: Claudia Eeckhout
 
@@ -113,11 +125,9 @@ Dit is de feedback op mijn vragen.
 - feedback 8: Probeer te denken zoals de gebruiker. 
 - feedback 9: Het door icoontje op zich is misschien al genoeg, in plaats van een hele card. Dit kan je dan user testen om te zien of het wel duidelijk genoeg is.
 
+## Gesprek 8 (Datum: 02/06/2023)
 
-
-## Gesprek 7 (Datum: xx/06/2023)
-
-Lector: Hans Ameel / Geert Desloovere
+Lector: Geert Desloovere
 
 Vragen voor dit gesprek:
 
@@ -125,4 +135,4 @@ Vragen voor dit gesprek:
 
 Dit is de feedback op mijn vragen.
 
-- feedback 1: 
+- feedback 1: Kijk eerst of dat het probleem zich voor doet bij het in of uitschakelen van de solenoid. En probeer het dan op te lossen met behulp van een diode. Als dit niet werkt kijk dan eens naar een snubber (condensator + weerstand).
