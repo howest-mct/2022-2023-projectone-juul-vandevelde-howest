@@ -93,3 +93,36 @@ Dit is de feedback.
 - feedback 3: Begin misschien ook al aan de UX.
 - feedback 4: Op tijd komen voor de toer momenten (8u30).
 
+## Gesprek 6 (Datum: 02/06/2023)
+
+Lector: Claudia Eeckhout
+
+Vragen voor dit gesprek:
+
+- vraag 1: Algemene feedback op mijn UX
+
+Dit is de feedback op mijn vragen.
+
+- feedback 1: Begin altijd mobile first!
+- feedback 2: Het is vooral belangrijk om het design te testen vooraleer je het designed, zorg dat alles duidelijk en toegankelijk is.
+- feedback 3: Zorg ervoor dat alles wat je toont relevant is voor de eindgebruiker, een database dump is onoverzichtelijk. In plaats van bijvoorbeeld enkel de historiek weer te geven van wanneer de brievenbus geopend werd, toon je misschien beter ook wie die had geopend.
+- feedback 4: Zorg ervoor dat je bijvoorbeeld aan account aan kan maken voor je buur, zodat deze tijdens dat je op reis bent je brievenbus niet elke dag hoeft te checken.
+- feedback 5: Temperatuur is leuk maar dit lost het hoofd probleem niet op, zet het dus ook bijvoorbeeld niet in de fold.
+- feedback 6: Verander de tekst bij de lighting, het is een beetje verwarrend dat er staat tot hoelang deze gaat branden. Terwijl de card bedoelt is om de kleur er van te veranderen.
+- feedback 7: Scrollen op de home page is niet zo fijn, probeer de belangrijkste info in de fold te steken. 
+- feedback 8: Probeer te denken zoals de gebruiker. 
+- feedback 9: Het door icoontje op zich is misschien al genoeg, in plaats van een hele card. Dit kan je dan user testen om te zien of het wel duidelijk genoeg is.
+
+
+
+## Gesprek 7 (Datum: xx/06/2023)
+
+Lector: Hans Ameel / Geert Desloovere
+
+Vragen voor dit gesprek:
+
+- vraag 1: Hoe storing door solenoid weg filteren? Condensator? Diode? (activatie solenoid triggered de callback van een andere sensor)
+
+Dit is de feedback op mijn vragen.
+
+- feedback 1: 
