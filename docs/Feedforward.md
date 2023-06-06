@@ -136,3 +136,11 @@ Vragen voor dit gesprek:
 Dit is de feedback op mijn vragen.
 
 - feedback 1: Kijk eerst of dat het probleem zich voor doet bij het in of uitschakelen van de solenoid. En probeer het dan op te lossen met behulp van een diode. Als dit niet werkt kijk dan eens naar een snubber (condensator + weerstand).
+
+## Gesprek 9 (Datum: 06/06/2023)
+
+Lector: Dieter Roobrouck, Stijn Walcarius
+
+- feedback 1: Maak de history data niet gewoon een datadump, voeg nuttige info toe zoals of de gescande rfid card toegang had of niet.
+- feedback 2: Goed op schema, begin nu wel zeker aan de Instructables en de website.
+
