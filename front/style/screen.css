@@ -731,6 +731,10 @@ a:active {
   justify-content: center;
   gap: 0.5rem;
   margin-left: auto;
+  font-weight: 600;
+}
+.c-mail__btn:hover {
+  background-color: #9775fa;
 }
 
 /*

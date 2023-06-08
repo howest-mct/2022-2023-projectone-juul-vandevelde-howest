@@ -864,6 +864,11 @@ a:active {
     justify-content: center;
     gap: 0.5rem;
     margin-left: auto;
+    font-weight: 600;
+
+    &:hover {
+      background-color: $color-primary-lighter;
+    }
   }
 }
 

@@ -26,11 +26,11 @@ class DataRepository:
         params = [device_id]
         return Database.get_rows(sql, params)
 
-    # @staticmethod
-    # def read_most_recent_device_history(device_id):
-    #     sql = "SELECT * FROM history WHERE device_id = %s ORDER BY history_id DESC LIMIT 1"
-    #     params = [device_id]
-    #     return Database.get_one_row(sql, params)
+    @staticmethod
+    def read_most_recent_device_history(device_id):
+        sql = "SELECT * FROM history WHERE device_id = %s ORDER BY history_id DESC LIMIT 1"
+        params = [device_id]
+        return Database.get_one_row(sql, params)
 
     @staticmethod
     def add_device_history(device_id, action_id, value, comment):
