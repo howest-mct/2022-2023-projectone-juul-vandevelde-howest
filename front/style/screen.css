@@ -107,9 +107,9 @@ h2 {
 }
 
 h3 {
-  font-size: 1rem;
+  font-size: 1.125rem;
   line-height: 1.7142857143rem;
-  margin-bottom: 1.7142857143rem;
+  margin-bottom: 0.5714285714rem;
 }
 
 h4,
@@ -718,7 +718,11 @@ a:active {
 */
 .c-mail {
   padding-bottom: 1.7142857143rem;
-  flex-wrap: nowrap;
+}
+@media (min-width: 26.25em) {
+  .c-mail {
+    flex-wrap: nowrap;
+  }
 }
 .c-mail__btn {
   background-color: #845ef7;
@@ -732,8 +736,14 @@ a:active {
   gap: 0.5rem;
   margin-left: auto;
   font-weight: 600;
+  font-size: 0.8888888889rem;
 }
-.c-mail__btn:hover {
+@media (max-width: 26.25em) {
+  .c-mail__btn {
+    margin: 0.5714285714rem 0 0 0;
+  }
+}
+.c-mail__btn:hover, .c-mail__btn:disabled {
   background-color: #9775fa;
 }
 
@@ -1016,6 +1026,68 @@ a:active {
   flex-basis: 100% !important;
 }
 
+@media (min-width: 26.25em) {
+  .u-1-of-2-bp0 {
+    flex-basis: 50% !important;
+  }
+  .u-2-of-2-bp0 {
+    flex-basis: 100% !important;
+  }
+  .u-1-of-3-bp0 {
+    flex-basis: 33.3333333333% !important;
+  }
+  .u-2-of-3-bp0 {
+    flex-basis: 66.6666666667% !important;
+  }
+  .u-3-of-3-bp0 {
+    flex-basis: 100% !important;
+  }
+  .u-1-of-4-bp0 {
+    flex-basis: 25% !important;
+  }
+  .u-2-of-4-bp0 {
+    flex-basis: 50% !important;
+  }
+  .u-3-of-4-bp0 {
+    flex-basis: 75% !important;
+  }
+  .u-4-of-4-bp0 {
+    flex-basis: 100% !important;
+  }
+  .u-1-of-5-bp0 {
+    flex-basis: 20% !important;
+  }
+  .u-2-of-5-bp0 {
+    flex-basis: 40% !important;
+  }
+  .u-3-of-5-bp0 {
+    flex-basis: 60% !important;
+  }
+  .u-4-of-5-bp0 {
+    flex-basis: 80% !important;
+  }
+  .u-5-of-5-bp0 {
+    flex-basis: 100% !important;
+  }
+  .u-1-of-6-bp0 {
+    flex-basis: 16.6666666667% !important;
+  }
+  .u-2-of-6-bp0 {
+    flex-basis: 33.3333333333% !important;
+  }
+  .u-3-of-6-bp0 {
+    flex-basis: 50% !important;
+  }
+  .u-4-of-6-bp0 {
+    flex-basis: 66.6666666667% !important;
+  }
+  .u-5-of-6-bp0 {
+    flex-basis: 83.3333333333% !important;
+  }
+  .u-6-of-6-bp0 {
+    flex-basis: 100% !important;
+  }
+}
 @media (min-width: 36.0625em) {
   .u-1-of-2-bp1 {
     flex-basis: 50% !important;
