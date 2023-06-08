@@ -2,7 +2,7 @@
  # Imports
 /*---------------------------------------*/
 
-@import "open-color";
+@import 'open-color';
 
 /*---------------------------------------/*
  # TOOLS
@@ -39,11 +39,11 @@ $color-text: $oc-gray-9;
 $color-text-light: $oc-gray-7;
 $color-text-lighter: $oc-gray-6;
 
-$color-primary: $oc-indigo-6;
-$color-primary-light: $oc-indigo-5;
-$color-primary-lighter: $oc-indigo-4;
-$color-primary-lightest: $oc-indigo-1;
-$color-primary-dark: $oc-indigo-7;
+$color-primary: $oc-violet-6;
+$color-primary-light: $oc-violet-5;
+$color-primary-lighter: $oc-violet-4;
+$color-primary-lightest: $oc-violet-1;
+$color-primary-dark: $oc-violet-7;
 
 $color-border: $oc-gray-3;
 $color-border-light: $oc-gray-2;
@@ -90,7 +90,7 @@ $ms9: calc($ms8 * $ratio); // 40px
 $ms10: calc($ms9 * $ratio); // 45px
 $ms11: calc($ms10 * $ratio); // 51px
 
-$font-family-primary: "Inter Web", Helvetica, arial, sans-serif;
+$font-family-primary: 'Inter Web', Helvetica, arial, sans-serif;
 
 // ---
 // Settings: Spacing
@@ -115,6 +115,7 @@ $space-xxxl: calc($space-xl * 2); // 96px
 // ---
 
 $breakpoints: (
+  bp0: calc(418 / 16 * 1em),
   bp1: calc(577 / 16 * 1em),
   bp2: calc(769 / 16 * 1em),
   bp3: calc(993 / 16 * 1em),
@@ -141,27 +142,27 @@ $columns: (2, 3, 4, 5, 6) !default;
 /*---------------------------------------*/
 
 @font-face {
-  font-family: "Inter Web";
+  font-family: 'Inter Web';
   font-weight: 400;
   font-style: normal;
   font-display: swap;
-  src: url("../fonts/Inter-Regular.woff2") format("woff2");
+  src: url('../../fonts/Inter-Regular.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: "Inter Web";
+  font-family: 'Inter Web';
   font-weight: 600;
   font-style: normal;
   font-display: swap;
-  src: url("../fonts/Inter-SemiBold.woff2") format("woff2");
+  src: url('../../fonts/Inter-SemiBold.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: "Inter Web";
+  font-family: 'Inter Web';
   font-weight: 700;
   font-style: normal;
   font-display: swap;
-  src: url("../fonts/Inter-Bold.woff2") format("woff2");
+  src: url('../../fonts/Inter-Bold.woff2') format('woff2');
 }
 
 *,
@@ -241,9 +242,9 @@ h2 {
 }
 
 h3 {
-  font-size: $ms0;
+  font-size: $ms1;
   line-height: calc($baseline * 3);
-  margin-bottom: $space-m;
+  margin-bottom: $space-xxs;
 }
 
 h4,
@@ -545,6 +546,16 @@ a:active {
 \*------------------------------------*/
 
 /*
+  Components: hidden
+  ---
+  The hidden component is used to hide a page when someone isn't logged in
+*/
+
+.hidden {
+  display: none;
+}
+
+/*
   Components: icon buttons
   ---
   The icon button component is used to display a button with an icon
@@ -578,10 +589,10 @@ a:active {
   display: block;
   height: 100%;
   width: auto;
-  fill: $oc-indigo-0;
+  fill: $oc-violet-0;
 
   &:hover {
-    fill: $oc-indigo-1;
+    fill: $oc-violet-1;
   }
 }
 
@@ -602,8 +613,13 @@ a:active {
 }
 
 .c-header__logout {
+  color: white;
   @include mq(bp1) {
     margin-left: auto;
+  }
+
+  &:hover {
+    color: $oc-violet-0;
   }
 }
 
@@ -662,13 +678,13 @@ a:active {
 .c-nav__link:any-link {
   display: block;
   font-weight: 600;
-  color: $oc-indigo-1;
+  color: $oc-violet-1;
   text-decoration: none;
   border-radius: $radius-m;
 
   .c-nav__item--active & {
-    color: $oc-indigo-0;
-    background-color: $oc-indigo-9;
+    color: $oc-violet-0;
+    background-color: $oc-violet-9;
     // padding: $space-xxs $space-xs;
     padding: $space-xxs $space-s;
   }
@@ -679,7 +695,7 @@ a:active {
 }
 
 .c-nav__link:hover {
-  color: $oc-indigo-0;
+  color: $oc-violet-0;
 }
 
 /*
@@ -718,7 +734,7 @@ a:active {
   border-radius: $radius-m;
   font-weight: 600;
   text-decoration: none;
-  color: $oc-indigo-0;
+  color: $oc-violet-0;
   background-color: $color-primary-dark;
   border: 1px solid $color-primary-dark;
   transition: background-color 0.2s ease-in-out;
@@ -782,9 +798,9 @@ a:active {
   padding: $space-m $space-m 0;
   display: flow-root;
 
-  & + & {
-    border-top: 1px solid $color-border-light;
-  }
+  // & + & {
+  //   border-top: 1px solid $color-border-light;
+  // }
 }
 
 /*
@@ -829,6 +845,42 @@ a:active {
 }
 
 /*
+    Components: Mail
+    ---
+    The mail component is used to display the mail status
+*/
+
+.c-mail {
+  padding-bottom: $space-m;
+
+  @include mq(bp0, min) {
+    flex-wrap: nowrap;
+  }
+
+  &__btn {
+    background-color: $color-primary-light;
+    color: white;
+    fill: white;
+    border-radius: $radius-m;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-left: auto;
+    font-weight: 600;
+    font-size: $ms0;
+    @include mq(bp0, max) {
+      margin:  $space-xxs 0 0 0;
+    }
+
+    &:hover, &:disabled {
+      background-color: $color-primary-lighter;
+    }
+  }
+}
+
+/*
     Components: Timeline
     ---
     The timeline component is used to display a list of timeline items
@@ -841,7 +893,7 @@ a:active {
   position: relative;
 
   &::before {
-    content: "";
+    content: '';
     width: 2px;
     position: absolute;
     top: 2px;

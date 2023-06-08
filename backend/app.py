@@ -61,12 +61,14 @@ def shutdown(pin):
 def read_switch(pin):
     if reed_1.pressed:
         print("door closed")
-        DataRepository.add_device_history(6, None, 1, None)
+        DataRepository.add_device_history(6, None, 0, None)
+        socketio.emit('B2F_door_changed')
         if current_device == 6:
             socketio.emit('B2F_new_data', {'device_id': 6})
     else:
         print("door open")
-        DataRepository.add_device_history(6, None, 0, None)
+        DataRepository.add_device_history(6, None, 1, None)
+        socketio.emit('B2F_door_changed')
         if current_device == 6:
             socketio.emit('B2F_new_data', {'device_id': 6})
 
@@ -117,7 +119,9 @@ def write_rfid():
 def read_temperature():
     temperature = DS18B20_object.get_temperature()
     print(f"De temperatuur is {temperature:.2f} °Celcius")
-    DataRepository.add_device_history(3, None, temperature, None)
+    if temperature >= 29:
+        # in productie zal deze temperatuur hoger staan
+        DataRepository.add_device_history(3, None, temperature, None)
     if current_device == 3:
         socketio.emit('B2F_new_data', {'device_id': 3})
 
@@ -151,7 +155,8 @@ def get_devices():
     if request.method == 'GET':
         data = DataRepository.read_devices()
         return jsonify(devices=data), 200
-    
+
+
 @app.route(endpoint + '/users/', methods=['GET'])
 def get_users():
     if request.method == 'GET':
@@ -164,6 +169,13 @@ def get_history(device_id):
     if request.method == 'GET':
         data = DataRepository.read_device_history(device_id)
         return jsonify(history=data), 200
+
+
+@app.route(endpoint + '/history/recent/<device_id>/', methods=['GET'])
+def get_most_recent_history(device_id):
+    if request.method == 'GET':
+        data = DataRepository.read_most_recent_device_history(device_id)
+        return jsonify(recent_history=data), 200
 
 
 @app.route(endpoint + '/login/', methods=['POST'])
@@ -186,6 +198,18 @@ def initial_connection():
 def set_current_device(jsonObject):
     global current_device
     current_device = int(jsonObject['device_id'])
+
+
+@socketio.on('F2B_open_door')
+def open_door():
+    status = DataRepository.read_most_recent_device_history(6)
+    if int(status['value']) == 0:
+        print("Door unlocked by website")
+        GPIO.output(solenoid, GPIO.HIGH)
+        time.sleep(1)
+        GPIO.output(solenoid, GPIO.LOW)
+    else:
+        print("Door already unlocked")
 
 
 # # get realtime data from the sensor

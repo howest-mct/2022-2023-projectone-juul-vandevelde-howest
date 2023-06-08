@@ -51,15 +51,15 @@ const showHistory = function (jsonObject) {
   dataHtml.innerHTML = html;
 };
 
-const showNewestHistory = function (jsonObject) {
-  console.info(jsonObject);
-  const dataHtml = document.querySelector('.js-data');
-  const html = `<tr>
-    <td>${jsonObject.history.datetime}</td>
-    <td>${jsonObject.history.value}</td>
-  </tr>`;
-  dataHtml.innerHTML += html;
-};
+// const showNewestHistory = function (jsonObject) {
+//   console.info(jsonObject);
+//   const dataHtml = document.querySelector('.js-data');
+//   const html = `<tr>
+//     <td>${jsonObject.history.datetime}</td>
+//     <td>${jsonObject.history.value}</td>
+//   </tr>`;
+//   dataHtml.innerHTML += html;
+// };
 
 const showLogin = function (jsonObject) {
   console.info(jsonObject);
@@ -69,6 +69,25 @@ const showLogin = function (jsonObject) {
     window.location.href = 'index.html';
   } else if (jsonObject.login_status == 0) {
     console.info('login failed');
+  }
+};
+
+const showDoorStatus = function (jsonObject) {
+  const mailBtn = document.querySelector('.js-mail-btn');
+  if (+jsonObject.recent_history.value == 1) {
+    console.info('door is opened');
+    mailBtn.disabled = true;
+    mailBtn.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+    <path d="M17 8h-7V6a2 2 0 0 1 4 0 1 1 0 0 0 2 0 4 4 0 0 0-8 0v2H7a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-8a3 3 0 0 0-3-3zm1 11a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1z" />
+    <path d="M12 12a3 3 0 1 0 3 3 3 3 0 0 0-3-3zm0 4a1 1 0 1 1 1-1 1 1 0 0 1-1 1z" />
+    </svg>
+    Door unlocked`;
+  } else if (+jsonObject.recent_history.value == 0) {
+    console.info('door is closed');
+    mailBtn.disabled = false;
+    mailBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><rect width="24" height="24" opacity="0"/><path d="M17 8h-1V6.11a4 4 0 1 0-8 0V8H7a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-8a3 3 0 0 0-3-3zm-7-1.89A2.06 2.06 0 0 1 12 4a2.06 2.06 0 0 1 2 2.11V8h-4zM18 19a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1z"/><path d="M12 12a3 3 0 1 0 3 3 3 3 0 0 0-3-3zm0 4a1 1 0 1 1 1-1 1 1 0 0 1-1 1z"/></svg>
+    Unlock door`;
   }
 };
 // #endregion
@@ -90,6 +109,11 @@ const getDevices = function () {
 const getHistory = function (device_id) {
   const url = 'http://' + lanIP + `/api/v1/history/${device_id}/`;
   handleData(url, showHistory, showError);
+};
+
+const getDoorStatus = function () {
+  const url = 'http://' + lanIP + `/api/v1/history/recent/6/`;
+  handleData(url, showDoorStatus, showError);
 };
 // #endregion
 
@@ -117,6 +141,10 @@ const listenToSocket = function () {
     if (jsonObject.device_id == currentDeviceId) {
       getHistory(currentDeviceId);
     }
+  });
+
+  socketio.on('B2F_door_changed', function () {
+    getDoorStatus();
   });
 };
 
@@ -146,6 +174,15 @@ const listenToMobileMenu = function () {
     });
   });
 };
+
+const listenToUnlock = function () {
+  const mailBtn = document.querySelector('.js-mail-btn');
+  mailBtn.addEventListener('click', function () {
+    console.info('opening door');
+    socketio.emit('F2B_open_door');
+    getDoorStatus();
+  });
+};
 // #endregion
 
 // #region ***  Init / DOMContentLoaded                  ***********
@@ -157,25 +194,36 @@ const init = function () {
   const htmlUsers = document.querySelector('.js-html-users');
   if (htmlLogin) {
     if (localStorage.getItem('login') == 1) {
-      window.location.href = 'history.html';
+      window.location.href = 'index.html';
     }
     listenToLogin();
   } else if (htmlDashboard) {
-    if (localStorage.getItem('login') != 1) {
+    if (localStorage.getItem('login') == 1) {
+      htmlDashboard.classList.remove('hidden');
+    } else if (localStorage.getItem('login') != 1) {
       window.location.href = 'login.html';
+      htmlDashboard.classList.add('hidden');
     }
     listenToLogout();
     listenToMobileMenu();
+    getDoorStatus();
+    listenToUnlock();
   } else if (htmlHistory) {
-    if (localStorage.getItem('login') != 1) {
+    if (localStorage.getItem('login') == 1) {
+      htmlHistory.classList.remove('hidden');
+    } else if (localStorage.getItem('login') != 1) {
       window.location.href = 'login.html';
+      htmlHistory.classList.add('hidden');
     }
     listenToLogout();
     listenToMobileMenu();
     getDevices();
   } else if (htmlUsers) {
-    if (localStorage.getItem('login') != 1) {
+    if (localStorage.getItem('login') == 1) {
+      htmlUsers.classList.remove('hidden');
+    } else if (localStorage.getItem('login') != 1) {
       window.location.href = 'login.html';
+      htmlUsers.classList.add('hidden');
     }
     listenToLogout();
     listenToMobileMenu();
