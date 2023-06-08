@@ -15,21 +15,21 @@
   font-weight: 400;
   font-style: normal;
   font-display: swap;
-  src: url("../fonts/Inter-Regular.woff2") format("woff2");
+  src: url("../../fonts/Inter-Regular.woff2") format("woff2");
 }
 @font-face {
   font-family: "Inter Web";
   font-weight: 600;
   font-style: normal;
   font-display: swap;
-  src: url("../fonts/Inter-SemiBold.woff2") format("woff2");
+  src: url("../../fonts/Inter-SemiBold.woff2") format("woff2");
 }
 @font-face {
   font-family: "Inter Web";
   font-weight: 700;
   font-style: normal;
   font-display: swap;
-  src: url("../fonts/Inter-Bold.woff2") format("woff2");
+  src: url("../../fonts/Inter-Bold.woff2") format("woff2");
 }
 *,
 *:before,
@@ -394,6 +394,15 @@ a:active {
   #COMPONENTS
 \*------------------------------------*/
 /*
+  Components: hidden
+  ---
+  The hidden component is used to hide a page when someone isn't logged in
+*/
+.hidden {
+  display: none;
+}
+
+/*
   Components: icon buttons
   ---
   The icon button component is used to display a button with an icon
@@ -446,10 +455,16 @@ a:active {
   }
 }
 
+.c-header__logout {
+  color: white;
+}
 @media (min-width: 36.0625em) {
   .c-header__logout {
     margin-left: auto;
   }
+}
+.c-header__logout:hover {
+  color: #edf2ff;
 }
 
 .c-header__menu-button {
@@ -656,9 +671,6 @@ a:active {
   padding: 1.7142857143rem 1.7142857143rem 0;
   display: flow-root;
 }
-.c-card__body + .c-card__body {
-  border-top: 1px solid #e9ecef;
-}
 
 /*
     Components: Attachments
@@ -697,6 +709,28 @@ a:active {
 .c-attachments__file-name {
   overflow-wrap: break-word;
   word-break: break-all;
+}
+
+/*
+    Components: Mail
+    ---
+    The mail component is used to display the mail status
+*/
+.c-mail {
+  padding-bottom: 1.7142857143rem;
+  flex-wrap: nowrap;
+}
+.c-mail__btn {
+  background-color: #5c7cfa;
+  color: white;
+  fill: white;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-left: auto;
 }
 
 /*

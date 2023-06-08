@@ -157,25 +157,34 @@ const init = function () {
   const htmlUsers = document.querySelector('.js-html-users');
   if (htmlLogin) {
     if (localStorage.getItem('login') == 1) {
-      window.location.href = 'history.html';
+      window.location.href = 'index.html';
     }
     listenToLogin();
   } else if (htmlDashboard) {
-    if (localStorage.getItem('login') != 1) {
+    if (localStorage.getItem('login') == 1) {
+      htmlDashboard.classList.remove('hidden');
+    } else if (localStorage.getItem('login') != 1) {
       window.location.href = 'login.html';
+      htmlDashboard.classList.add('hidden');
     }
     listenToLogout();
     listenToMobileMenu();
   } else if (htmlHistory) {
-    if (localStorage.getItem('login') != 1) {
+    if (localStorage.getItem('login') == 1) {
+      htmlHistory.classList.remove('hidden');
+    } else if (localStorage.getItem('login') != 1) {
       window.location.href = 'login.html';
+      htmlHistory.classList.add('hidden');
     }
     listenToLogout();
     listenToMobileMenu();
     getDevices();
   } else if (htmlUsers) {
-    if (localStorage.getItem('login') != 1) {
+    if (localStorage.getItem('login') == 1) {
+      htmlUsers.classList.remove('hidden');
+    } else if (localStorage.getItem('login') != 1) {
       window.location.href = 'login.html';
+      htmlUsers.classList.add('hidden');
     }
     listenToLogout();
     listenToMobileMenu();

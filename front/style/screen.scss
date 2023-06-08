@@ -2,7 +2,7 @@
  # Imports
 /*---------------------------------------*/
 
-@import "open-color";
+@import 'open-color';
 
 /*---------------------------------------/*
  # TOOLS
@@ -90,7 +90,7 @@ $ms9: calc($ms8 * $ratio); // 40px
 $ms10: calc($ms9 * $ratio); // 45px
 $ms11: calc($ms10 * $ratio); // 51px
 
-$font-family-primary: "Inter Web", Helvetica, arial, sans-serif;
+$font-family-primary: 'Inter Web', Helvetica, arial, sans-serif;
 
 // ---
 // Settings: Spacing
@@ -141,27 +141,27 @@ $columns: (2, 3, 4, 5, 6) !default;
 /*---------------------------------------*/
 
 @font-face {
-  font-family: "Inter Web";
+  font-family: 'Inter Web';
   font-weight: 400;
   font-style: normal;
   font-display: swap;
-  src: url("../fonts/Inter-Regular.woff2") format("woff2");
+  src: url('../../fonts/Inter-Regular.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: "Inter Web";
+  font-family: 'Inter Web';
   font-weight: 600;
   font-style: normal;
   font-display: swap;
-  src: url("../fonts/Inter-SemiBold.woff2") format("woff2");
+  src: url('../../fonts/Inter-SemiBold.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: "Inter Web";
+  font-family: 'Inter Web';
   font-weight: 700;
   font-style: normal;
   font-display: swap;
-  src: url("../fonts/Inter-Bold.woff2") format("woff2");
+  src: url('../../fonts/Inter-Bold.woff2') format('woff2');
 }
 
 *,
@@ -545,6 +545,16 @@ a:active {
 \*------------------------------------*/
 
 /*
+  Components: hidden
+  ---
+  The hidden component is used to hide a page when someone isn't logged in
+*/
+
+.hidden {
+  display: none;
+}
+
+/*
   Components: icon buttons
   ---
   The icon button component is used to display a button with an icon
@@ -602,8 +612,13 @@ a:active {
 }
 
 .c-header__logout {
+  color: white;
   @include mq(bp1) {
     margin-left: auto;
+  }
+
+  &:hover {
+    color: $oc-indigo-0;
   }
 }
 
@@ -782,9 +797,9 @@ a:active {
   padding: $space-m $space-m 0;
   display: flow-root;
 
-  & + & {
-    border-top: 1px solid $color-border-light;
-  }
+  // & + & {
+  //   border-top: 1px solid $color-border-light;
+  // }
 }
 
 /*
@@ -829,6 +844,30 @@ a:active {
 }
 
 /*
+    Components: Mail
+    ---
+    The mail component is used to display the mail status
+*/
+
+.c-mail {
+  padding-bottom: $space-m;
+  flex-wrap: nowrap;
+
+  &__btn {
+    background-color: $color-primary-light;
+    color: white;
+    fill: white;
+    border-radius: $radius-m;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-left: auto;
+  }
+}
+
+/*
     Components: Timeline
     ---
     The timeline component is used to display a list of timeline items
@@ -841,7 +880,7 @@ a:active {
   position: relative;
 
   &::before {
-    content: "";
+    content: '';
     width: 2px;
     position: absolute;
     top: 2px;
