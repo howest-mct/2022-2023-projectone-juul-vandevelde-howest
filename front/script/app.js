@@ -51,15 +51,15 @@ const showHistory = function (jsonObject) {
   dataHtml.innerHTML = html;
 };
 
-const showNewestHistory = function (jsonObject) {
-  console.info(jsonObject);
-  const dataHtml = document.querySelector('.js-data');
-  const html = `<tr>
-    <td>${jsonObject.history.datetime}</td>
-    <td>${jsonObject.history.value}</td>
-  </tr>`;
-  dataHtml.innerHTML += html;
-};
+// const showNewestHistory = function (jsonObject) {
+//   console.info(jsonObject);
+//   const dataHtml = document.querySelector('.js-data');
+//   const html = `<tr>
+//     <td>${jsonObject.history.datetime}</td>
+//     <td>${jsonObject.history.value}</td>
+//   </tr>`;
+//   dataHtml.innerHTML += html;
+// };
 
 const showLogin = function (jsonObject) {
   console.info(jsonObject);

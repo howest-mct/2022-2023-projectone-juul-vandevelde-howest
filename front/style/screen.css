@@ -719,7 +719,7 @@ a:active {
 .c-mail {
   padding-bottom: 1.7142857143rem;
 }
-@media (min-width: 26.25em) {
+@media (min-width: 26.125em) {
   .c-mail {
     flex-wrap: nowrap;
   }
@@ -736,9 +736,9 @@ a:active {
   gap: 0.5rem;
   margin-left: auto;
   font-weight: 600;
-  font-size: 0.8888888889rem;
+  font-size: 1rem;
 }
-@media (max-width: 26.25em) {
+@media (max-width: 26.125em) {
   .c-mail__btn {
     margin: 0.5714285714rem 0 0 0;
   }
@@ -1026,7 +1026,7 @@ a:active {
   flex-basis: 100% !important;
 }
 
-@media (min-width: 26.25em) {
+@media (min-width: 26.125em) {
   .u-1-of-2-bp0 {
     flex-basis: 50% !important;
   }

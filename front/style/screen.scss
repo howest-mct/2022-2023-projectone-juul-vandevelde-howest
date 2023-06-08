@@ -115,7 +115,7 @@ $space-xxxl: calc($space-xl * 2); // 96px
 // ---
 
 $breakpoints: (
-  bp0: calc(420 / 16 * 1em),
+  bp0: calc(418 / 16 * 1em),
   bp1: calc(577 / 16 * 1em),
   bp2: calc(769 / 16 * 1em),
   bp3: calc(993 / 16 * 1em),
@@ -869,7 +869,7 @@ a:active {
     gap: 0.5rem;
     margin-left: auto;
     font-weight: 600;
-    font-size: $ms-1;
+    font-size: $ms0;
     @include mq(bp0, max) {
       margin:  $space-xxs 0 0 0;
     }
