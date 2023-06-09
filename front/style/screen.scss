@@ -313,6 +313,11 @@ a:active {
   color: $color-primary-dark;
 }
 
+input[type='text'],
+input[type='password'] {
+  font-family: 'Inter Web';
+}
+
 /*---------------------------------------/*
  # OBJECTS
 /*---------------------------------------*/
@@ -367,6 +372,10 @@ a:active {
 .o-row {
   padding: $space-m $space-m 0;
   display: flow-root;
+}
+
+.o-row--np {
+  padding: 0;
 }
 
 .o-row--primary {
@@ -473,6 +482,10 @@ a:active {
 
 .o-layout--row-reverse {
   flex-direction: row-reverse;
+}
+
+.o-layout--column {
+  flex-direction: column;
 }
 
 /* Horizontal alignment modifiers*/
@@ -699,6 +712,75 @@ a:active {
 }
 
 /*
+    Components: Login
+    ---
+    The login component is used to display the login form
+*/
+.c-login-background {
+  background-color: white;
+}
+
+.c-login {
+  height: 100vh;
+
+  &__title {
+    font-size: $ms5;
+    margin-bottom: 0.5rem;
+  }
+
+  &__subtitle {
+    font-weight: 600;
+    margin-bottom: 2.5rem;
+  }
+
+  &__fieldname {
+    color: $oc-gray-9;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  &__field {
+    margin-bottom: 1.5rem;
+    background-color: $oc-gray-1;
+    border: none;
+    border-radius: $radius-m;
+    width: 100%;
+    height: 2.5rem;
+    outline-color: $oc-violet-2;
+    padding: 0 1rem;
+  }
+
+  &__warning {
+    color: $oc-red-6;
+  }
+
+  &__btn {
+    background-color: $color-primary-light;
+    color: white;
+    border-radius: $radius-m;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    font-size: $ms0;
+    width: 100%;
+    margin: 2rem 0 7.5rem 0;
+
+    &:hover {
+      background-color: $color-primary-lighter;
+    }
+  }
+}
+
+/*
+    Components: Wrong password
+    ---
+    The wrong password component is used to display that the log details are not correct
+*/
+.wrong-password {
+  border: solid $oc-red-6 2px;
+  outline-color: $oc-red-5;
+}
+
+/*
     Components: Author
     ---
     The author component is used to display the author of an application
@@ -871,10 +953,11 @@ a:active {
     font-weight: 600;
     font-size: $ms0;
     @include mq(bp0, max) {
-      margin:  $space-xxs 0 0 0;
+      margin: $space-xxs 0 0 0;
     }
 
-    &:hover, &:disabled {
+    &:hover,
+    &:disabled {
       background-color: $color-primary-lighter;
     }
   }

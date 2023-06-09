@@ -178,6 +178,11 @@ a:active {
   color: #7048e8;
 }
 
+input[type=text],
+input[type=password] {
+  font-family: "Inter Web";
+}
+
 /*---------------------------------------/*
  # OBJECTS
 /*---------------------------------------*/
@@ -224,6 +229,10 @@ a:active {
 .o-row {
   padding: 1.7142857143rem 1.7142857143rem 0;
   display: flow-root;
+}
+
+.o-row--np {
+  padding: 0;
 }
 
 .o-row--primary {
@@ -325,6 +334,10 @@ a:active {
 /* reverse horizontal row modifier */
 .o-layout--row-reverse {
   flex-direction: row-reverse;
+}
+
+.o-layout--column {
+  flex-direction: column;
 }
 
 /* Horizontal alignment modifiers*/
@@ -551,6 +564,68 @@ a:active {
 
 .c-nav__link:hover {
   color: #f3f0ff;
+}
+
+/*
+    Components: Login
+    ---
+    The login component is used to display the login form
+*/
+.c-login-background {
+  background-color: white;
+}
+
+.c-login {
+  height: 100vh;
+}
+.c-login__title {
+  font-size: 1.8020324707rem;
+  margin-bottom: 0.5rem;
+}
+.c-login__subtitle {
+  font-weight: 600;
+  margin-bottom: 2.5rem;
+}
+.c-login__fieldname {
+  color: #212529;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.c-login__field {
+  margin-bottom: 1.5rem;
+  background-color: #f1f3f5;
+  border: none;
+  border-radius: 6px;
+  width: 100%;
+  height: 2.5rem;
+  outline-color: #d0bfff;
+  padding: 0 1rem;
+}
+.c-login__warning {
+  color: #fa5252;
+}
+.c-login__btn {
+  background-color: #845ef7;
+  color: white;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  width: 100%;
+  margin: 2rem 0 7.5rem 0;
+}
+.c-login__btn:hover {
+  background-color: #9775fa;
+}
+
+/*
+    Components: Wrong password
+    ---
+    The wrong password component is used to display that the log details are not correct
+*/
+.wrong-password {
+  border: solid #fa5252 2px;
+  outline-color: #ff6b6b;
 }
 
 /*

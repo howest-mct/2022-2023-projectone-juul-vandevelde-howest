@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="c-login-background">
 
 <head>
     <meta charset="UTF-8">
@@ -13,14 +13,31 @@
 </head>
 
 <body class="js-html-login">
-    <div>
-        <label for="username">Username: </label>
-        <input type="text" class="js-username" id="username" required>
-        <br>
-        <label for="password">Password: </label>
-        <input type="password" class="js-password" id="password" required>
-        <br>
-        <button class="js-login-btn">Log in</button>
+    <div class="o-row--np">
+        <div class="o-container">
+            <div class="c-login o-layout o-layout--align-center o-layout--justify-center">
+                <section class="o-row">
+                    <h1 class="c-login__title">
+                        Welcome to DeliverEase
+                    </h1>
+                    <div class="c-login__subtitle">
+                        Sign in to access your dashboard
+                    </div>
+                    <div class="o-layout o-layout__item o-layout--column">
+                        <label class="c-login__fieldname" for="username">Username</label>
+                        <input class="c-login__field js-login-field js-username" type="text" id="username" required>
+                    </div>
+                    <div class="o-layout o-layout__item o-layout--column">
+                        <label class="c-login__fieldname" for="password">Password</label>
+                        <input class="c-login__field js-login-field js-password u-mb-clear" type="password" id="password" required>
+                    </div>
+                    <div class="c-login__warning js-wrong-password hidden">
+                        Incorrect username or password.
+                    </div>
+                    <button class="c-login__btn o-button-reset js-login-btn">Sign in</button>
+                </section>
+            </div>
+        </div>
     </div>
 </body>
 

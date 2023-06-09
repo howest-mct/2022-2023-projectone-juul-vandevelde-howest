@@ -62,13 +62,18 @@ const showHistory = function (jsonObject) {
 // };
 
 const showLogin = function (jsonObject) {
-  console.info(jsonObject);
+  // console.info(jsonObject);
   if (jsonObject.login_status == 1) {
-    console.info('login succes');
+    // console.info('login succes');
     localStorage.setItem('login', 1);
     window.location.href = 'index.html';
   } else if (jsonObject.login_status == 0) {
     console.info('login failed');
+    const fields = document.querySelectorAll('.js-login-field');
+    for (const field of fields) {
+      field.classList.add('wrong-password');
+      document.querySelector('.js-wrong-password').classList.remove('hidden');
+    }
   }
 };
 
@@ -149,7 +154,16 @@ const listenToSocket = function () {
 };
 
 const listenToLogin = function () {
-  console.info('login');
+  const fields = document.querySelectorAll('.js-login-field');
+  for (const field of fields) {
+    field.onkeypress = function (e) {
+      if (!e) e = window.event;
+      var keyCode = e.code || e.key;
+      if (keyCode == 'Enter') {
+        document.querySelector('.js-login-btn').click();
+      }
+    };
+  }
   document.querySelector('.js-login-btn').addEventListener('click', function () {
     const body = JSON.stringify({
       username: document.querySelector('.js-username').value,
