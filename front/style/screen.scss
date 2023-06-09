@@ -688,6 +688,19 @@ input[type='password'] {
   }
 }
 
+.c-nav__action {
+  color: $oc-violet-0;
+  fill: $oc-violet-0;
+  border-radius: $radius-m;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: $ms0;
+}
+
 .c-nav__link:any-link {
   display: block;
   font-weight: 600;
@@ -940,7 +953,7 @@ input[type='password'] {
   }
 
   &__btn {
-    background-color: $color-primary-light;
+    background-color: $color-primary;
     color: white;
     fill: white;
     border-radius: $radius-m;
@@ -958,7 +971,7 @@ input[type='password'] {
 
     &:hover,
     &:disabled {
-      background-color: $color-primary-lighter;
+      background-color: $color-primary-light;
     }
   }
 }

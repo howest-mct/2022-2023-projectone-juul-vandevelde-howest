@@ -530,6 +530,19 @@ input[type=password] {
   align-items: center;
 }
 
+.c-nav__action {
+  color: #f3f0ff;
+  fill: #f3f0ff;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
 .c-nav__link:-moz-any-link {
   display: block;
   font-weight: 600;
@@ -800,7 +813,7 @@ input[type=password] {
   }
 }
 .c-mail__btn {
-  background-color: #845ef7;
+  background-color: #7950f2;
   color: white;
   fill: white;
   border-radius: 6px;
@@ -819,7 +832,7 @@ input[type=password] {
   }
 }
 .c-mail__btn:hover, .c-mail__btn:disabled {
-  background-color: #9775fa;
+  background-color: #845ef7;
 }
 
 /*
