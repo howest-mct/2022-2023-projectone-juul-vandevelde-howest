@@ -699,6 +699,9 @@ input[type='password'] {
   gap: 0.5rem;
   font-weight: 600;
   font-size: $ms0;
+  cursor: pointer;
+  position: absolute;
+  bottom: 1.5rem;
 }
 
 .c-nav__link:any-link {
@@ -1108,6 +1111,40 @@ input[type='password'] {
  # UTILITIES
 /*---------------------------------------*/
 
+/*
+    Utilities: Btn styles
+    ---
+    Utility classes to set the style of a button
+*/
+.u-btn-fill {
+  background-color: $color-primary;
+  color: white;
+  fill: white;
+  border-radius: $radius-m;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-left: 2rem;
+  font-weight: 600;
+  font-size: $ms0;
+}
+
+.u-btn-outline {
+  background-color: white;
+  color: $color-primary;
+  fill: $color-primary;
+  border-radius: $radius-m;
+  border: solid 2px $color-primary;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: $ms0;
+}
 /*
     Utilities: Colors
     ---

@@ -541,6 +541,9 @@ input[type=password] {
   gap: 0.5rem;
   font-weight: 600;
   font-size: 1rem;
+  cursor: pointer;
+  position: absolute;
+  bottom: 1.5rem;
 }
 
 .c-nav__link:-moz-any-link {
@@ -952,6 +955,41 @@ input[type=password] {
 /*---------------------------------------/*
  # UTILITIES
 /*---------------------------------------*/
+/*
+    Utilities: Btn styles
+    ---
+    Utility classes to set the style of a button
+*/
+.u-btn-fill {
+  background-color: #7950f2;
+  color: white;
+  fill: white;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-left: 2rem;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.u-btn-outline {
+  background-color: white;
+  color: #7950f2;
+  fill: #7950f2;
+  border-radius: 6px;
+  border: solid 2px #7950f2;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
 /*
     Utilities: Colors
     ---
