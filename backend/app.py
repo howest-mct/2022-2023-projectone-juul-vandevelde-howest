@@ -12,9 +12,17 @@ from mfrc522 import SimpleMFRC522
 from RPi import GPIO
 import subprocess
 import threading
+import neopixel
+import board
 import time
 
 GPIO.setmode(GPIO.BCM)
+
+pixel_pin = board.D18
+num_pixels = 8
+ORDER = neopixel.GRB
+pixels = neopixel.NeoPixel(pixel_pin, num_pixels,
+                           brightness=0.2, auto_write=False, pixel_order=ORDER)
 
 rfid_reader = SimpleMFRC522()
 mcp_object = Mcp()
@@ -28,6 +36,12 @@ solenoid = 24
 
 printed = False
 current_device = None
+
+
+def hex_to_rgb(hex_code):
+    hex_code = hex_code.lstrip('#')
+    rgb = tuple(int(hex_code[i:i+2], 16) for i in (0, 2, 4))
+    return rgb
 
 
 def setup():
@@ -44,6 +58,10 @@ def setup():
 
     break_beam_1.on_both(read_beam)
     read_beam(break_beam_1)
+
+    rgb = hex_to_rgb(DataRepository.read_current_color()['value'])
+    pixels.fill((rgb[0], rgb[1], rgb[2]))
+    pixels.show()
 
 
 def shutdown(pin):
@@ -186,7 +204,24 @@ def check_login():
         return jsonify(data), 200
 
 
+@app.route(endpoint + '/current-color/', methods=['GET'])
+def get_current_color():
+    if request.method == 'GET':
+        data = DataRepository.read_current_color()
+        return jsonify(current_color=data), 200
+
+
+@app.route(endpoint + '/change-color/', methods=['PUT'])
+def update_color():
+    if request.method == 'PUT':
+        input = DataRepository.json_or_formdata(request)
+        data = DataRepository.add_device_history(
+            10, None, input['color_hex'], None)
+        return jsonify(history_id=data), 200
+
 # SOCKET IO
+
+
 @socketio.on('connect')
 def initial_connection():
     print('A new client connect')
@@ -198,6 +233,13 @@ def initial_connection():
 def set_current_device(jsonObject):
     global current_device
     current_device = int(jsonObject['device_id'])
+
+
+@socketio.on('F2B_color_changed')
+def change_color():
+    rgb = hex_to_rgb(DataRepository.read_current_color()['value'])
+    pixels.fill((rgb[0], rgb[1], rgb[2]))
+    pixels.show()
 
 
 @socketio.on('F2B_shutdown')

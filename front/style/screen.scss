@@ -653,6 +653,29 @@ input[type='password'] {
 }
 
 /*
+  Components: Color picker
+*/
+
+.c-color-picker {
+  width: 4.75rem;
+  height: 3rem;
+  padding: 2px;
+  border: none;
+  outline: none;
+  border-radius: $radius-m;
+  margin-bottom: 2rem;
+}
+
+.c-picked-color {
+  width: 4.75rem;
+  height: 3rem;
+  border-radius: $radius-m;
+  margin-bottom: 2rem;
+  border: solid 1px $oc-gray-9;
+  background-color: $oc-violet-6;
+}
+
+/*
   Components: Nav
   ---
   The nav component is used to display the navigation of the site
@@ -701,7 +724,14 @@ input[type='password'] {
   font-size: $ms0;
   cursor: pointer;
   position: absolute;
-  bottom: 1.5rem;
+
+  &--shutdown {
+    bottom: 1.5rem;
+  }
+
+  &--color {
+    bottom: 6.5rem;
+  }
 }
 
 .c-nav__link:any-link {
@@ -935,10 +965,10 @@ input[type='password'] {
 
 @keyframes spin {
   0% {
-      transform: rotate(0);
+    transform: rotate(0);
   }
   100% {
-      transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 

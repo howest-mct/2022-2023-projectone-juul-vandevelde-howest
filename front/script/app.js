@@ -1,6 +1,7 @@
 const lanIP = `${window.location.hostname}:5000`;
 const socketio = io(lanIP);
 let currentDeviceId;
+let current_color;
 
 // #region ***  DOM references                           ***********
 // #endregion
@@ -98,6 +99,14 @@ const showDoorStatus = function (jsonObject) {
 // #endregion
 
 // #region ***  Callback-No Visualisation - callback___  ***********
+const setCurrentColor = function (jsonObject) {
+  current_color = jsonObject.current_color.value;
+};
+
+const callbackSetColor = function () {
+  console.info("Color added :)")
+  socketio.emit('F2B_color_changed');
+}
 // #endregion
 
 // #region ***  Data Access - get___                     ***********
@@ -119,6 +128,11 @@ const getHistory = function (device_id) {
 const getDoorStatus = function () {
   const url = 'http://' + lanIP + `/api/v1/history/recent/6/`;
   handleData(url, showDoorStatus, showError);
+};
+
+const getCurrentColor = function () {
+  const url = 'http://' + lanIP + `/api/v1/current-color/`;
+  handleData(url, setCurrentColor, showError);
 };
 // #endregion
 
@@ -185,8 +199,10 @@ const listenToMobileMenu = function () {
   document.querySelectorAll('.js-toggle-menu').forEach(function (el) {
     el.addEventListener('click', function () {
       document.body.classList.toggle('has-mobile-nav');
+      getCurrentColor();
     });
   });
+
   document.querySelector('.js-shutdown').addEventListener('click', function () {
     document.body.innerHTML = `
     <div class="o-row--np">
@@ -195,7 +211,7 @@ const listenToMobileMenu = function () {
                 <section class="o-row c-popup__body c-card u-mb-clear">
                     <h2>Are you sure you want to shut down the device?</h2>
                     <div class="c-popup__btns o-layout">
-                        <button class="u-btn-outline o-button-reset js-shutdown-cancel">Cancel</button>
+                        <button class="u-btn-outline o-button-reset js-cancel">Cancel</button>
                         <button class="u-btn-fill o-button-reset js-shutdown-confirm">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
                                 <rect width="24" height="24" opacity="0" />
@@ -211,11 +227,7 @@ const listenToMobileMenu = function () {
     </div>
     `;
   });
-  document.body.addEventListener('click', function (event) {
-    if (event.target.matches('.js-shutdown-cancel')) {
-      location.reload();
-    }
-  });
+
   document.body.addEventListener('click', function (event) {
     if (event.target.matches('.js-shutdown-confirm')) {
       document.body.innerHTML = `
@@ -227,6 +239,71 @@ const listenToMobileMenu = function () {
       setTimeout(function () {
         location.reload();
       }, 5000);
+    } else if (event.target.matches('.js-cancel')) {
+      location.reload();
+    }
+  });
+
+  document.querySelector('.js-change-lighting').addEventListener('click', function () {
+    document.body.innerHTML = `
+    <div class="o-row--np">
+        <div class="o-container">
+            <div class="c-popup o-layout o-layout--align-center o-layout--justify-center">
+                <section class="o-row c-popup__body c-card u-mb-clear">
+                    <h2>Select a lighting color:</h2>
+                    <div class="o-layout">
+                        <input type="color" value="${current_color}" class="c-color-picker js-color-picker">
+                    </div>
+                    <div class="c-popup__btns o-layout">
+                        <button class="u-btn-outline o-button-reset js-cancel">Cancel</button>
+                        <button class="u-btn-fill o-button-reset js-color-confirm">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><rect width="24" height="24" opacity="0"/><path d="M19.54 5.08A10.61 10.61 0 0 0 11.91 2a10 10 0 0 0-.05 20 2.58 2.58 0 0 0 2.53-1.89 2.52 2.52 0 0 0-.57-2.28.5.5 0 0 1 .37-.83h1.65A6.15 6.15 0 0 0 22 11.33a8.48 8.48 0 0 0-2.46-6.25zM15.88 15h-1.65a2.49 2.49 0 0 0-1.87 4.15.49.49 0 0 1 .12.49c-.05.21-.28.34-.59.36a8 8 0 0 1-7.82-9.11A8.1 8.1 0 0 1 11.92 4H12a8.47 8.47 0 0 1 6.1 2.48 6.5 6.5 0 0 1 1.9 4.77A4.17 4.17 0 0 1 15.88 15z"/><circle cx="12" cy="6.5" r="1.5"/><path d="M15.25 7.2a1.5 1.5 0 1 0 2.05.55 1.5 1.5 0 0 0-2.05-.55z"/><path d="M8.75 7.2a1.5 1.5 0 1 0 .55 2.05 1.5 1.5 0 0 0-.55-2.05z"/><path d="M6.16 11.26a1.5 1.5 0 1 0 2.08.4 1.49 1.49 0 0 0-2.08-.4z"/></svg>
+                            Pick Color
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    `;
+  });
+
+  document.body.addEventListener('click', function (event) {
+    if (event.target.matches('.js-color-confirm')) {
+      current_color = document.querySelector('.js-color-picker').value;
+      const url = 'http://' + lanIP + `/api/v1/change-color/`;
+      const body = JSON.stringify({
+        color_hex: current_color,
+      });
+      handleData(
+        url,
+        callbackSetColor,
+        function () {
+          console.error('Woops there went something wrong :(');
+        },
+        'PUT',
+        body
+      );
+      document.body.innerHTML = `
+      <div class="o-row--np">
+      <div class="o-container">
+      <div class="c-popup o-layout o-layout--align-center o-layout--justify-center">
+      <section class="o-row c-popup__body c-card u-mb-clear">
+      <h2>Congratulations! You've successfully set a new color.</h2>
+      <div class="c-picked-color js-picked-color"></div>
+      <div class="c-popup__btns o-layout">
+      <button class="u-btn-fill o-button-reset js-return-to-dashboard">
+      Return to Dashboard
+      </button>
+      </div>
+      </section>
+      </div>
+      </div>
+      </div>
+      `;
+      document.querySelector('.js-picked-color').style.backgroundColor = current_color;
+    } else if (event.target.matches('.js-return-to-dashboard')) {
+      location.reload();
     }
   });
 };
