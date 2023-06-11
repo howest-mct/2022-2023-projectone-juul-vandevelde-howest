@@ -185,6 +185,18 @@ def check_login():
         data = DataRepository.check_login(input['username'], input['password'])
         return jsonify(data), 200
 
+@app.route(endpoint + '/current-color/', methods=['GET'])
+def get_current_color():
+    if request.method == 'GET':
+        data = DataRepository.read_current_color()
+        return jsonify(current_color=data), 200
+    
+@app.route(endpoint + '/change-color/', methods=['PUT'])
+def update_color():
+    if request.method == 'PUT':
+        input = DataRepository.json_or_formdata(request)
+        data = DataRepository.add_device_history(10, None, input['color_hex'], None)
+        return jsonify(history_id = data), 200 
 
 # SOCKET IO
 @socketio.on('connect')
