@@ -764,6 +764,48 @@ input[type=password] {
 }
 
 /*
+    Components: popup
+    ---
+    The popup component is used to display a popup
+*/
+.c-popup {
+  height: 100vh;
+}
+.c-popup__body {
+  padding-bottom: 1.7142857143rem;
+  margin: 0 2.5rem;
+}
+.c-popup__btns {
+  gap: 1rem;
+}
+
+/*
+    Components: shutdown
+    ---
+    The shutdown component is used to display that the pi is shutting down
+*/
+.c-shutdown {
+  height: 100vh;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.spin-animation {
+  animation: spin 4s ease-in-out infinite;
+}
+
+/*
     Components: Attachments
     ---
     The attachments component is used to display a list of attachments
@@ -810,7 +852,7 @@ input[type=password] {
 .c-mail {
   padding-bottom: 1.7142857143rem;
 }
-@media (min-width: 26.125em) {
+@media (min-width: 27.1875em) {
   .c-mail {
     flex-wrap: nowrap;
   }
@@ -829,7 +871,7 @@ input[type=password] {
   font-weight: 600;
   font-size: 1rem;
 }
-@media (max-width: 26.125em) {
+@media (max-width: 27.1875em) {
   .c-mail__btn {
     margin: 0.5714285714rem 0 0 0;
   }
@@ -970,7 +1012,6 @@ input[type=password] {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  margin-left: 2rem;
   font-weight: 600;
   font-size: 1rem;
 }
@@ -1152,7 +1193,7 @@ input[type=password] {
   flex-basis: 100% !important;
 }
 
-@media (min-width: 26.125em) {
+@media (min-width: 27.1875em) {
   .u-1-of-2-bp0 {
     flex-basis: 50% !important;
   }

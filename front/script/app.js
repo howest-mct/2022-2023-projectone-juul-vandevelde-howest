@@ -187,6 +187,48 @@ const listenToMobileMenu = function () {
       document.body.classList.toggle('has-mobile-nav');
     });
   });
+  document.querySelector('.js-shutdown').addEventListener('click', function () {
+    document.body.innerHTML = `
+    <div class="o-row--np">
+        <div class="o-container">
+            <div class="c-popup o-layout o-layout--align-center o-layout--justify-center">
+                <section class="o-row c-popup__body c-card u-mb-clear">
+                    <h2>Are you sure you want to shut down the device?</h2>
+                    <div class="c-popup__btns o-layout">
+                        <button class="u-btn-outline o-button-reset js-shutdown-cancel">Cancel</button>
+                        <button class="u-btn-fill o-button-reset js-shutdown-confirm">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                                <rect width="24" height="24" opacity="0" />
+                                <path d="M12 13a1 1 0 0 0 1-1V2a1 1 0 0 0-2 0v10a1 1 0 0 0 1 1z" />
+                                <path d="M16.59 3.11a1 1 0 0 0-.92 1.78 8 8 0 1 1-7.34 0 1 1 0 1 0-.92-1.78 10 10 0 1 0 9.18 0z" />
+                            </svg>
+                            Shut down
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    `;
+  });
+  document.body.addEventListener('click', function (event) {
+    if (event.target.matches('.js-shutdown-cancel')) {
+      location.reload();
+    }
+  });
+  document.body.addEventListener('click', function (event) {
+    if (event.target.matches('.js-shutdown-confirm')) {
+      document.body.innerHTML = `
+    <div class='c-shutdown'>
+    <svg class='spin-animation' xmlns="http://www.w3.org/2000/svg" height="64" viewBox="0 0 24 24" width="64"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M12 2a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0V3a1 1 0 0 0-1-1z"/><path d="M21 11h-2a1 1 0 0 0 0 2h2a1 1 0 0 0 0-2z"/><path d="M6 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h2a1 1 0 0 0 1-1z"/><path d="M6.22 5a1 1 0 0 0-1.39 1.47l1.44 1.39a1 1 0 0 0 .73.28 1 1 0 0 0 .72-.31 1 1 0 0 0 0-1.41z"/><path d="M17 8.14a1 1 0 0 0 .69-.28l1.44-1.39A1 1 0 0 0 17.78 5l-1.44 1.42a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.31z"/><path d="M12 18a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0v-2a1 1 0 0 0-1-1z"/><path d="M17.73 16.14a1 1 0 0 0-1.39 1.44L17.78 19a1 1 0 0 0 .69.28 1 1 0 0 0 .72-.3 1 1 0 0 0 0-1.42z"/><path d="M6.27 16.14l-1.44 1.39a1 1 0 0 0 0 1.42 1 1 0 0 0 .72.3 1 1 0 0 0 .67-.25l1.44-1.39a1 1 0 0 0-1.39-1.44z"/></svg>
+    <h2 class='u-mb-clear'>Shutting down</h2>
+    </div>`;
+      socketio.emit('F2B_shutdown');
+      setTimeout(function () {
+        location.reload();
+      }, 5000);
+    }
+  });
 };
 
 const listenToUnlock = function () {
