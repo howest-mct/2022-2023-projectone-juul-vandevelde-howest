@@ -105,6 +105,7 @@ const setCurrentColor = function (jsonObject) {
 
 const callbackSetColor = function () {
   console.info("Color added :)")
+  socketio.emit('F2B_color_changed');
 }
 // #endregion
 
