@@ -49,6 +49,11 @@ class DataRepository:
         sql = "SELECT COUNT(*) AS 'login_status' FROM user WHERE username = %s AND BINARY password = %s"
         params = [username, password]
         return Database.get_one_row(sql, params)
+    
+    @staticmethod
+    def read_current_color():
+        sql = "SELECT value FROM history WHERE device_id = 10 ORDER BY datetime DESC LIMIT 1"
+        return Database.get_one_row(sql)
 
     # @staticmethod
     # def read_status_lamp_by_id(id):
