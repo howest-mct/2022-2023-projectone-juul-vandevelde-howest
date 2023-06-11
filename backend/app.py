@@ -10,6 +10,7 @@ from helpers.Lcd import Lcd
 
 from mfrc522 import SimpleMFRC522
 from RPi import GPIO
+import subprocess
 import threading
 import time
 
@@ -51,11 +52,10 @@ def shutdown(pin):
     shutdown_initiated = False
     while shutdown_btn.pressed:
         if (time.time() - start_time) > 5 and shutdown_initiated == False:
-            DataRepository.add_device_history(11, None, None, None)
             if current_device == 11:
                 socketio.emit('B2F_new_data', {'device_id': 11})
             shutdown_initiated = True
-            print("**** shutdown ****")
+            shutdown_pi()
 
 
 def read_switch(pin):
@@ -198,6 +198,15 @@ def initial_connection():
 def set_current_device(jsonObject):
     global current_device
     current_device = int(jsonObject['device_id'])
+
+
+@socketio.on('F2B_shutdown')
+def shutdown_pi():
+    DataRepository.add_device_history(11, None, None, None)
+    print("**** shutdown ****")
+    mcp_object.closespi()
+    GPIO.cleanup()
+    subprocess.call("sudo shutdown now", shell=True)
 
 
 @socketio.on('F2B_open_door')
