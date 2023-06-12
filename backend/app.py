@@ -195,7 +195,6 @@ def get_most_recent_history(device_id):
         data = DataRepository.read_most_recent_device_history(device_id)
         return jsonify(recent_history=data), 200
 
-
 @app.route(endpoint + '/login/', methods=['POST'])
 def check_login():
     if request.method == 'POST':

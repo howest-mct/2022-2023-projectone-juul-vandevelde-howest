@@ -22,7 +22,7 @@ class DataRepository:
 
     @staticmethod
     def read_device_history(device_id):
-        sql = "SELECT * FROM history WHERE device_id = %s ORDER BY history_id DESC"
+        sql = "SELECT * FROM history WHERE device_id = %s ORDER BY history_id DESC LIMIT 15"
         params = [device_id]
         return Database.get_rows(sql, params)
 

@@ -2,6 +2,7 @@ const lanIP = `${window.location.hostname}:5000`;
 const socketio = io(lanIP);
 let currentDeviceId;
 let current_color;
+let chart;
 
 // #region ***  DOM references                           ***********
 // #endregion
@@ -39,18 +40,31 @@ const showUsers = function (jsonObject) {
 //   listenToBtns();
 // };
 
-// const showHistory = function (jsonObject) {
-//   console.info(jsonObject);
-//   const dataHtml = document.querySelector('.js-data');
-//   let html = '';
-//   for (const history of jsonObject.history) {
-//     html += `<tr>
-//     <td>${history.datetime}</td>
-//     <td>${history.value}</td>
-//   </tr>`;
-//   }
-//   dataHtml.innerHTML = html;
-// };
+const wipeData = function () {
+  if (chart) {
+    chart.destroy();
+  }
+  document.querySelector('.js-chart__title').innerHTML = ``;
+  document.querySelector('.js-history-table').innerHTML = ``;
+};
+
+const showHistory = function (jsonObject) {
+  console.info(jsonObject);
+  const historyTable = document.querySelector('.js-history-table');
+  let html = `<table class='o-row u-pb-m'>
+  <tr>
+    <th class='c-table__header'>When</th>
+    <th class='c-table__header'>Color</th>
+  </tr>`;
+  for (const history of jsonObject.history) {
+    html += `<tr>
+    <td class='c-table__data'>${formatDate(history.datetime)}</td>
+    <td class='c-table__data'>${history.value}</td>
+  </tr>`;
+  }
+  html += `</table>`;
+  historyTable.innerHTML = html;
+};
 
 // const showNewestHistory = function (jsonObject) {
 //   console.info(jsonObject);
@@ -97,10 +111,13 @@ const showDoorStatus = function (jsonObject) {
   }
 };
 
-const showGraph = function (graph) {
+const showData = function (graph) {
   const historyBody = document.querySelector('.js-history-text');
   historyBody.innerHTML = ``;
-  let jsonObject, chartTitle;
+  let jsonObject = '',
+    chartTitle = '';
+
+  wipeData();
 
   if (graph == 'unlock') {
     chartTitle = 'Unlock frequency by user';
@@ -118,6 +135,7 @@ const showGraph = function (graph) {
         inflation_index: 1000,
       },
     ];
+    showGraph(jsonObject, chartTitle);
   } else if (graph == 'mail') {
     chartTitle = 'Mail History';
     jsonObject = [
@@ -134,6 +152,7 @@ const showGraph = function (graph) {
         inflation_index: 1000,
       },
     ];
+    showGraph(jsonObject, chartTitle);
   } else if (graph == 'temp') {
     chartTitle = 'Mailbox inside temperature';
     jsonObject = [
@@ -150,40 +169,72 @@ const showGraph = function (graph) {
         inflation_index: 1000,
       },
     ];
+    showGraph(jsonObject, chartTitle);
   } else if (graph == 'color') {
     chartTitle = 'Previous lighting colors';
-    jsonObject = [
-      {
-        unit: 'iPhone 1',
-        year: 2007,
-        price: 499,
-        inflation_index: 1000,
-      },
-      {
-        unit: 'iPhone 3G',
-        year: 2008,
-        price: 599,
-        inflation_index: 1000,
-      },
-    ];
+    getHistory(10);
+    if (chart) {
+      chart.destroy();
+    }
   }
-  console.info(jsonObject);
+};
 
+const showGraph = function (jsonObject, chartTitle) {
   let converted_labels = [];
   let converted_data = [];
   for (const iphone of jsonObject) {
     converted_labels.push(iphone.unit);
     converted_data.push(iphone.price);
   }
-  document.querySelector('.js-chart').innerHTML = ``;
-  drawChart(converted_labels, converted_data);
   document.querySelector('.js-chart__title').innerHTML = `<h3 class="o-row--xs">${chartTitle}</h3>`;
+  drawChart(converted_labels, converted_data);
 };
 // #endregion
 
 // #region ***  Callback-No Visualisation - callback___  ***********
 const setCurrentColor = function (jsonObject) {
   current_color = jsonObject.current_color.value;
+};
+
+const formatDate = function (inputDate) {
+  const today = new Date();
+  const date = new Date(inputDate);
+
+  const isToday = today.getUTCFullYear() === date.getUTCFullYear() && today.getUTCMonth() === date.getUTCMonth() && today.getUTCDate() === date.getUTCDate();
+
+  if (isToday) {
+    const hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes();
+
+    const isNow = hours === (today.getUTCHours() + 2) && minutes === today.getUTCMinutes();
+
+    if (isNow) {
+      return 'Now';
+    } else {
+      return `Today, ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    }
+  }
+
+  const yesterday = new Date();
+  yesterday.setDate(today.getDate() - 1);
+  const isYesterday = yesterday.getUTCFullYear() === date.getUTCFullYear() && yesterday.getUTCMonth() === date.getUTCMonth() && yesterday.getUTCDate() === date.getUTCDate();
+
+  if (isYesterday) {
+    const hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes();
+    return `Yesterday, ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  }
+
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  const month = monthNames[date.getUTCMonth()];
+  const day = date.getUTCDate();
+  const hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
+
+  const formattedDate = `${month} ${day}, ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+
+  return formattedDate;
 };
 
 const callbackSetColor = function () {
@@ -214,7 +265,7 @@ const drawChart = function (labels, data) {
       text: 'Loading ...',
     },
   };
-  var chart = new ApexCharts(document.querySelector('.js-chart'), options);
+  chart = new ApexCharts(document.querySelector('.js-chart'), options);
   chart.render();
 };
 // #endregion
@@ -265,7 +316,7 @@ const listenToSelector = function () {
   const selector = document.querySelector('.js-selector');
   selector.addEventListener('change', function () {
     const graph = selector.value;
-    showGraph(graph);
+    showData(graph);
   });
 };
 

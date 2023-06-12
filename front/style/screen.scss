@@ -969,6 +969,24 @@ input[type='password'] {
 }
 
 /*
+    Components: Table
+    ---
+    The table component is used to display a table
+*/
+
+.c-table {
+  &__header {
+    font-size: $ms0;
+    text-align: left;
+  }
+
+  &__data {
+    font-size: $ms-1;
+    font-weight: 600;
+  }
+}
+
+/*
     Components: Timeline
     ---
     The timeline component is used to display a list of timeline items
@@ -1169,6 +1187,10 @@ input[type='password'] {
 
 .u-pt-clear {
   padding-top: 0;
+}
+
+.u-pb-m {
+  padding-bottom: $space-m;
 }
 
 .u-mb-clear {
