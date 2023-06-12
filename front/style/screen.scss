@@ -729,8 +729,12 @@ input[type='password'] {
     bottom: 1.5rem;
   }
 
+  &--logout {
+    bottom: 4.5rem;
+  }
+
   &--color {
-    bottom: 6.5rem;
+    bottom: 7.5rem;
   }
 }
 
