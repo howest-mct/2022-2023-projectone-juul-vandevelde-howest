@@ -29,28 +29,28 @@ const showUsers = function (jsonObject) {
   dataHtml.innerHTML = html;
 };
 
-const showDevices = function (jsonObject) {
-  const btnsHtml = document.querySelector('.js-btns');
-  let html = '';
-  for (const device of jsonObject.devices) {
-    html += `<button class='js-btn' data-device_id="${device.device_id}">${device.description}</button>`;
-  }
-  btnsHtml.innerHTML = html;
-  listenToBtns();
-};
+// const showDevices = function (jsonObject) {
+//   const btnsHtml = document.querySelector('.js-btns');
+//   let html = '';
+//   for (const device of jsonObject.devices) {
+//     html += `<button class='js-btn' data-device_id="${device.device_id}">${device.description}</button>`;
+//   }
+//   btnsHtml.innerHTML = html;
+//   listenToBtns();
+// };
 
-const showHistory = function (jsonObject) {
-  console.info(jsonObject);
-  const dataHtml = document.querySelector('.js-data');
-  let html = '';
-  for (const history of jsonObject.history) {
-    html += `<tr>
-    <td>${history.datetime}</td>
-    <td>${history.value}</td>
-  </tr>`;
-  }
-  dataHtml.innerHTML = html;
-};
+// const showHistory = function (jsonObject) {
+//   console.info(jsonObject);
+//   const dataHtml = document.querySelector('.js-data');
+//   let html = '';
+//   for (const history of jsonObject.history) {
+//     html += `<tr>
+//     <td>${history.datetime}</td>
+//     <td>${history.value}</td>
+//   </tr>`;
+//   }
+//   dataHtml.innerHTML = html;
+// };
 
 // const showNewestHistory = function (jsonObject) {
 //   console.info(jsonObject);
@@ -96,6 +96,89 @@ const showDoorStatus = function (jsonObject) {
     Unlock door`;
   }
 };
+
+const showGraph = function (graph) {
+  const historyBody = document.querySelector('.js-history-text');
+  historyBody.innerHTML = ``;
+  let jsonObject, chartTitle;
+
+  if (graph == 'unlock') {
+    chartTitle = 'Unlock frequency by user';
+    jsonObject = [
+      {
+        unit: 'iPhone 1',
+        year: 2007,
+        price: 499,
+        inflation_index: 1000,
+      },
+      {
+        unit: 'iPhone 3G',
+        year: 2008,
+        price: 599,
+        inflation_index: 1000,
+      },
+    ];
+  } else if (graph == 'mail') {
+    chartTitle = 'Mail History';
+    jsonObject = [
+      {
+        unit: 'iPhone 1',
+        year: 2007,
+        price: 499,
+        inflation_index: 1000,
+      },
+      {
+        unit: 'iPhone 3G',
+        year: 2008,
+        price: 599,
+        inflation_index: 1000,
+      },
+    ];
+  } else if (graph == 'temp') {
+    chartTitle = 'Mailbox inside temperature';
+    jsonObject = [
+      {
+        unit: 'iPhone 1',
+        year: 2007,
+        price: 499,
+        inflation_index: 1000,
+      },
+      {
+        unit: 'iPhone 3G',
+        year: 2008,
+        price: 599,
+        inflation_index: 1000,
+      },
+    ];
+  } else if (graph == 'color') {
+    chartTitle = 'Previous lighting colors';
+    jsonObject = [
+      {
+        unit: 'iPhone 1',
+        year: 2007,
+        price: 499,
+        inflation_index: 1000,
+      },
+      {
+        unit: 'iPhone 3G',
+        year: 2008,
+        price: 599,
+        inflation_index: 1000,
+      },
+    ];
+  }
+  console.info(jsonObject);
+
+  let converted_labels = [];
+  let converted_data = [];
+  for (const iphone of jsonObject) {
+    converted_labels.push(iphone.unit);
+    converted_data.push(iphone.price);
+  }
+  document.querySelector('.js-chart').innerHTML = ``;
+  drawChart(converted_labels, converted_data);
+  document.querySelector('.js-chart__title').innerHTML = `<h3 class="o-row--xs">${chartTitle}</h3>`;
+};
 // #endregion
 
 // #region ***  Callback-No Visualisation - callback___  ***********
@@ -104,9 +187,36 @@ const setCurrentColor = function (jsonObject) {
 };
 
 const callbackSetColor = function () {
-  console.info("Color added :)")
+  console.info('Color added :)');
   socketio.emit('F2B_color_changed');
-}
+};
+
+const drawChart = function (labels, data) {
+  var options = {
+    chart: {
+      id: 'iPhoneChart',
+      type: 'line',
+    },
+    stroke: {
+      curve: 'stepline',
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    series: [
+      {
+        name: 'iPhone Pricing',
+        data: data,
+      },
+    ],
+    labels: labels,
+    noData: {
+      text: 'Loading ...',
+    },
+  };
+  var chart = new ApexCharts(document.querySelector('.js-chart'), options);
+  chart.render();
+};
 // #endregion
 
 // #region ***  Data Access - get___                     ***********
@@ -149,6 +259,14 @@ const listenToBtns = function () {
       htmlSensorName.innerHTML = btn.innerHTML;
     });
   }
+};
+
+const listenToSelector = function () {
+  const selector = document.querySelector('.js-selector');
+  selector.addEventListener('change', function () {
+    const graph = selector.value;
+    showGraph(graph);
+  });
 };
 
 const listenToSocket = function () {
@@ -386,7 +504,8 @@ const init = function () {
     }
     listenToLogout();
     listenToMobileMenu();
-    getDevices();
+    listenToSelector();
+    // getDevices();
   } else if (htmlUsers) {
     if (localStorage.getItem('login') == 1) {
       htmlUsers.classList.remove('hidden');
