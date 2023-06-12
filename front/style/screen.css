@@ -569,8 +569,11 @@ input[type=password] {
 .c-nav__action--shutdown {
   bottom: 1.5rem;
 }
+.c-nav__action--logout {
+  bottom: 4.5rem;
+}
 .c-nav__action--color {
-  bottom: 6.5rem;
+  bottom: 7.5rem;
 }
 
 .c-nav__link:-moz-any-link {

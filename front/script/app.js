@@ -190,8 +190,24 @@ const listenToLogin = function () {
 
 const listenToLogout = function () {
   document.querySelector('.js-logout-btn').addEventListener('click', function () {
-    localStorage.removeItem('login');
-    location.reload();
+    document.body.innerHTML = `
+    <div class="o-row--np">
+        <div class="o-container">
+            <div class="c-popup o-layout o-layout--align-center o-layout--justify-center">
+                <section class="o-row c-popup__body c-card u-mb-clear">
+                    <h2>Are you sure you want to log out?</h2>
+                    <div class="c-popup__btns o-layout">
+                        <button class="u-btn-outline o-button-reset js-cancel">Cancel</button>
+                        <button class="u-btn-fill o-button-reset js-logout-confirm">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><rect width="24" height="24" transform="rotate(90 12 12)" opacity="0"/><path d="M7 6a1 1 0 0 0 0-2H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h2a1 1 0 0 0 0-2H6V6z"/><path d="M20.82 11.42l-2.82-4a1 1 0 0 0-1.39-.24 1 1 0 0 0-.24 1.4L18.09 11H10a1 1 0 0 0 0 2h8l-1.8 2.4a1 1 0 0 0 .2 1.4 1 1 0 0 0 .6.2 1 1 0 0 0 .8-.4l3-4a1 1 0 0 0 .02-1.18z"/></svg>
+                            Log out
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    `;
   });
 };
 
@@ -228,22 +244,6 @@ const listenToMobileMenu = function () {
     `;
   });
 
-  document.body.addEventListener('click', function (event) {
-    if (event.target.matches('.js-shutdown-confirm')) {
-      document.body.innerHTML = `
-    <div class='c-shutdown'>
-    <svg class='spin-animation' xmlns="http://www.w3.org/2000/svg" height="64" viewBox="0 0 24 24" width="64"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M12 2a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0V3a1 1 0 0 0-1-1z"/><path d="M21 11h-2a1 1 0 0 0 0 2h2a1 1 0 0 0 0-2z"/><path d="M6 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h2a1 1 0 0 0 1-1z"/><path d="M6.22 5a1 1 0 0 0-1.39 1.47l1.44 1.39a1 1 0 0 0 .73.28 1 1 0 0 0 .72-.31 1 1 0 0 0 0-1.41z"/><path d="M17 8.14a1 1 0 0 0 .69-.28l1.44-1.39A1 1 0 0 0 17.78 5l-1.44 1.42a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.31z"/><path d="M12 18a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0v-2a1 1 0 0 0-1-1z"/><path d="M17.73 16.14a1 1 0 0 0-1.39 1.44L17.78 19a1 1 0 0 0 .69.28 1 1 0 0 0 .72-.3 1 1 0 0 0 0-1.42z"/><path d="M6.27 16.14l-1.44 1.39a1 1 0 0 0 0 1.42 1 1 0 0 0 .72.3 1 1 0 0 0 .67-.25l1.44-1.39a1 1 0 0 0-1.39-1.44z"/></svg>
-    <h2 class='u-mb-clear'>Shutting down</h2>
-    </div>`;
-      socketio.emit('F2B_shutdown');
-      setTimeout(function () {
-        location.reload();
-      }, 5000);
-    } else if (event.target.matches('.js-cancel')) {
-      location.reload();
-    }
-  });
-
   document.querySelector('.js-change-lighting').addEventListener('click', function () {
     document.body.innerHTML = `
     <div class="o-row--np">
@@ -268,8 +268,41 @@ const listenToMobileMenu = function () {
     `;
   });
 
+  document.querySelector('.js-logout').addEventListener('click', function () {
+    document.body.innerHTML = `
+    <div class="o-row--np">
+        <div class="o-container">
+            <div class="c-popup o-layout o-layout--align-center o-layout--justify-center">
+                <section class="o-row c-popup__body c-card u-mb-clear">
+                    <h2>Are you sure you want to log out?</h2>
+                    <div class="c-popup__btns o-layout">
+                        <button class="u-btn-outline o-button-reset js-cancel">Cancel</button>
+                        <button class="u-btn-fill o-button-reset js-logout-confirm">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><rect width="24" height="24" transform="rotate(90 12 12)" opacity="0"/><path d="M7 6a1 1 0 0 0 0-2H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h2a1 1 0 0 0 0-2H6V6z"/><path d="M20.82 11.42l-2.82-4a1 1 0 0 0-1.39-.24 1 1 0 0 0-.24 1.4L18.09 11H10a1 1 0 0 0 0 2h8l-1.8 2.4a1 1 0 0 0 .2 1.4 1 1 0 0 0 .6.2 1 1 0 0 0 .8-.4l3-4a1 1 0 0 0 .02-1.18z"/></svg>
+                            Log out
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    `;
+  });
+
   document.body.addEventListener('click', function (event) {
-    if (event.target.matches('.js-color-confirm')) {
+    if (event.target.matches('.js-shutdown-confirm')) {
+      document.body.innerHTML = `
+    <div class='c-shutdown'>
+    <svg class='spin-animation' xmlns="http://www.w3.org/2000/svg" height="64" viewBox="0 0 24 24" width="64"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M12 2a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0V3a1 1 0 0 0-1-1z"/><path d="M21 11h-2a1 1 0 0 0 0 2h2a1 1 0 0 0 0-2z"/><path d="M6 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h2a1 1 0 0 0 1-1z"/><path d="M6.22 5a1 1 0 0 0-1.39 1.47l1.44 1.39a1 1 0 0 0 .73.28 1 1 0 0 0 .72-.31 1 1 0 0 0 0-1.41z"/><path d="M17 8.14a1 1 0 0 0 .69-.28l1.44-1.39A1 1 0 0 0 17.78 5l-1.44 1.42a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.31z"/><path d="M12 18a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0v-2a1 1 0 0 0-1-1z"/><path d="M17.73 16.14a1 1 0 0 0-1.39 1.44L17.78 19a1 1 0 0 0 .69.28 1 1 0 0 0 .72-.3 1 1 0 0 0 0-1.42z"/><path d="M6.27 16.14l-1.44 1.39a1 1 0 0 0 0 1.42 1 1 0 0 0 .72.3 1 1 0 0 0 .67-.25l1.44-1.39a1 1 0 0 0-1.39-1.44z"/></svg>
+    <h2 class='u-mb-clear'>Shutting down</h2>
+    </div>`;
+      socketio.emit('F2B_shutdown');
+      setTimeout(function () {
+        location.reload();
+      }, 5000);
+    } else if (event.target.matches('.js-cancel')) {
+      location.reload();
+    } else if (event.target.matches('.js-color-confirm')) {
       current_color = document.querySelector('.js-color-picker').value;
       const url = 'http://' + lanIP + `/api/v1/change-color/`;
       const body = JSON.stringify({
@@ -303,6 +336,9 @@ const listenToMobileMenu = function () {
       `;
       document.querySelector('.js-picked-color').style.backgroundColor = current_color;
     } else if (event.target.matches('.js-return-to-dashboard')) {
+      location.reload();
+    } else if (event.target.matches('.js-logout-confirm')) {
+      localStorage.removeItem('login');
       location.reload();
     }
   });
