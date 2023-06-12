@@ -814,6 +814,7 @@ input[type=password] {
 .c-table__data {
   font-size: 0.8888888889rem;
   font-weight: 600;
+  padding: 1rem 4rem 1rem 0;
 }
 
 /*
@@ -1000,6 +1001,10 @@ input[type=password] {
 */
 .u-pt-clear {
   padding-top: 0;
+}
+
+.u-pr-clear {
+  padding-right: 0;
 }
 
 .u-pb-m {

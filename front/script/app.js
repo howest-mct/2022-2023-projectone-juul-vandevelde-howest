@@ -57,9 +57,9 @@ const showHistory = function (jsonObject) {
     <th class='c-table__header'>Color</th>
   </tr>`;
   for (const history of jsonObject.history) {
-    html += `<tr>
+    html += `<tr class='c-table__record'>
     <td class='c-table__data'>${formatDate(history.datetime)}</td>
-    <td class='c-table__data'>${history.value}</td>
+    <td class='c-table__data u-pr-clear'>${history.value}</td>
   </tr>`;
   }
   html += `</table>`;
