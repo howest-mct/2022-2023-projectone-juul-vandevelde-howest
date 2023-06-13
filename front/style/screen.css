@@ -516,7 +516,7 @@ input[type=password] {
   height: 3rem;
   border-radius: 6px;
   margin-bottom: 2rem;
-  border: solid 1px #212529;
+  border: solid 1px #495057;
   background-color: #7950f2;
 }
 
@@ -815,6 +815,16 @@ input[type=password] {
   font-size: 0.8888888889rem;
   font-weight: 600;
   padding: 1rem 4rem 1rem 0;
+}
+.c-table__data--color {
+  padding: 1rem 2rem;
+  border-radius: 6px;
+  margin-right: 1rem;
+  border: solid 1px #495057;
+}
+.c-table__data--color-hex {
+  font-size: 0.8888888889rem;
+  font-weight: 600;
 }
 
 /*

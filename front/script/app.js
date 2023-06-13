@@ -57,13 +57,25 @@ const showHistory = function (jsonObject) {
     <th class='c-table__header'>Color</th>
   </tr>`;
   for (const history of jsonObject.history) {
+    if (history.value.startsWith('#')) {
+      const color = history.value;
+      history.value = `<div class='o-layout o-layout--align-center'><div class="c-table__data--color js-table__data--color-card" data-color="${color}"></div><div class='c-table__data--color-hex js-table__data--color-hex'>${color}</div></div>`;
+    }
+
     html += `<tr class='c-table__record'>
     <td class='c-table__data'>${formatDate(history.datetime)}</td>
     <td class='c-table__data u-pr-clear'>${history.value}</td>
   </tr>`;
   }
+
   html += `</table>`;
   historyTable.innerHTML = html;
+  const colorCards = document.querySelectorAll('.js-table__data--color-card');
+  // if (colorCards) {
+    for (const colorCard of colorCards) {
+      colorCard.style.backgroundColor = `${colorCard.getAttribute('data-color')}`;
+    }
+  // }
 };
 
 // const showNewestHistory = function (jsonObject) {
@@ -206,7 +218,7 @@ const formatDate = function (inputDate) {
     const hours = date.getUTCHours();
     const minutes = date.getUTCMinutes();
 
-    const isNow = hours === (today.getUTCHours() + 2) && minutes === today.getUTCMinutes();
+    const isNow = hours === today.getUTCHours() + 2 && minutes === today.getUTCMinutes();
 
     if (isNow) {
       return 'Now';
