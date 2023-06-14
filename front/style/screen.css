@@ -831,6 +831,15 @@ input[type=password] {
 }
 
 /*
+    Components: Chart
+    ---
+    The chart component is used to display a chart
+*/
+.c-chart {
+  padding: 1rem;
+}
+
+/*
     Components: Timeline
     ---
     The timeline component is used to display a list of timeline items

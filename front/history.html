@@ -53,26 +53,30 @@
     </header>
 
     <main>
-        <div class="c-history o-row">
-            <div class="c-history__header o-layout o-layout--justify-space-between o-layout--align-center u-mb-m">
-                <h1 class="u-mb-clear">History</h1>
-                <select class="c-history__selector js-selector" name="graph" id="graph">
-                    <option class="c-history__selector--item" value="select" selected disabled hidden>Select a graph</option>
-                    <option class="c-history__selector--item" value="unlock">Unlock Frequency</option>
-                    <option class="c-history__selector--item" value="mail">Mail History</option>
-                    <option class="c-history__selector--item" value="temp">Mailbox Temperature</option>
-                    <option class="c-history__selector--item" value="color">Lighting Colors</option>
-                </select>
-            </div>
-            <div class="c-history__body js-history-text">
-                Caution: The ghosts of past mail deliveries may haunt this empty history page. But fear not! Select a graph to give them a colorful afterlife they never expected! 👻
-            </div>
-            <div class="c-card">
-                <div class="c-chart__title js-chart__title"></div>
-                <div id="chart" class="c-chart js-chart"></div>
-            </div>
-            <div class="c-card">
-                <div class="js-history-table"></div>
+        <div class="o-row">
+            <div class="o-container">
+                <div class="c-history__header o-layout o-layout--justify-space-between o-layout--align-center u-mb-m">
+                    <h1 class="u-mb-clear">History</h1>
+                    <select class="c-history__selector js-selector" name="graph" id="graph">
+                        <option class="c-history__selector--item" value="select" selected disabled hidden>Select a graph</option>
+                        <option class="c-history__selector--item" value="unlock">Unlock Frequency</option>
+                        <option class="c-history__selector--item" value="mail">Mail History</option>
+                        <option class="c-history__selector--item" value="temp">Mailbox Temperature</option>
+                        <option class="c-history__selector--item" value="color">Lighting Colors</option>
+                    </select>
+                </div>
+                <div class="c-history">
+                    <div class="c-history__body js-history-text">
+                        Caution: The ghosts of past mail deliveries may haunt this empty history page. But fear not! Select a graph to give them a colorful afterlife they never expected! 👻
+                    </div>
+                    <div class="c-card">
+                        <div class="c-chart__title js-chart__title"></div>
+                        <div id="chart" class="c-chart js-chart hidden"></div>
+                    </div>
+                    <div class="c-card">
+                        <div class="js-history-table"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>

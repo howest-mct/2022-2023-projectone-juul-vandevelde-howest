@@ -44,6 +44,7 @@ const wipeData = function () {
   if (chart) {
     chart.destroy();
   }
+  document.querySelector('.js-chart').classList.add('hidden');
   document.querySelector('.js-chart__title').innerHTML = ``;
   document.querySelector('.js-history-table').innerHTML = ``;
 };
@@ -149,47 +150,16 @@ const showData = function (graph) {
   wipeData();
 
   if (graph == 'unlock') {
-    chartTitle = 'Unlock frequency by user';
-    jsonObject = [
-      {
-        unit: 'iPhone 1',
-        year: 2007,
-        price: 499,
-        inflation_index: 1000,
-      },
-      {
-        unit: 'iPhone 3G',
-        year: 2008,
-        price: 599,
-        inflation_index: 1000,
-      },
-    ];
-    showGraph(jsonObject, chartTitle);
+    // chartTitle = 'Unlock frequency by user';
+    // getHistory(3);
   } else if (graph == 'mail') {
-    chartTitle = 'Mail History';
-    jsonObject = [
-      {
-        unit: 'iPhone 1',
-        year: 2007,
-        price: 499,
-        inflation_index: 1000,
-      },
-      {
-        unit: 'iPhone 3G',
-        year: 2008,
-        price: 599,
-        inflation_index: 1000,
-      },
-    ];
-    showGraph(jsonObject, chartTitle);
+    // chartTitle = 'Mail History';
+    getHistory(4);
   } else if (graph == 'temp') {
     getHistory(3);
   } else if (graph == 'color') {
     // chartTitle = 'Previous lighting colors';
     getHistory(10);
-    if (chart) {
-      chart.destroy();
-    }
   }
 };
 
@@ -197,9 +167,10 @@ const showLineGraph = function (jsonObject, chartTitle) {
   let converted_labels = [];
   let converted_data = [];
   for (const history of jsonObject.history) {
-    converted_labels.push(history.value);
-    converted_data.push(history.datetime);
+    converted_labels.push(formatDate(history.datetime));
+    converted_data.push(parseFloat(history.value).toFixed(1));
   }
+  console.info(converted_data, converted_labels);
   document.querySelector('.js-chart__title').innerHTML = `<h3 class="o-row--xs">${chartTitle}</h3>`;
   drawLineChart(converted_labels, converted_data);
 };
@@ -268,70 +239,36 @@ const callbackSetColor = function () {
 };
 
 const drawLineChart = function (labels, data) {
+  document.querySelector('.js-chart').classList.remove('hidden');
+  console.info(data);
   var options = {
     series: [
       {
-        data: data.slice(),
+        data: data.reverse(),
       },
     ],
     chart: {
-      id: 'realtime',
-      height: 350,
       type: 'line',
-      animations: {
-        enabled: true,
-        easing: 'linear',
-        dynamicAnimation: {
-          speed: 1000,
-        },
-      },
-      toolbar: {
-        show: false,
-      },
-      zoom: {
-        enabled: false,
-      },
-    },
-    dataLabels: {
-      enabled: false,
+      height: 350,
     },
     stroke: {
       curve: 'smooth',
     },
-    title: {
-      text: 'Dynamic Updating Chart',
-      align: 'left',
+    dataLabels: {
+      enabled: false,
     },
     markers: {
-      size: 0,
+      hover: {
+        sizeOffset: 4,
+      },
     },
     xaxis: {
-      type: 'datetime',
-      range: 5,
-    },
-    yaxis: {
-      max: 100,
-    },
-    legend: {
-      show: false,
+      categories: labels.reverse(),
     },
   };
 
-  var chart = new ApexCharts(document.querySelector('#chart'), options);
+  chart = new ApexCharts(document.querySelector('#chart'), options);
   chart.render();
-
-  window.setInterval(function () {
-    getNewSeries(lastDate, {
-      min: 10,
-      max: 90,
-    });
-
-    chart.updateSeries([
-      {
-        data: data,
-      },
-    ]);
-  }, 1000);
 };
 
 // const drawChart = function (labels, data) {

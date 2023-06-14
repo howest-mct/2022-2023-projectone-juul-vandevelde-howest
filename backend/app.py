@@ -141,9 +141,7 @@ def write_rfid():
 def read_temperature():
     temperature = DS18B20_object.get_temperature()
     print(f"De temperatuur is {temperature:.2f} °Celcius")
-    if temperature >= 29:
-        # in productie zal deze temperatuur hoger staan
-        DataRepository.add_device_history(3, None, temperature, None)
+    DataRepository.add_device_history(3, None, temperature, None)
     if current_device == 3:
         socketio.emit('B2F_new_data', {'device_id': 3})
 
@@ -208,6 +206,12 @@ def check_login():
         return jsonify(data), 200
 
 
+@app.route(endpoint + '/mail-history/', methods=['GET'])
+def get_mail_history():
+    if request.method == 'GET':
+        data = DataRepository.read_current_color()
+        return jsonify(mail_history=data), 200
+    
 @app.route(endpoint + '/current-color/', methods=['GET'])
 def get_current_color():
     if request.method == 'GET':
@@ -298,7 +302,7 @@ if __name__ == '__main__':
                 read_ldr()
                 last_ldr_runtime = time.time()
 
-            if (time.time() - last_temperature_runtime) > 15:
+            if (time.time() - last_temperature_runtime) > 60:
                 read_temperature()
                 last_temperature_runtime = time.time()
 
