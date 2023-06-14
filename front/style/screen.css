@@ -798,8 +798,11 @@ input[type=password] {
     margin: 0.5714285714rem 0 0 0;
   }
 }
-.c-mail__btn:hover, .c-mail__btn:disabled {
-  background-color: #845ef7;
+.c-mail__btn:hover {
+  background-color: #9775fa;
+}
+.c-mail__btn:disabled {
+  background-color: #868e96;
 }
 
 /*

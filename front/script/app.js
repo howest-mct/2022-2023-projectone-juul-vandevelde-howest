@@ -51,31 +51,48 @@ const wipeData = function () {
 const showHistory = function (jsonObject) {
   console.info(jsonObject);
   const historyTable = document.querySelector('.js-history-table');
-  let html = `<table class='o-row u-pb-m'>
-  <tr>
-    <th class='c-table__header'>When</th>
-    <th class='c-table__header'>Color</th>
-  </tr>`;
-  for (const history of jsonObject.history) {
-    if (history.value.startsWith('#')) {
+  if (jsonObject.history[0].device_id == 3) {
+    chartTitle = 'Mailbox inside temperature';
+    showLineGraph(jsonObject, chartTitle);
+    let html = `<table class='o-row u-pb-m'>
+    <tr>
+      <th class='c-table__header'>When</th>
+      <th class='c-table__header'>Temperature</th>
+    </tr>`;
+    for (const history of jsonObject.history) {
+      html += `<tr class='c-table__record'>
+      <td class='c-table__data'>${formatDate(history.datetime)}</td>
+      <td class='c-table__data u-pr-clear'>${parseFloat(history.value).toFixed(1)} °C</td>
+    </tr>`;
+    }
+    html += `</table>`;
+    historyTable.innerHTML = html;
+  } else if (jsonObject.history[0].device_id == 10) {
+    let html = `<table class='o-row u-pb-m'>
+    <tr>
+      <th class='c-table__header'>When</th>
+      <th class='c-table__header'>Color</th>
+    </tr>`;
+    for (const history of jsonObject.history) {
       const color = history.value;
       history.value = `<div class='o-layout o-layout--align-center'><div class="c-table__data--color js-table__data--color-card" data-color="${color}"></div><div class='c-table__data--color-hex js-table__data--color-hex'>${color}</div></div>`;
+
+      html += `<tr class='c-table__record'>
+      <td class='c-table__data'>${formatDate(history.datetime)}</td>
+      <td class='c-table__data u-pr-clear'>${history.value}</td>
+    </tr>`;
     }
 
-    html += `<tr class='c-table__record'>
-    <td class='c-table__data'>${formatDate(history.datetime)}</td>
-    <td class='c-table__data u-pr-clear'>${history.value}</td>
-  </tr>`;
+    html += `</table>`;
+    historyTable.innerHTML = html;
+
+    const colorCards = document.querySelectorAll('.js-table__data--color-card');
+    if (colorCards) {
+      for (const colorCard of colorCards) {
+        colorCard.style.backgroundColor = `${colorCard.getAttribute('data-color')}`;
+      }
+    }
   }
-
-  html += `</table>`;
-  historyTable.innerHTML = html;
-  const colorCards = document.querySelectorAll('.js-table__data--color-card');
-  // if (colorCards) {
-    for (const colorCard of colorCards) {
-      colorCard.style.backgroundColor = `${colorCard.getAttribute('data-color')}`;
-    }
-  // }
 };
 
 // const showNewestHistory = function (jsonObject) {
@@ -166,24 +183,9 @@ const showData = function (graph) {
     ];
     showGraph(jsonObject, chartTitle);
   } else if (graph == 'temp') {
-    chartTitle = 'Mailbox inside temperature';
-    jsonObject = [
-      {
-        unit: 'iPhone 1',
-        year: 2007,
-        price: 499,
-        inflation_index: 1000,
-      },
-      {
-        unit: 'iPhone 3G',
-        year: 2008,
-        price: 599,
-        inflation_index: 1000,
-      },
-    ];
-    showGraph(jsonObject, chartTitle);
+    getHistory(3);
   } else if (graph == 'color') {
-    chartTitle = 'Previous lighting colors';
+    // chartTitle = 'Previous lighting colors';
     getHistory(10);
     if (chart) {
       chart.destroy();
@@ -191,16 +193,27 @@ const showData = function (graph) {
   }
 };
 
-const showGraph = function (jsonObject, chartTitle) {
+const showLineGraph = function (jsonObject, chartTitle) {
   let converted_labels = [];
   let converted_data = [];
-  for (const iphone of jsonObject) {
-    converted_labels.push(iphone.unit);
-    converted_data.push(iphone.price);
+  for (const history of jsonObject.history) {
+    converted_labels.push(history.value);
+    converted_data.push(history.datetime);
   }
   document.querySelector('.js-chart__title').innerHTML = `<h3 class="o-row--xs">${chartTitle}</h3>`;
-  drawChart(converted_labels, converted_data);
+  drawLineChart(converted_labels, converted_data);
 };
+
+// const showGraph = function (jsonObject, chartTitle) {
+//   let converted_labels = [];
+//   let converted_data = [];
+//   for (const iphone of jsonObject) {
+//     converted_labels.push(iphone.unit);
+//     converted_data.push(iphone.price);
+//   }
+//   document.querySelector('.js-chart__title').innerHTML = `<h3 class="o-row--xs">${chartTitle}</h3>`;
+//   drawChart(converted_labels, converted_data);
+// };
 // #endregion
 
 // #region ***  Callback-No Visualisation - callback___  ***********
@@ -254,32 +267,99 @@ const callbackSetColor = function () {
   socketio.emit('F2B_color_changed');
 };
 
-const drawChart = function (labels, data) {
+const drawLineChart = function (labels, data) {
   var options = {
+    series: [
+      {
+        data: data.slice(),
+      },
+    ],
     chart: {
-      id: 'iPhoneChart',
+      id: 'realtime',
+      height: 350,
       type: 'line',
-    },
-    stroke: {
-      curve: 'stepline',
+      animations: {
+        enabled: true,
+        easing: 'linear',
+        dynamicAnimation: {
+          speed: 1000,
+        },
+      },
+      toolbar: {
+        show: false,
+      },
+      zoom: {
+        enabled: false,
+      },
     },
     dataLabels: {
       enabled: false,
     },
-    series: [
-      {
-        name: 'iPhone Pricing',
-        data: data,
-      },
-    ],
-    labels: labels,
-    noData: {
-      text: 'Loading ...',
+    stroke: {
+      curve: 'smooth',
+    },
+    title: {
+      text: 'Dynamic Updating Chart',
+      align: 'left',
+    },
+    markers: {
+      size: 0,
+    },
+    xaxis: {
+      type: 'datetime',
+      range: 5,
+    },
+    yaxis: {
+      max: 100,
+    },
+    legend: {
+      show: false,
     },
   };
-  chart = new ApexCharts(document.querySelector('.js-chart'), options);
+
+  var chart = new ApexCharts(document.querySelector('#chart'), options);
   chart.render();
+
+  window.setInterval(function () {
+    getNewSeries(lastDate, {
+      min: 10,
+      max: 90,
+    });
+
+    chart.updateSeries([
+      {
+        data: data,
+      },
+    ]);
+  }, 1000);
 };
+
+// const drawChart = function (labels, data) {
+//   var options = {
+//     chart: {
+//       id: 'iPhoneChart',
+//       type: 'line',
+//     },
+//     stroke: {
+//       curve: 'stepline',
+//     },
+//     dataLabels: {
+//       enabled: false,
+//     },
+//     series: [
+//       {
+//         name: 'iPhone Pricing',
+//         data: data,
+//       },
+//     ],
+//     labels: labels,
+//     noData: {
+//       text: 'Loading ...',
+//     },
+//   };
+//   chart = new ApexCharts(document.querySelector('.js-chart'), options);
+//   chart.render();
+// };
 // #endregion
 
 // #region ***  Data Access - get___                     ***********
@@ -344,7 +424,9 @@ const listenToSocket = function () {
   });
 
   socketio.on('B2F_door_changed', function () {
-    getDoorStatus();
+    if (document.querySelector('.js-html-dashboard')) {
+      getDoorStatus();
+    }
   });
 };
 

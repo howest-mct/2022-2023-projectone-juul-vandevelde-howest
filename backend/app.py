@@ -36,7 +36,7 @@ solenoid = 24
 
 printed = False
 current_device = None
-
+first_iteration = True
 
 def hex_to_rgb(hex_code):
     hex_code = hex_code.lstrip('#')
@@ -58,10 +58,6 @@ def setup():
 
     break_beam_1.on_both(read_beam)
     read_beam(break_beam_1)
-
-    rgb = hex_to_rgb(DataRepository.read_current_color()['value'])
-    pixels.fill((rgb[0], rgb[1], rgb[2]))
-    pixels.show()
 
 
 def shutdown(pin):
@@ -104,6 +100,13 @@ def read_ldr():
     light_intensity = 100 - ((mcp_object.read_channel(0) / 1023) * 100)
     print(f"{light_intensity:.2f}%")
     DataRepository.add_device_history(1, None, light_intensity, None)
+    if light_intensity <= 30:
+        rgb = hex_to_rgb(DataRepository.read_current_color()['value'])
+        pixels.fill((rgb[0], rgb[1], rgb[2]))
+        pixels.show()
+    else:
+        pixels.fill((0, 0, 0))
+        pixels.show()
     if current_device == 1:
         socketio.emit('B2F_new_data', {'device_id': 1})
 
@@ -111,7 +114,7 @@ def read_ldr():
 def read_rfid():
     last_runtime = time.time()
     while True:
-        if (time.time() - last_runtime) > 5:
+        if (first_iteration == True) or ((time.time() - last_runtime) > 5):
             print("**** Hold a tag near the reader ****")
             id, password = rfid_reader.read()
             DataRepository.add_device_history(2, None, id, None)
@@ -126,6 +129,7 @@ def read_rfid():
                 GPIO.output(solenoid, GPIO.LOW)
             else:
                 print("You don't have access :(")
+            first_iteration == False
 
 
 def write_rfid():
@@ -195,6 +199,7 @@ def get_most_recent_history(device_id):
         data = DataRepository.read_most_recent_device_history(device_id)
         return jsonify(recent_history=data), 200
 
+
 @app.route(endpoint + '/login/', methods=['POST'])
 def check_login():
     if request.method == 'POST':
@@ -245,6 +250,9 @@ def change_color():
 def shutdown_pi():
     DataRepository.add_device_history(11, None, None, None)
     print("**** shutdown ****")
+    lcdObject.clear_screen()
+    pixels.fill((0, 0, 0))
+    pixels.show()
     mcp_object.closespi()
     GPIO.cleanup()
     subprocess.call("sudo shutdown now", shell=True)
