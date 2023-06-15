@@ -117,18 +117,18 @@ def read_rfid():
         if (first_iteration == True) or ((time.time() - last_runtime) > 5):
             print("**** Hold a tag near the reader ****")
             id, password = rfid_reader.read()
-            DataRepository.add_device_history(2, None, id, None)
-            if current_device == 2:
-                socketio.emit('B2F_new_data', {'device_id': 2})
-            # print("ID: %s\nPassword: %s" % (id, password))
-            last_runtime = time.time()
             if (DataRepository.check_rfid(id, password))['user_exists'] == 1:
+                DataRepository.add_device_history(2, 1, id, None)
                 print("Door unlocked by rfid")
                 GPIO.output(solenoid, GPIO.HIGH)
                 time.sleep(1)
                 GPIO.output(solenoid, GPIO.LOW)
             else:
+                DataRepository.add_device_history(2, None, id, None)
                 print("You don't have access :(")
+            if current_device == 2:
+                socketio.emit('B2F_new_data', {'device_id': 2})
+            last_runtime = time.time()
             first_iteration == False
 
 
