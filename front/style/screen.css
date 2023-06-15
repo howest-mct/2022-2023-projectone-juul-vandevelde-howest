@@ -15,21 +15,21 @@
   font-weight: 400;
   font-style: normal;
   font-display: swap;
-  src: url("../../fonts/Inter-Regular.woff2") format("woff2");
+  src: url("../fonts/Inter-Regular.woff2") format("woff2");
 }
 @font-face {
   font-family: "Inter Web";
   font-weight: 600;
   font-style: normal;
   font-display: swap;
-  src: url("../../fonts/Inter-SemiBold.woff2") format("woff2");
+  src: url("../fonts/Inter-SemiBold.woff2") format("woff2");
 }
 @font-face {
   font-family: "Inter Web";
   font-weight: 700;
   font-style: normal;
   font-display: swap;
-  src: url("../../fonts/Inter-Bold.woff2") format("woff2");
+  src: url("../fonts/Inter-Bold.woff2") format("woff2");
 }
 *,
 *:before,
@@ -95,7 +95,7 @@ strong {
 }
 
 h1 {
-  font-size: 1.6018066406rem;
+  font-size: 1.8020324707rem;
   line-height: 2.2857142857rem;
   margin-bottom: 1.7142857143rem;
 }
@@ -245,8 +245,8 @@ input[type=password] {
 }
 
 .o-row--xs {
-  padding-top: 0.8571428571rem;
-  padding-bottom: 0.8571428571rem;
+  padding: 1.1428571429rem 1.1428571429rem 0;
+  display: flow-root;
 }
 
 @media (min-width: 48.0625em) {
@@ -261,6 +261,8 @@ input[type=password] {
   left: 0;
   right: 0;
   z-index: 20;
+  padding-top: 0.8571428571rem;
+  padding-bottom: 0.8571428571rem;
 }
 
 /*
@@ -514,7 +516,7 @@ input[type=password] {
   height: 3rem;
   border-radius: 6px;
   margin-bottom: 2rem;
-  border: solid 1px #212529;
+  border: solid 1px #495057;
   background-color: #7950f2;
 }
 
@@ -625,7 +627,6 @@ input[type=password] {
   height: 100vh;
 }
 .c-login__title {
-  font-size: 1.8020324707rem;
   margin-bottom: 0.5rem;
 }
 .c-login__subtitle {
@@ -675,108 +676,6 @@ input[type=password] {
 }
 
 /*
-    Components: Author
-    ---
-    The author component is used to display the author of an application
-*/
-.c-author {
-  display: flex;
-  align-items: center;
-  gap: 1.1428571429rem;
-  margin-bottom: 1.7142857143rem;
-}
-
-.c-author__image {
-  width: 4.5714285714rem;
-  aspect-ratio: 1/1;
-  border-radius: 100%;
-}
-
-.c-author__meta {
-  color: #868e96;
-}
-
-/*
-    Components: Buttons
-    ---
-    The button component is used to display buttons
-*/
-.c-button:-moz-any-link {
-  display: inline-block;
-  padding: 0.5714285714rem 1.1428571429rem;
-  border-radius: 6px;
-  font-weight: 600;
-  text-decoration: none;
-  color: #f3f0ff;
-  background-color: #7048e8;
-  border: 1px solid #7048e8;
-  -moz-transition: background-color 0.2s ease-in-out;
-  transition: background-color 0.2s ease-in-out;
-}
-.c-button,
-.c-button:any-link {
-  display: inline-block;
-  padding: 0.5714285714rem 1.1428571429rem;
-  border-radius: 6px;
-  font-weight: 600;
-  text-decoration: none;
-  color: #f3f0ff;
-  background-color: #7048e8;
-  border: 1px solid #7048e8;
-  transition: background-color 0.2s ease-in-out;
-}
-.c-button:-moz-any-link:hover {
-  background-color: #7950f2;
-}
-.c-button:hover,
-.c-button:any-link:hover {
-  background-color: #7950f2;
-}
-
-.c-button--meta:-moz-any-link {
-  color: #495057;
-  background-color: white;
-  border-color: #ced4da;
-}
-
-.c-button--meta,
-.c-button--meta:any-link {
-  color: #495057;
-  background-color: white;
-  border-color: #ced4da;
-}
-.c-button--meta:-moz-any-link:hover {
-  background-color: #f8f9fa;
-}
-.c-button--meta:hover,
-.c-button--meta:any-link:hover {
-  background-color: #f8f9fa;
-}
-
-/*
-    Components: Links
-    ---
-    Special reusable link classes
-*/
-.c-link-bold {
-  font-weight: 600;
-  text-decoration: none;
-}
-.c-link-bold:hover {
-  text-decoration: underline;
-}
-
-/*
-    Components: Button group
-    ---
-    The button group component is used to display a group of buttons
-*/
-.c-button-group {
-  display: flex;
-  gap: 1.1428571429rem;
-}
-
-/*
     Components: Card
     ---
     The card component is used to display a card
@@ -810,6 +709,38 @@ input[type=password] {
 }
 
 /*
+    Components: History
+    ---
+    The history component is used to display the history
+*/
+.c-history__header {
+  gap: 1rem;
+}
+.c-history__selector {
+  position: relative;
+  font-size: 1rem;
+  font-family: "Inter Web";
+  font-weight: 600;
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  border: none;
+  border-right: 0.5rem solid #7950f2;
+  outline: none;
+  background-color: #7950f2;
+}
+.c-history__selector--item {
+  font-size: 1rem;
+  font-family: "Inter Web";
+  font-weight: 600;
+  color: #495057;
+  background-color: white;
+}
+.c-history__body {
+  font-size: 1.125rem;
+}
+
+/*
     Components: shutdown
     ---
     The shutdown component is used to display that the pi is shutting down
@@ -833,45 +764,6 @@ input[type=password] {
 }
 .spin-animation {
   animation: spin 4s ease-in-out infinite;
-}
-
-/*
-    Components: Attachments
-    ---
-    The attachments component is used to display a list of attachments
-*/
-.c-attachments {
-  border: 1px solid #e9ecef;
-  border-radius: 6px;
-}
-
-.c-attachments__item {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8571428571rem;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.8571428571rem 1.1428571429rem;
-}
-.c-attachments__item + .c-attachments__item {
-  border-top: 1px solid #e9ecef;
-}
-
-.c-attachments__icon {
-  fill: #adb5bd;
-  rotate: 45deg;
-  flex-shrink: 0;
-}
-
-.c-attachments__file {
-  display: flex;
-  align-items: center;
-  gap: 0.5714285714rem;
-}
-
-.c-attachments__file-name {
-  overflow-wrap: break-word;
-  word-break: break-all;
 }
 
 /*
@@ -906,8 +798,45 @@ input[type=password] {
     margin: 0.5714285714rem 0 0 0;
   }
 }
-.c-mail__btn:hover, .c-mail__btn:disabled {
-  background-color: #845ef7;
+.c-mail__btn:hover {
+  background-color: #9775fa;
+}
+.c-mail__btn:disabled {
+  background-color: #868e96;
+}
+
+/*
+    Components: Table
+    ---
+    The table component is used to display a table
+*/
+.c-table__header {
+  font-size: 1rem;
+  text-align: left;
+}
+.c-table__data {
+  font-size: 0.8888888889rem;
+  font-weight: 600;
+  padding: 1rem 4rem 1rem 0;
+}
+.c-table__data--color {
+  padding: 1rem 2rem;
+  border-radius: 6px;
+  margin-right: 1rem;
+  border: solid 1px #495057;
+}
+.c-table__data--color-hex {
+  font-size: 0.8888888889rem;
+  font-weight: 600;
+}
+
+/*
+    Components: Chart
+    ---
+    The chart component is used to display a chart
+*/
+.c-chart {
+  padding: 1rem;
 }
 
 /*
@@ -1094,6 +1023,14 @@ input[type=password] {
 */
 .u-pt-clear {
   padding-top: 0;
+}
+
+.u-pr-clear {
+  padding-right: 0;
+}
+
+.u-pb-m {
+  padding-bottom: 1.7142857143rem;
 }
 
 .u-mb-clear {

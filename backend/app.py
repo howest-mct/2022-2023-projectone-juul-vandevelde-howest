@@ -35,8 +35,7 @@ shutdown_btn = Button(21)
 solenoid = 24
 
 printed = False
-current_device = None
-
+first_iteration = True
 
 def hex_to_rgb(hex_code):
     hex_code = hex_code.lstrip('#')
@@ -59,10 +58,6 @@ def setup():
     break_beam_1.on_both(read_beam)
     read_beam(break_beam_1)
 
-    rgb = hex_to_rgb(DataRepository.read_current_color()['value'])
-    pixels.fill((rgb[0], rgb[1], rgb[2]))
-    pixels.show()
-
 
 def shutdown(pin):
     # deze code blokkeerd de rest, maar dit is niet erg aangezien de pi hier toch afgesloten wordt
@@ -70,8 +65,6 @@ def shutdown(pin):
     shutdown_initiated = False
     while shutdown_btn.pressed:
         if (time.time() - start_time) > 5 and shutdown_initiated == False:
-            if current_device == 11:
-                socketio.emit('B2F_new_data', {'device_id': 11})
             shutdown_initiated = True
             shutdown_pi()
 
@@ -81,14 +74,10 @@ def read_switch(pin):
         print("door closed")
         DataRepository.add_device_history(6, None, 0, None)
         socketio.emit('B2F_door_changed')
-        if current_device == 6:
-            socketio.emit('B2F_new_data', {'device_id': 6})
     else:
         print("door open")
         DataRepository.add_device_history(6, None, 1, None)
         socketio.emit('B2F_door_changed')
-        if current_device == 6:
-            socketio.emit('B2F_new_data', {'device_id': 6})
 
 
 def read_beam(pin):
@@ -96,36 +85,42 @@ def read_beam(pin):
         print("letter/parcel detected")
         # de ene break beam zal voor pakketjes zijn de andere voor brieven
         DataRepository.add_device_history(4, None, 1, None)
-        if current_device == 4:
-            socketio.emit('B2F_new_data', {'device_id': 4})
+    else:
+        print("lege brievenbus")
 
 
 def read_ldr():
     light_intensity = 100 - ((mcp_object.read_channel(0) / 1023) * 100)
     print(f"{light_intensity:.2f}%")
     DataRepository.add_device_history(1, None, light_intensity, None)
-    if current_device == 1:
-        socketio.emit('B2F_new_data', {'device_id': 1})
+    if light_intensity <= 30:
+        rgb = hex_to_rgb(DataRepository.read_current_color()['value'])
+        pixels.fill((rgb[0], rgb[1], rgb[2]))
+        pixels.show()
+    else:
+        pixels.fill((0, 0, 0))
+        pixels.show()
 
 
 def read_rfid():
+    global first_iteration
     last_runtime = time.time()
     while True:
-        if (time.time() - last_runtime) > 5:
+        if (first_iteration == True) or ((time.time() - last_runtime) > 5):
             print("**** Hold a tag near the reader ****")
             id, password = rfid_reader.read()
-            DataRepository.add_device_history(2, None, id, None)
-            if current_device == 2:
-                socketio.emit('B2F_new_data', {'device_id': 2})
-            # print("ID: %s\nPassword: %s" % (id, password))
-            last_runtime = time.time()
             if (DataRepository.check_rfid(id, password))['user_exists'] == 1:
+                DataRepository.add_device_history(2, 1, id, None)
                 print("Door unlocked by rfid")
                 GPIO.output(solenoid, GPIO.HIGH)
                 time.sleep(1)
                 GPIO.output(solenoid, GPIO.LOW)
+                DataRepository.add_device_history(9, None, id, None)
             else:
+                DataRepository.add_device_history(2, None, id, None)
                 print("You don't have access :(")
+            last_runtime = time.time()
+            first_iteration = False
 
 
 def write_rfid():
@@ -137,11 +132,7 @@ def write_rfid():
 def read_temperature():
     temperature = DS18B20_object.get_temperature()
     print(f"De temperatuur is {temperature:.2f} °Celcius")
-    if temperature >= 29:
-        # in productie zal deze temperatuur hoger staan
-        DataRepository.add_device_history(3, None, temperature, None)
-    if current_device == 3:
-        socketio.emit('B2F_new_data', {'device_id': 3})
+    DataRepository.add_device_history(3, None, temperature, None)
 
 
 def start_threads():
@@ -187,6 +178,12 @@ def get_history(device_id):
     if request.method == 'GET':
         data = DataRepository.read_device_history(device_id)
         return jsonify(history=data), 200
+    
+@app.route(endpoint + '/history/today/<device_id>/', methods=['GET'])
+def get_history_today(device_id):
+    if request.method == 'GET':
+        data = DataRepository.read_device_history_today(device_id)
+        return jsonify(history=data), 200
 
 
 @app.route(endpoint + '/history/recent/<device_id>/', methods=['GET'])
@@ -204,6 +201,18 @@ def check_login():
         return jsonify(data), 200
 
 
+@app.route(endpoint + '/mail-history/', methods=['GET'])
+def get_mail_history():
+    if request.method == 'GET':
+        data = DataRepository.read_mail_history()
+        return jsonify(history=data), 200
+    
+@app.route(endpoint + '/unlock-history/', methods=['GET'])
+def get_unlock_history():
+    if request.method == 'GET':
+        data = DataRepository.read_unlocks_per_user()
+        return jsonify(history=data), 200
+    
 @app.route(endpoint + '/current-color/', methods=['GET'])
 def get_current_color():
     if request.method == 'GET':
@@ -229,12 +238,6 @@ def initial_connection():
 #     emit('B2F_devices', {'devices': devices}, broadcast=False)
 
 
-@socketio.on('F2B_current_device')
-def set_current_device(jsonObject):
-    global current_device
-    current_device = int(jsonObject['device_id'])
-
-
 @socketio.on('F2B_color_changed')
 def change_color():
     rgb = hex_to_rgb(DataRepository.read_current_color()['value'])
@@ -246,6 +249,9 @@ def change_color():
 def shutdown_pi():
     DataRepository.add_device_history(11, None, None, None)
     print("**** shutdown ****")
+    lcdObject.clear_screen()
+    pixels.fill((0, 0, 0))
+    pixels.show()
     mcp_object.closespi()
     GPIO.cleanup()
     subprocess.call("sudo shutdown now", shell=True)
@@ -291,7 +297,7 @@ if __name__ == '__main__':
                 read_ldr()
                 last_ldr_runtime = time.time()
 
-            if (time.time() - last_temperature_runtime) > 15:
+            if (time.time() - last_temperature_runtime) > 60:
                 read_temperature()
                 last_temperature_runtime = time.time()
 
@@ -300,12 +306,14 @@ if __name__ == '__main__':
                     lcdObject.show_ip()
                     # show_ip nog dynamisch maken ipv 2 fixed ip adressen
                     printed = False
-                if (time.time() - last_ip_runtime) > (15 + 10):
+                if (time.time() - last_ip_runtime) > (15 + 15):
                     last_ip_runtime = time.time()
             elif printed == False:
                 lcdObject.disable_cursor()
                 lcdObject.clear_screen()
-                lcdObject.write_message('Nuttige info')
+                lcdObject.write_message('<- Mail        |')
+                lcdObject.go_to_second_row()
+                lcdObject.write_message('       Parcels v')
                 # het schermpje nog nuttiger maken
                 printed = True
             time.sleep((0.001))

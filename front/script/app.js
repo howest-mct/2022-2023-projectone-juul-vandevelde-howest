@@ -2,6 +2,7 @@ const lanIP = `${window.location.hostname}:5000`;
 const socketio = io(lanIP);
 let currentDeviceId;
 let current_color;
+let chart;
 
 // #region ***  DOM references                           ***********
 // #endregion
@@ -29,27 +30,102 @@ const showUsers = function (jsonObject) {
   dataHtml.innerHTML = html;
 };
 
-const showDevices = function (jsonObject) {
-  const btnsHtml = document.querySelector('.js-btns');
-  let html = '';
-  for (const device of jsonObject.devices) {
-    html += `<button class='js-btn' data-device_id="${device.device_id}">${device.description}</button>`;
+// const showDevices = function (jsonObject) {
+//   const btnsHtml = document.querySelector('.js-btns');
+//   let html = '';
+//   for (const device of jsonObject.devices) {
+//     html += `<button class='js-btn' data-device_id="${device.device_id}">${device.description}</button>`;
+//   }
+//   btnsHtml.innerHTML = html;
+//   listenToBtns();
+// };
+
+const wipeData = function () {
+  if (chart) {
+    chart.destroy();
   }
-  btnsHtml.innerHTML = html;
-  listenToBtns();
+  document.querySelector('.js-chart').classList.add('hidden');
+  document.querySelector('.js-chart__title').innerHTML = ``;
+  document.querySelector('.js-history-table').innerHTML = ``;
 };
 
 const showHistory = function (jsonObject) {
   console.info(jsonObject);
-  const dataHtml = document.querySelector('.js-data');
-  let html = '';
-  for (const history of jsonObject.history) {
-    html += `<tr>
-    <td>${history.datetime}</td>
-    <td>${history.value}</td>
-  </tr>`;
+  const historyTable = document.querySelector('.js-history-table');
+  if (jsonObject.history[0].device_id == 3) {
+    chartTitle = 'Mailbox inside temperature (today)';
+    showLineGraph(jsonObject, chartTitle);
+    let html = `<table class='o-row u-pb-m'>
+    <tr>
+      <th class='c-table__header'>When</th>
+      <th class='c-table__header'>Temperature</th>
+    </tr>`;
+    for (const history of jsonObject.history.slice(0, 15)) {
+      html += `<tr class='c-table__record'>
+      <td class='c-table__data'>${formatDate(history.datetime)}</td>
+      <td class='c-table__data u-pr-clear'>${parseFloat(history.value).toFixed(1)} °C</td>
+    </tr>`;
+    }
+    html += `</table>`;
+    historyTable.innerHTML = html;
+  } else if (jsonObject.history[0].device_id == 4 || jsonObject.history[0].device_id == 5) {
+    chartTitle = 'Deliveries per Day';
+    showBarGraph_1(jsonObject, chartTitle);
+    let html = `<table class='o-row u-pb-m'>
+    <tr>
+      <th class='c-table__header'>Day</th>
+      <th class='c-table__header'>Delivery Amount</th>
+    </tr>`;
+    for (const history of jsonObject.history.reverse()) {
+      html += `<tr class='c-table__record'>
+      <td class='c-table__data'>${formatDate(history.date).split(',')[0].trim()}</td>
+      <td class='c-table__data u-pr-clear'>${history.deliveries}</td>
+    </tr>`;
+    }
+    html += `</table>`;
+    historyTable.innerHTML = html;
+  } else if (jsonObject.history[0].device_id == 10) {
+    let html = `<table class='o-row u-pb-m'>
+    <tr>
+      <th class='c-table__header'>When</th>
+      <th class='c-table__header'>Color</th>
+    </tr>`;
+    for (const history of jsonObject.history) {
+      const color = history.value;
+      history.value = `<div class='o-layout o-layout--align-center'><div class="c-table__data--color js-table__data--color-card" data-color="${color}"></div><div class='c-table__data--color-hex js-table__data--color-hex'>${color}</div></div>`;
+
+      html += `<tr class='c-table__record'>
+      <td class='c-table__data'>${formatDate(history.datetime)}</td>
+      <td class='c-table__data u-pr-clear'>${history.value}</td>
+    </tr>`;
+    }
+
+    html += `</table>`;
+    historyTable.innerHTML = html;
+
+    const colorCards = document.querySelectorAll('.js-table__data--color-card');
+    if (colorCards) {
+      for (const colorCard of colorCards) {
+        colorCard.style.backgroundColor = `${colorCard.getAttribute('data-color')}`;
+      }
+    }
+  } else {
+    chartTitle = 'Unlock frequency by user';
+    showBarGraph_2(jsonObject, chartTitle);
+    let html = `<table class='o-row u-pb-m'>
+    <tr>
+      <th class='c-table__header'>User</th>
+      <th class='c-table__header'>Total Unlock Amount</th>
+    </tr>`;
+    for (const history of jsonObject.history) {
+      html += `<tr class='c-table__record'>
+      <td class='c-table__data'>${history.first_name}</td>
+      <td class='c-table__data u-pr-clear'>${history.counter}</td>
+    </tr>`;
+    }
+    html += `</table>`;
+    historyTable.innerHTML = html;
   }
-  dataHtml.innerHTML = html;
 };
 
 // const showNewestHistory = function (jsonObject) {
@@ -96,6 +172,69 @@ const showDoorStatus = function (jsonObject) {
     Unlock door`;
   }
 };
+
+const showData = function (graph) {
+  const historyBody = document.querySelector('.js-history-text');
+  historyBody.innerHTML = ``;
+  wipeData();
+
+  if (graph == 'unlock') {
+    getUnlockHistory();
+  } else if (graph == 'mail') {
+    getMailHistory();
+  } else if (graph == 'temp') {
+    getHistoryToday(3);
+  } else if (graph == 'color') {
+    getHistory(10);
+  }
+};
+
+const showLineGraph = function (jsonObject, chartTitle) {
+  let converted_labels = [];
+  let converted_data = [];
+  for (const history of jsonObject.history) {
+    converted_labels.push(formatDate(history.datetime).replace('Today, ', ''));
+    converted_data.push(parseFloat(history.value).toFixed(2));
+  }
+  console.info(converted_data, converted_labels);
+  document.querySelector('.js-chart__title').innerHTML = `<h3 class="o-row--xs">${chartTitle}</h3>`;
+  drawLineChart(converted_labels, converted_data);
+};
+
+const showBarGraph_1 = function (jsonObject, chartTitle) {
+  let converted_labels = [];
+  let converted_data = [];
+  for (const history of jsonObject.history) {
+    converted_labels.push(formatDate(history.date).split(',')[0].trim());
+    converted_data.push(parseInt(history.deliveries));
+  }
+  console.info(converted_data, converted_labels);
+  document.querySelector('.js-chart__title').innerHTML = `<h3 class="o-row--xs">${chartTitle}</h3>`;
+  drawBarChart(converted_labels, converted_data);
+};
+
+const showBarGraph_2 = function (jsonObject, chartTitle) {
+  let converted_labels = [];
+  let converted_data = [];
+  for (const history of jsonObject.history) {
+    converted_labels.push(history.first_name);
+    converted_data.push(parseInt(history.counter));
+  }
+  console.info(converted_data, converted_labels);
+  document.querySelector('.js-chart__title').innerHTML = `<h3 class="o-row--xs">${chartTitle}</h3>`;
+  drawBarChart(converted_labels, converted_data);
+};
+
+// const showGraph = function (jsonObject, chartTitle) {
+//   let converted_labels = [];
+//   let converted_data = [];
+//   for (const iphone of jsonObject) {
+//     converted_labels.push(iphone.unit);
+//     converted_data.push(iphone.price);
+//   }
+//   document.querySelector('.js-chart__title').innerHTML = `<h3 class="o-row--xs">${chartTitle}</h3>`;
+//   drawChart(converted_labels, converted_data);
+// };
 // #endregion
 
 // #region ***  Callback-No Visualisation - callback___  ***********
@@ -103,10 +242,167 @@ const setCurrentColor = function (jsonObject) {
   current_color = jsonObject.current_color.value;
 };
 
+const formatDate = function (inputDate) {
+  const today = new Date();
+  const date = new Date(inputDate);
+
+  const isToday = today.getUTCFullYear() === date.getUTCFullYear() && today.getUTCMonth() === date.getUTCMonth() && today.getUTCDate() === date.getUTCDate();
+
+  if (isToday) {
+    const hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes();
+
+    const isNow = hours === today.getUTCHours() + 2 && minutes === today.getUTCMinutes();
+
+    if (isNow) {
+      return 'Now';
+    } else {
+      return `Today, ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    }
+  }
+
+  const yesterday = new Date();
+  yesterday.setDate(today.getDate() - 1);
+  const isYesterday = yesterday.getUTCFullYear() === date.getUTCFullYear() && yesterday.getUTCMonth() === date.getUTCMonth() && yesterday.getUTCDate() === date.getUTCDate();
+
+  if (isYesterday) {
+    const hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes();
+    return `Yesterday, ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  }
+
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  const month = monthNames[date.getUTCMonth()];
+  const day = date.getUTCDate();
+  const hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
+
+  const formattedDate = `${month} ${day}, ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+
+  return formattedDate;
+};
+
 const callbackSetColor = function () {
-  console.info("Color added :)")
+  console.info('Color added :)');
   socketio.emit('F2B_color_changed');
-}
+};
+
+const drawLineChart = function (labels, data) {
+  document.querySelector('.js-chart').classList.remove('hidden');
+  console.info(data);
+  var options = {
+    series: [
+      {
+        name: 'Inside Temperature',
+        data: data.reverse(),
+      },
+    ],
+    chart: {
+      type: 'line',
+      height: 350,
+    },
+    stroke: {
+      curve: 'smooth',
+      colors: ['#7950F2'],
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    markers: {
+      hover: {
+        sizeOffset: 4,
+      },
+    },
+    xaxis: {
+      categories: labels.reverse(),
+      style: {
+        fontSize: '10px', // Adjust the font size as per your preference
+      },
+      tickAmount: 8,
+    },
+    yaxis: {
+      labels: {
+        formatter: function (value) {
+          return value.toFixed(2) + '°C';
+        },
+      },
+    },
+  };
+
+  chart = new ApexCharts(document.querySelector('#chart'), options);
+  chart.render();
+};
+
+const drawBarChart = function (labels, data) {
+  document.querySelector('.js-chart').classList.remove('hidden');
+  console.info(data);
+  var options = {
+    series: [
+      {
+        name: 'Items Delivered',
+        data: data,
+      },
+    ],
+    chart: {
+      type: 'bar',
+      height: 350,
+    },
+    colors: ['#7950F2'],
+    plotOptions: {
+      bar: {
+        borderRadius: 4,
+        horizontal: false,
+      },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    xaxis: {
+      categories: labels,
+    },
+    yaxis: {
+      categories: labels,
+      title: {
+        text: 'Amount',
+        style: {
+          fontSize: '14px', // Optional styling for the title
+          fontWeight: 'bold',
+        },
+      },
+    },
+  };
+
+  chart = new ApexCharts(document.querySelector('#chart'), options);
+  chart.render();
+};
+
+// const drawChart = function (labels, data) {
+//   var options = {
+//     chart: {
+//       id: 'iPhoneChart',
+//       type: 'line',
+//     },
+//     stroke: {
+//       curve: 'stepline',
+//     },
+//     dataLabels: {
+//       enabled: false,
+//     },
+//     series: [
+//       {
+//         name: 'iPhone Pricing',
+//         data: data,
+//       },
+//     ],
+//     labels: labels,
+//     noData: {
+//       text: 'Loading ...',
+//     },
+//   };
+//   chart = new ApexCharts(document.querySelector('.js-chart'), options);
+//   chart.render();
+// };
 // #endregion
 
 // #region ***  Data Access - get___                     ***********
@@ -125,6 +421,21 @@ const getHistory = function (device_id) {
   handleData(url, showHistory, showError);
 };
 
+const getHistoryToday = function (device_id) {
+  const url = 'http://' + lanIP + `/api/v1/history/today/${device_id}/`;
+  handleData(url, showHistory, showError);
+};
+
+const getUnlockHistory = function () {
+  const url = 'http://' + lanIP + `/api/v1/unlock-history/`;
+  handleData(url, showHistory, showError);
+};
+
+const getMailHistory = function () {
+  const url = 'http://' + lanIP + `/api/v1/mail-history/`;
+  handleData(url, showHistory, showError);
+};
+
 const getDoorStatus = function () {
   const url = 'http://' + lanIP + `/api/v1/history/recent/6/`;
   handleData(url, showDoorStatus, showError);
@@ -137,18 +448,26 @@ const getCurrentColor = function () {
 // #endregion
 
 // #region ***  Event Listeners - listenTo___            ***********
-const listenToBtns = function () {
-  const htmlSensorName = document.querySelector('.js-sensor_name');
-  const btns = document.querySelectorAll('.js-btn');
-  for (const btn of btns) {
-    btn.addEventListener('click', function () {
-      console.info('klik');
-      currentDeviceId = btn.getAttribute('data-device_id');
-      socketio.emit('F2B_current_device', { device_id: currentDeviceId });
-      getHistory(currentDeviceId);
-      htmlSensorName.innerHTML = btn.innerHTML;
-    });
-  }
+// const listenToBtns = function () {
+//   const htmlSensorName = document.querySelector('.js-sensor_name');
+//   const btns = document.querySelectorAll('.js-btn');
+//   for (const btn of btns) {
+//     btn.addEventListener('click', function () {
+//       console.info('klik');
+//       currentDeviceId = btn.getAttribute('data-device_id');
+//       socketio.emit('F2B_current_device', { device_id: currentDeviceId });
+//       getHistory(currentDeviceId);
+//       htmlSensorName.innerHTML = btn.innerHTML;
+//     });
+//   }
+// };
+
+const listenToSelector = function () {
+  const selector = document.querySelector('.js-selector');
+  selector.addEventListener('change', function () {
+    const graph = selector.value;
+    showData(graph);
+  });
 };
 
 const listenToSocket = function () {
@@ -163,7 +482,9 @@ const listenToSocket = function () {
   });
 
   socketio.on('B2F_door_changed', function () {
-    getDoorStatus();
+    if (document.querySelector('.js-html-dashboard')) {
+      getDoorStatus();
+    }
   });
 };
 
@@ -386,7 +707,8 @@ const init = function () {
     }
     listenToLogout();
     listenToMobileMenu();
-    getDevices();
+    listenToSelector();
+    // getDevices();
   } else if (htmlUsers) {
     if (localStorage.getItem('login') == 1) {
       htmlUsers.classList.remove('hidden');

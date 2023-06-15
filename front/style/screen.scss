@@ -146,7 +146,7 @@ $columns: (2, 3, 4, 5, 6) !default;
   font-weight: 400;
   font-style: normal;
   font-display: swap;
-  src: url('../../fonts/Inter-Regular.woff2') format('woff2');
+  src: url('../fonts/Inter-Regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -154,7 +154,7 @@ $columns: (2, 3, 4, 5, 6) !default;
   font-weight: 600;
   font-style: normal;
   font-display: swap;
-  src: url('../../fonts/Inter-SemiBold.woff2') format('woff2');
+  src: url('../fonts/Inter-SemiBold.woff2') format('woff2');
 }
 
 @font-face {
@@ -162,7 +162,7 @@ $columns: (2, 3, 4, 5, 6) !default;
   font-weight: 700;
   font-style: normal;
   font-display: swap;
-  src: url('../../fonts/Inter-Bold.woff2') format('woff2');
+  src: url('../fonts/Inter-Bold.woff2') format('woff2');
 }
 
 *,
@@ -230,7 +230,7 @@ strong {
 }
 
 h1 {
-  font-size: $ms4;
+  font-size: $ms5;
   line-height: calc($baseline * 4);
   margin-bottom: $space-m;
 }
@@ -388,8 +388,8 @@ input[type='password'] {
 }
 
 .o-row--xs {
-  padding-top: $space-xs;
-  padding-bottom: $space-xs;
+  padding: $space-s $space-s 0;
+  display: flow-root;
 }
 
 .o-row--l {
@@ -404,6 +404,8 @@ input[type='password'] {
   left: 0;
   right: 0;
   z-index: 20;
+  padding-top: $space-xs;
+  padding-bottom: $space-xs;
 }
 
 /*
@@ -671,7 +673,7 @@ input[type='password'] {
   height: 3rem;
   border-radius: $radius-m;
   margin-bottom: 2rem;
-  border: solid 1px $oc-gray-9;
+  border: solid 1px $oc-gray-7;
   background-color: $oc-violet-6;
 }
 
@@ -774,7 +776,6 @@ input[type='password'] {
   height: 100vh;
 
   &__title {
-    font-size: $ms5;
     margin-bottom: 0.5rem;
   }
 
@@ -831,89 +832,6 @@ input[type='password'] {
 }
 
 /*
-    Components: Author
-    ---
-    The author component is used to display the author of an application
-*/
-
-.c-author {
-  display: flex;
-  align-items: center;
-  gap: $space-s;
-  margin-bottom: $space-m;
-}
-
-.c-author__image {
-  width: calc($baseline * 8);
-  aspect-ratio: 1/1;
-  border-radius: 100%;
-}
-
-.c-author__meta {
-  color: $color-text-lighter;
-}
-
-/*
-    Components: Buttons
-    ---
-    The button component is used to display buttons
-*/
-
-.c-button,
-.c-button:any-link {
-  display: inline-block;
-  padding: $space-xxs $space-s;
-  border-radius: $radius-m;
-  font-weight: 600;
-  text-decoration: none;
-  color: $oc-violet-0;
-  background-color: $color-primary-dark;
-  border: 1px solid $color-primary-dark;
-  transition: background-color 0.2s ease-in-out;
-
-  &:hover {
-    background-color: $color-primary;
-  }
-}
-
-.c-button--meta,
-.c-button--meta:any-link {
-  color: $color-text-light;
-  background-color: white;
-  border-color: $color-border-dark;
-
-  &:hover {
-    background-color: $oc-gray-0;
-  }
-}
-
-/*
-    Components: Links
-    ---
-    Special reusable link classes
-*/
-
-.c-link-bold {
-  font-weight: 600;
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-/*
-    Components: Button group
-    ---
-    The button group component is used to display a group of buttons
-*/
-
-.c-button-group {
-  display: flex;
-  gap: $space-s;
-}
-
-/*
     Components: Card
     ---
     The card component is used to display a card
@@ -929,10 +847,6 @@ input[type='password'] {
 .c-card__body {
   padding: $space-m $space-m 0;
   display: flow-root;
-
-  // & + & {
-  //   border-top: 1px solid $color-border-light;
-  // }
 }
 
 /*
@@ -950,6 +864,43 @@ input[type='password'] {
 
   &__btns {
     gap: 1rem;
+  }
+}
+
+/*
+    Components: History
+    ---
+    The history component is used to display the history
+*/
+.c-history {
+  &__header {
+    gap: 1rem;
+  }
+
+  &__selector {
+    position: relative;
+    font-size: $ms0;
+    font-family: 'Inter Web';
+    font-weight: 600;
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: $radius-m;
+    border: none;
+    border-right: 0.5rem solid $color-primary;
+    outline: none;
+    background-color: $color-primary;
+
+    &--item {
+      font-size: $ms0;
+      font-family: 'Inter Web';
+      font-weight: 600;
+      color: $oc-gray-7;
+      background-color: white;
+    }
+  }
+
+  &__body {
+    font-size: $ms1;
   }
 }
 
@@ -978,47 +929,6 @@ input[type='password'] {
 
 .spin-animation {
   animation: spin 4s ease-in-out infinite;
-}
-
-/*
-    Components: Attachments
-    ---
-    The attachments component is used to display a list of attachments
-*/
-
-.c-attachments {
-  border: 1px solid $color-border-light;
-  border-radius: $radius-m;
-}
-
-.c-attachments__item {
-  display: flex;
-  flex-wrap: wrap;
-  gap: $space-xs;
-  align-items: center;
-  justify-content: space-between;
-  padding: $space-xs $space-s;
-
-  & + & {
-    border-top: 1px solid $color-border-light;
-  }
-}
-
-.c-attachments__icon {
-  fill: $oc-gray-5;
-  rotate: 45deg;
-  flex-shrink: 0;
-}
-
-.c-attachments__file {
-  display: flex;
-  align-items: center;
-  gap: $space-xxs;
-}
-
-.c-attachments__file-name {
-  overflow-wrap: break-word;
-  word-break: break-all;
 }
 
 /*
@@ -1051,11 +961,55 @@ input[type='password'] {
       margin: $space-xxs 0 0 0;
     }
 
-    &:hover,
+    &:hover {
+      background-color: $color-primary-lighter;
+    }
+
     &:disabled {
-      background-color: $color-primary-light;
+      background-color: $oc-gray-6;
     }
   }
+}
+
+/*
+    Components: Table
+    ---
+    The table component is used to display a table
+*/
+
+.c-table {
+  &__header {
+    font-size: $ms0;
+    text-align: left;
+  }
+
+  &__data {
+    font-size: $ms-1;
+    font-weight: 600;
+    padding: 1rem 4rem 1rem 0;
+
+    &--color {
+      padding: 1rem 2rem;
+      border-radius: $radius-m;
+      margin-right: 1rem;
+      border: solid 1px $oc-gray-7;
+    }
+
+    &--color-hex {
+      font-size: $ms-1;
+      font-weight: 600;
+    }
+  }
+}
+
+/*
+    Components: Chart
+    ---
+    The chart component is used to display a chart
+*/
+
+.c-chart {
+  padding: 1rem;
 }
 
 /*
@@ -1259,6 +1213,14 @@ input[type='password'] {
 
 .u-pt-clear {
   padding-top: 0;
+}
+
+.u-pr-clear {
+  padding-right: 0;
+}
+
+.u-pb-m {
+  padding-bottom: $space-m;
 }
 
 .u-mb-clear {

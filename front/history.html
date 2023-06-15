@@ -2,114 +2,140 @@
 <html lang="nl">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>history</title>
-  <link rel="stylesheet" href="style/screen.css">
-  <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
-  <script src="script/datahandler.js"></script>
-  <script src="script/app.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>history</title>
+    <link rel="stylesheet" href="style/screen.css">
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+    <script src="script/datahandler.js"></script>
+    <script src="script/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 
 <body class="js-html-history hidden">
-  <header class="o-row o-row--primary o-row--xs o-row--header">
-    <div class="c-header">
-        <button class="o-button-reset c-header__menu-button c-icon-button js-toggle-menu">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 96 960 960" width="24">
-                <path d="M120 816v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
-            </svg>
-        </button>
-        <h2 class="c-logo">
-            <a class="c-logo__link" href="index.html">
-                <svg class="c-logo__symbol" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28.768 32">
-                    <title>MCT</title>
-                    <path d="M-955.584,341.472l-2.942-1.7v-5.662l4.91,2.71,4.91-2.71v5.662l-2.942,1.7a3.932,3.932,0,0,1-1.968.528A3.932,3.932,0,0,1-955.584,341.472Zm12.565-20.839a.848.848,0,0,0-1.272-.734l-9.318,5.257-9.332-5.257a.848.848,0,0,0-1.272.734v15.857l-1.819-1.05A3.939,3.939,0,0,1-968,332.033V319.967a3.939,3.939,0,0,1,1.968-3.408l10.448-6.031a3.933,3.933,0,0,1,3.936,0l10.448,6.031a3.938,3.938,0,0,1,1.968,3.408v12.065a3.938,3.938,0,0,1-1.968,3.408l-1.819,1.05Z" transform="translate(968 -310)" />
+    <header class="o-row o-row--primary o-row--header">
+        <div class="c-header">
+            <button class="o-button-reset c-header__menu-button c-icon-button js-toggle-menu">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 96 960 960" width="24">
+                    <path d="M120 816v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z" />
                 </svg>
-            </a>
-        </h2>
-        <nav class="c-nav c-nav--header">
-            <ul class="o-list-reset c-nav__list">
-                <li class="c-nav__item">
-                    <a class="c-nav__link" href="index.html">Dashboard</a>
-                </li>
-                <li class="c-nav__item c-nav__item--active">
-                    <a class="c-nav__link" href="history.html">History</a>
-                </li>
-                <li class="c-nav__item">
-                    <a class="c-nav__link" href="users.html">Users</a>
-                </li>
-            </ul>
-        </nav>
-        <button class="c-header__logout js-logout-btn o-button-reset c-icon-button">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                <rect width="24" height="24" transform="rotate(90 12 12)" opacity="0" />
-                <path d="M7 6a1 1 0 0 0 0-2H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h2a1 1 0 0 0 0-2H6V6z" />
-                <path d="M20.82 11.42l-2.82-4a1 1 0 0 0-1.39-.24 1 1 0 0 0-.24 1.4L18.09 11H10a1 1 0 0 0 0 2h8l-1.8 2.4a1 1 0 0 0 .2 1.4 1 1 0 0 0 .6.2 1 1 0 0 0 .8-.4l3-4a1 1 0 0 0 .02-1.18z" />
-            </svg>
-        </button>
-    </div>
-</header>
-  <div class="js-btns"></div>
-  <h1 class="js-sensor_name">Select a sensor</h1>
-  <table border="1">
-    <thead>
-      <tr>
-        <th>DateTime</th>
-        <th>Value</th>
-      </tr>
-    </thead>
-    <tbody class="js-data">
-      <tr>
-        <td>...</td>
-        <td>...</td>
-      </tr>
-    </tbody>
-  </table>
-  <div class="c-mobile-nav">
-    <div class="c-mobile-nav__overlay"></div>
-    <div class="c-mobile-nav__body">
-        <nav class="c-nav c-nav--mobile">
-            <header class="c-nav__header">
-                <h2 class="c-nav__title">
-                    Navigation
-                </h2>
-                <button class="o-button-reset c-icon-button js-toggle-menu">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 96 960 960" width="24">
-                        <path d="m256 856-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+            </button>
+            <h2 class="c-logo">
+                <a class="c-logo__link" href="index.html">
+                    <svg class="c-logo__symbol" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28.768 32">
+                        <title>MCT</title>
+                        <path d="M-955.584,341.472l-2.942-1.7v-5.662l4.91,2.71,4.91-2.71v5.662l-2.942,1.7a3.932,3.932,0,0,1-1.968.528A3.932,3.932,0,0,1-955.584,341.472Zm12.565-20.839a.848.848,0,0,0-1.272-.734l-9.318,5.257-9.332-5.257a.848.848,0,0,0-1.272.734v15.857l-1.819-1.05A3.939,3.939,0,0,1-968,332.033V319.967a3.939,3.939,0,0,1,1.968-3.408l10.448-6.031a3.933,3.933,0,0,1,3.936,0l10.448,6.031a3.938,3.938,0,0,1,1.968,3.408v12.065a3.938,3.938,0,0,1-1.968,3.408l-1.819,1.05Z" transform="translate(968 -310)" />
                     </svg>
-                </button>
-            </header>
-            <ul class="o-list-reset c-nav__list">
-                <li class="c-nav__item">
-                    <a class="c-nav__link" href="index.html">Dashboard</a>
-                </li>
-                <li class="c-nav__item c-nav__item--active">
-                    <a class="c-nav__link" href="history.html">History</a>
-                </li>
-                <li class="c-nav__item">
-                    <a class="c-nav__link" href="users.html">Users</a>
-                </li>
-            </ul>
-            <button class="c-nav__action c-nav__action--color o-button-reset js-change-lighting">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><rect width="24" height="24" opacity="0"/><path d="M19.54 5.08A10.61 10.61 0 0 0 11.91 2a10 10 0 0 0-.05 20 2.58 2.58 0 0 0 2.53-1.89 2.52 2.52 0 0 0-.57-2.28.5.5 0 0 1 .37-.83h1.65A6.15 6.15 0 0 0 22 11.33a8.48 8.48 0 0 0-2.46-6.25zM15.88 15h-1.65a2.49 2.49 0 0 0-1.87 4.15.49.49 0 0 1 .12.49c-.05.21-.28.34-.59.36a8 8 0 0 1-7.82-9.11A8.1 8.1 0 0 1 11.92 4H12a8.47 8.47 0 0 1 6.1 2.48 6.5 6.5 0 0 1 1.9 4.77A4.17 4.17 0 0 1 15.88 15z"/><circle cx="12" cy="6.5" r="1.5"/><path d="M15.25 7.2a1.5 1.5 0 1 0 2.05.55 1.5 1.5 0 0 0-2.05-.55z"/><path d="M8.75 7.2a1.5 1.5 0 1 0 .55 2.05 1.5 1.5 0 0 0-.55-2.05z"/><path d="M6.16 11.26a1.5 1.5 0 1 0 2.08.4 1.49 1.49 0 0 0-2.08-.4z"/></svg>
-                Customize Lighting
-            </button>
-            <button class="c-nav__action c-nav__action--logout o-button-reset js-logout">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><rect width="24" height="24" transform="rotate(90 12 12)" opacity="0"/><path d="M7 6a1 1 0 0 0 0-2H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h2a1 1 0 0 0 0-2H6V6z"/><path d="M20.82 11.42l-2.82-4a1 1 0 0 0-1.39-.24 1 1 0 0 0-.24 1.4L18.09 11H10a1 1 0 0 0 0 2h8l-1.8 2.4a1 1 0 0 0 .2 1.4 1 1 0 0 0 .6.2 1 1 0 0 0 .8-.4l3-4a1 1 0 0 0 .02-1.18z"/></svg>
-                Log out
-            </button>
-            <button class="c-nav__action c-nav__action--shutdown o-button-reset js-shutdown">
+                </a>
+            </h2>
+            <nav class="c-nav c-nav--header">
+                <ul class="o-list-reset c-nav__list">
+                    <li class="c-nav__item">
+                        <a class="c-nav__link" href="index.html">Dashboard</a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--active">
+                        <a class="c-nav__link" href="history.html">History</a>
+                    </li>
+                    <li class="c-nav__item">
+                        <a class="c-nav__link" href="users.html">Users</a>
+                    </li>
+                </ul>
+            </nav>
+            <button class="c-header__logout js-logout-btn o-button-reset c-icon-button">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                    <rect width="24" height="24" opacity="0" />
-                    <path d="M12 13a1 1 0 0 0 1-1V2a1 1 0 0 0-2 0v10a1 1 0 0 0 1 1z" />
-                    <path d="M16.59 3.11a1 1 0 0 0-.92 1.78 8 8 0 1 1-7.34 0 1 1 0 1 0-.92-1.78 10 10 0 1 0 9.18 0z" />
+                    <rect width="24" height="24" transform="rotate(90 12 12)" opacity="0" />
+                    <path d="M7 6a1 1 0 0 0 0-2H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h2a1 1 0 0 0 0-2H6V6z" />
+                    <path d="M20.82 11.42l-2.82-4a1 1 0 0 0-1.39-.24 1 1 0 0 0-.24 1.4L18.09 11H10a1 1 0 0 0 0 2h8l-1.8 2.4a1 1 0 0 0 .2 1.4 1 1 0 0 0 .6.2 1 1 0 0 0 .8-.4l3-4a1 1 0 0 0 .02-1.18z" />
                 </svg>
-                Shut down
             </button>
-        </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="o-row">
+            <div class="o-container">
+                <div class="c-history__header o-layout o-layout--justify-space-between o-layout--align-center u-mb-m">
+                    <h1 class="u-mb-clear">History</h1>
+                    <select class="c-history__selector js-selector" name="graph" id="graph">
+                        <option class="c-history__selector--item" value="select" selected disabled hidden>Select a graph</option>
+                        <option class="c-history__selector--item" value="unlock">Unlock Frequency</option>
+                        <option class="c-history__selector--item" value="mail">Mail History</option>
+                        <option class="c-history__selector--item" value="temp">Mailbox Temperature</option>
+                        <option class="c-history__selector--item" value="color">Lighting Colors</option>
+                    </select>
+                </div>
+                <div class="c-history">
+                    <div class="c-history__body js-history-text">
+                        Caution: The ghosts of past mail deliveries may haunt this empty history page. But fear not! Select a graph to give them a colorful afterlife they never expected! 👻
+                    </div>
+                    <div class="c-card">
+                        <div class="c-chart__title js-chart__title"></div>
+                        <div id="chart" class="c-chart js-chart hidden"></div>
+                    </div>
+                    <div class="c-card">
+                        <div class="js-history-table"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="c-mobile-nav">
+        <div class="c-mobile-nav__overlay"></div>
+        <div class="c-mobile-nav__body">
+            <nav class="c-nav c-nav--mobile">
+                <header class="c-nav__header">
+                    <h2 class="c-nav__title">
+                        Navigation
+                    </h2>
+                    <button class="o-button-reset c-icon-button js-toggle-menu">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 96 960 960" width="24">
+                            <path d="m256 856-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                        </svg>
+                    </button>
+                </header>
+                <ul class="o-list-reset c-nav__list">
+                    <li class="c-nav__item">
+                        <a class="c-nav__link" href="index.html">Dashboard</a>
+                    </li>
+                    <li class="c-nav__item c-nav__item--active">
+                        <a class="c-nav__link" href="history.html">History</a>
+                    </li>
+                    <li class="c-nav__item">
+                        <a class="c-nav__link" href="users.html">Users</a>
+                    </li>
+                </ul>
+                <button class="c-nav__action c-nav__action--color o-button-reset js-change-lighting">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                        <rect width="24" height="24" opacity="0" />
+                        <path d="M19.54 5.08A10.61 10.61 0 0 0 11.91 2a10 10 0 0 0-.05 20 2.58 2.58 0 0 0 2.53-1.89 2.52 2.52 0 0 0-.57-2.28.5.5 0 0 1 .37-.83h1.65A6.15 6.15 0 0 0 22 11.33a8.48 8.48 0 0 0-2.46-6.25zM15.88 15h-1.65a2.49 2.49 0 0 0-1.87 4.15.49.49 0 0 1 .12.49c-.05.21-.28.34-.59.36a8 8 0 0 1-7.82-9.11A8.1 8.1 0 0 1 11.92 4H12a8.47 8.47 0 0 1 6.1 2.48 6.5 6.5 0 0 1 1.9 4.77A4.17 4.17 0 0 1 15.88 15z" />
+                        <circle cx="12" cy="6.5" r="1.5" />
+                        <path d="M15.25 7.2a1.5 1.5 0 1 0 2.05.55 1.5 1.5 0 0 0-2.05-.55z" />
+                        <path d="M8.75 7.2a1.5 1.5 0 1 0 .55 2.05 1.5 1.5 0 0 0-.55-2.05z" />
+                        <path d="M6.16 11.26a1.5 1.5 0 1 0 2.08.4 1.49 1.49 0 0 0-2.08-.4z" />
+                    </svg>
+                    Customize Lighting
+                </button>
+                <button class="c-nav__action c-nav__action--logout o-button-reset js-logout">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                        <rect width="24" height="24" transform="rotate(90 12 12)" opacity="0" />
+                        <path d="M7 6a1 1 0 0 0 0-2H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h2a1 1 0 0 0 0-2H6V6z" />
+                        <path d="M20.82 11.42l-2.82-4a1 1 0 0 0-1.39-.24 1 1 0 0 0-.24 1.4L18.09 11H10a1 1 0 0 0 0 2h8l-1.8 2.4a1 1 0 0 0 .2 1.4 1 1 0 0 0 .6.2 1 1 0 0 0 .8-.4l3-4a1 1 0 0 0 .02-1.18z" />
+                    </svg>
+                    Log out
+                </button>
+                <button class="c-nav__action c-nav__action--shutdown o-button-reset js-shutdown">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                        <rect width="24" height="24" opacity="0" />
+                        <path d="M12 13a1 1 0 0 0 1-1V2a1 1 0 0 0-2 0v10a1 1 0 0 0 1 1z" />
+                        <path d="M16.59 3.11a1 1 0 0 0-.92 1.78 8 8 0 1 1-7.34 0 1 1 0 1 0-.92-1.78 10 10 0 1 0 9.18 0z" />
+                    </svg>
+                    Shut down
+                </button>
+            </nav>
+        </div>
     </div>
-</div>
 </body>
 
 </html>
