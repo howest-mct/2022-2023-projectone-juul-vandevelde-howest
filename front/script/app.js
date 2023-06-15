@@ -70,7 +70,7 @@ const showHistory = function (jsonObject) {
     historyTable.innerHTML = html;
   } else if (jsonObject.history[0].device_id == 4 || jsonObject.history[0].device_id == 5) {
     chartTitle = 'Deliveries per Day';
-    showBarGraph(jsonObject, chartTitle);
+    showBarGraph_1(jsonObject, chartTitle);
     let html = `<table class='o-row u-pb-m'>
     <tr>
       <th class='c-table__header'>Day</th>
@@ -80,7 +80,7 @@ const showHistory = function (jsonObject) {
       html += `<tr class='c-table__record'>
       <td class='c-table__data'>${formatDate(history.date).split(',')[0].trim()}</td>
       <td class='c-table__data u-pr-clear'>${history.deliveries}</td>
-    </tr>`
+    </tr>`;
     }
     html += `</table>`;
     historyTable.innerHTML = html;
@@ -109,6 +109,22 @@ const showHistory = function (jsonObject) {
         colorCard.style.backgroundColor = `${colorCard.getAttribute('data-color')}`;
       }
     }
+  } else {
+    chartTitle = 'Unlock frequency by user';
+    showBarGraph_2(jsonObject, chartTitle);
+    let html = `<table class='o-row u-pb-m'>
+    <tr>
+      <th class='c-table__header'>User</th>
+      <th class='c-table__header'>Total Unlock Amount</th>
+    </tr>`;
+    for (const history of jsonObject.history) {
+      html += `<tr class='c-table__record'>
+      <td class='c-table__data'>${history.first_name}</td>
+      <td class='c-table__data u-pr-clear'>${history.counter}</td>
+    </tr>`;
+    }
+    html += `</table>`;
+    historyTable.innerHTML = html;
   }
 };
 
@@ -163,14 +179,12 @@ const showData = function (graph) {
   wipeData();
 
   if (graph == 'unlock') {
-    // chartTitle = 'Unlock frequency by user';
-    // getHistory(3);
+    getUnlockHistory();
   } else if (graph == 'mail') {
     getMailHistory();
   } else if (graph == 'temp') {
     getHistoryToday(3);
   } else if (graph == 'color') {
-    // chartTitle = 'Previous lighting colors';
     getHistory(10);
   }
 };
@@ -187,12 +201,24 @@ const showLineGraph = function (jsonObject, chartTitle) {
   drawLineChart(converted_labels, converted_data);
 };
 
-const showBarGraph = function (jsonObject, chartTitle) {
+const showBarGraph_1 = function (jsonObject, chartTitle) {
   let converted_labels = [];
   let converted_data = [];
   for (const history of jsonObject.history) {
     converted_labels.push(formatDate(history.date).split(',')[0].trim());
     converted_data.push(parseInt(history.deliveries));
+  }
+  console.info(converted_data, converted_labels);
+  document.querySelector('.js-chart__title').innerHTML = `<h3 class="o-row--xs">${chartTitle}</h3>`;
+  drawBarChart(converted_labels, converted_data);
+};
+
+const showBarGraph_2 = function (jsonObject, chartTitle) {
+  let converted_labels = [];
+  let converted_data = [];
+  for (const history of jsonObject.history) {
+    converted_labels.push(history.first_name);
+    converted_data.push(parseInt(history.counter));
   }
   console.info(converted_data, converted_labels);
   document.querySelector('.js-chart__title').innerHTML = `<h3 class="o-row--xs">${chartTitle}</h3>`;
@@ -397,6 +423,11 @@ const getHistory = function (device_id) {
 
 const getHistoryToday = function (device_id) {
   const url = 'http://' + lanIP + `/api/v1/history/today/${device_id}/`;
+  handleData(url, showHistory, showError);
+};
+
+const getUnlockHistory = function () {
+  const url = 'http://' + lanIP + `/api/v1/unlock-history/`;
   handleData(url, showHistory, showError);
 };
 

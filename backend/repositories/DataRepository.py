@@ -31,6 +31,11 @@ class DataRepository:
         sql = "SELECT * FROM history WHERE device_id = %s AND DATE(datetime) = CURDATE() ORDER BY history_id DESC"
         params = [device_id]
         return Database.get_rows(sql, params)
+    
+    @staticmethod
+    def read_unlocks_per_user():
+        sql = "SELECT u.first_name, COUNT(history.history_id) AS counter FROM user u LEFT JOIN history ON history.value = u.rfid_id AND history.device_id = 9 GROUP BY u.first_name ORDER BY history.history_id DESC"
+        return Database.get_rows(sql)
 
     @staticmethod
     def read_most_recent_device_history(device_id):

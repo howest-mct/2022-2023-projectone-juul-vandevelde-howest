@@ -103,6 +103,7 @@ def read_ldr():
 
 
 def read_rfid():
+    global first_iteration
     last_runtime = time.time()
     while True:
         if (first_iteration == True) or ((time.time() - last_runtime) > 5):
@@ -118,9 +119,8 @@ def read_rfid():
             else:
                 DataRepository.add_device_history(2, None, id, None)
                 print("You don't have access :(")
-                time.sleep(1)
             last_runtime = time.time()
-            first_iteration == False
+            first_iteration = False
 
 
 def write_rfid():
@@ -205,6 +205,12 @@ def check_login():
 def get_mail_history():
     if request.method == 'GET':
         data = DataRepository.read_mail_history()
+        return jsonify(history=data), 200
+    
+@app.route(endpoint + '/unlock-history/', methods=['GET'])
+def get_unlock_history():
+    if request.method == 'GET':
+        data = DataRepository.read_unlocks_per_user()
         return jsonify(history=data), 200
     
 @app.route(endpoint + '/current-color/', methods=['GET'])
