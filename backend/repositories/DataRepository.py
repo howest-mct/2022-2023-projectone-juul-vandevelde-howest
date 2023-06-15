@@ -25,6 +25,12 @@ class DataRepository:
         sql = "SELECT * FROM history WHERE device_id = %s ORDER BY history_id DESC LIMIT 15"
         params = [device_id]
         return Database.get_rows(sql, params)
+    
+    @staticmethod
+    def read_device_history_today(device_id):
+        sql = "SELECT * FROM history WHERE device_id = %s AND DATE(datetime) = CURDATE() ORDER BY history_id DESC"
+        params = [device_id]
+        return Database.get_rows(sql, params)
 
     @staticmethod
     def read_most_recent_device_history(device_id):
@@ -49,11 +55,16 @@ class DataRepository:
         sql = "SELECT COUNT(*) AS 'login_status' FROM user WHERE username = %s AND BINARY password = %s"
         params = [username, password]
         return Database.get_one_row(sql, params)
-    
+
     @staticmethod
     def read_current_color():
         sql = "SELECT value FROM history WHERE device_id = 10 ORDER BY datetime DESC LIMIT 1"
         return Database.get_one_row(sql)
+
+    @staticmethod
+    def read_mail_history():
+        sql = "SELECT device_id, (datetime) AS date, COUNT(history_id) AS deliveries FROM history WHERE (device_id IN (4, 5)) AND (value = 1) AND (datetime >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)) AND (datetime <= CURDATE() + INTERVAL 1 DAY) GROUP BY DATE(datetime) ORDER BY date ASC;"
+        return Database.get_rows(sql)
 
     # @staticmethod
     # def read_status_lamp_by_id(id):

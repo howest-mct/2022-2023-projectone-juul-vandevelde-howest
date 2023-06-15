@@ -53,18 +53,34 @@ const showHistory = function (jsonObject) {
   console.info(jsonObject);
   const historyTable = document.querySelector('.js-history-table');
   if (jsonObject.history[0].device_id == 3) {
-    chartTitle = 'Mailbox inside temperature';
+    chartTitle = 'Mailbox inside temperature (today)';
     showLineGraph(jsonObject, chartTitle);
     let html = `<table class='o-row u-pb-m'>
     <tr>
       <th class='c-table__header'>When</th>
       <th class='c-table__header'>Temperature</th>
     </tr>`;
-    for (const history of jsonObject.history) {
+    for (const history of jsonObject.history.slice(0, 15)) {
       html += `<tr class='c-table__record'>
       <td class='c-table__data'>${formatDate(history.datetime)}</td>
       <td class='c-table__data u-pr-clear'>${parseFloat(history.value).toFixed(1)} °C</td>
     </tr>`;
+    }
+    html += `</table>`;
+    historyTable.innerHTML = html;
+  } else if (jsonObject.history[0].device_id == 4 || jsonObject.history[0].device_id == 5) {
+    chartTitle = 'Deliveries per Day';
+    showBarGraph(jsonObject, chartTitle);
+    let html = `<table class='o-row u-pb-m'>
+    <tr>
+      <th class='c-table__header'>Day</th>
+      <th class='c-table__header'>Delivery Amount</th>
+    </tr>`;
+    for (const history of jsonObject.history.reverse()) {
+      html += `<tr class='c-table__record'>
+      <td class='c-table__data'>${formatDate(history.date).split(',')[0].trim()}</td>
+      <td class='c-table__data u-pr-clear'>${history.deliveries}</td>
+    </tr>`
     }
     html += `</table>`;
     historyTable.innerHTML = html;
@@ -144,19 +160,15 @@ const showDoorStatus = function (jsonObject) {
 const showData = function (graph) {
   const historyBody = document.querySelector('.js-history-text');
   historyBody.innerHTML = ``;
-  let jsonObject = '',
-    chartTitle = '';
-
   wipeData();
 
   if (graph == 'unlock') {
     // chartTitle = 'Unlock frequency by user';
     // getHistory(3);
   } else if (graph == 'mail') {
-    // chartTitle = 'Mail History';
-    getHistory(4);
+    getMailHistory();
   } else if (graph == 'temp') {
-    getHistory(3);
+    getHistoryToday(3);
   } else if (graph == 'color') {
     // chartTitle = 'Previous lighting colors';
     getHistory(10);
@@ -167,12 +179,24 @@ const showLineGraph = function (jsonObject, chartTitle) {
   let converted_labels = [];
   let converted_data = [];
   for (const history of jsonObject.history) {
-    converted_labels.push(formatDate(history.datetime));
-    converted_data.push(parseFloat(history.value).toFixed(1));
+    converted_labels.push(formatDate(history.datetime).replace('Today, ', ''));
+    converted_data.push(parseFloat(history.value).toFixed(2));
   }
   console.info(converted_data, converted_labels);
   document.querySelector('.js-chart__title').innerHTML = `<h3 class="o-row--xs">${chartTitle}</h3>`;
   drawLineChart(converted_labels, converted_data);
+};
+
+const showBarGraph = function (jsonObject, chartTitle) {
+  let converted_labels = [];
+  let converted_data = [];
+  for (const history of jsonObject.history) {
+    converted_labels.push(formatDate(history.date).split(',')[0].trim());
+    converted_data.push(parseInt(history.deliveries));
+  }
+  console.info(converted_data, converted_labels);
+  document.querySelector('.js-chart__title').innerHTML = `<h3 class="o-row--xs">${chartTitle}</h3>`;
+  drawBarChart(converted_labels, converted_data);
 };
 
 // const showGraph = function (jsonObject, chartTitle) {
@@ -244,6 +268,7 @@ const drawLineChart = function (labels, data) {
   var options = {
     series: [
       {
+        name: 'Inside Temperature',
         data: data.reverse(),
       },
     ],
@@ -253,6 +278,7 @@ const drawLineChart = function (labels, data) {
     },
     stroke: {
       curve: 'smooth',
+      colors: ['#7950F2'],
     },
     dataLabels: {
       enabled: false,
@@ -264,6 +290,60 @@ const drawLineChart = function (labels, data) {
     },
     xaxis: {
       categories: labels.reverse(),
+      style: {
+        fontSize: '10px', // Adjust the font size as per your preference
+      },
+      tickAmount: 8,
+    },
+    yaxis: {
+      labels: {
+        formatter: function (value) {
+          return value.toFixed(2) + '°C';
+        },
+      },
+    },
+  };
+
+  chart = new ApexCharts(document.querySelector('#chart'), options);
+  chart.render();
+};
+
+const drawBarChart = function (labels, data) {
+  document.querySelector('.js-chart').classList.remove('hidden');
+  console.info(data);
+  var options = {
+    series: [
+      {
+        name: 'Items Delivered',
+        data: data,
+      },
+    ],
+    chart: {
+      type: 'bar',
+      height: 350,
+    },
+    colors: ['#7950F2'],
+    plotOptions: {
+      bar: {
+        borderRadius: 4,
+        horizontal: false,
+      },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    xaxis: {
+      categories: labels,
+    },
+    yaxis: {
+      categories: labels,
+      title: {
+        text: 'Amount',
+        style: {
+          fontSize: '14px', // Optional styling for the title
+          fontWeight: 'bold',
+        },
+      },
     },
   };
 
@@ -312,6 +392,16 @@ const getDevices = function () {
 
 const getHistory = function (device_id) {
   const url = 'http://' + lanIP + `/api/v1/history/${device_id}/`;
+  handleData(url, showHistory, showError);
+};
+
+const getHistoryToday = function (device_id) {
+  const url = 'http://' + lanIP + `/api/v1/history/today/${device_id}/`;
+  handleData(url, showHistory, showError);
+};
+
+const getMailHistory = function () {
+  const url = 'http://' + lanIP + `/api/v1/mail-history/`;
   handleData(url, showHistory, showError);
 };
 

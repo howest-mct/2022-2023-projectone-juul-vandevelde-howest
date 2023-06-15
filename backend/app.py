@@ -178,6 +178,12 @@ def get_history(device_id):
     if request.method == 'GET':
         data = DataRepository.read_device_history(device_id)
         return jsonify(history=data), 200
+    
+@app.route(endpoint + '/history/today/<device_id>/', methods=['GET'])
+def get_history_today(device_id):
+    if request.method == 'GET':
+        data = DataRepository.read_device_history_today(device_id)
+        return jsonify(history=data), 200
 
 
 @app.route(endpoint + '/history/recent/<device_id>/', methods=['GET'])
@@ -198,8 +204,8 @@ def check_login():
 @app.route(endpoint + '/mail-history/', methods=['GET'])
 def get_mail_history():
     if request.method == 'GET':
-        data = DataRepository.read_current_color()
-        return jsonify(mail_history=data), 200
+        data = DataRepository.read_mail_history()
+        return jsonify(history=data), 200
     
 @app.route(endpoint + '/current-color/', methods=['GET'])
 def get_current_color():
