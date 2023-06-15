@@ -299,9 +299,9 @@ if __name__ == '__main__':
             elif printed == False:
                 lcdObject.disable_cursor()
                 lcdObject.clear_screen()
-                lcdObject.write_message('<-- Mail       |')
+                lcdObject.write_message('<- Mail        |')
                 lcdObject.go_to_second_row()
-                lcdObject.write_message('       Parcels V')
+                lcdObject.write_message('       Parcels v')
                 # het schermpje nog nuttiger maken
                 printed = True
             time.sleep((0.001))
