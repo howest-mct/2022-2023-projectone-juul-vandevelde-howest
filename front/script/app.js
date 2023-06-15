@@ -327,19 +327,19 @@ const getCurrentColor = function () {
 // #endregion
 
 // #region ***  Event Listeners - listenTo___            ***********
-const listenToBtns = function () {
-  const htmlSensorName = document.querySelector('.js-sensor_name');
-  const btns = document.querySelectorAll('.js-btn');
-  for (const btn of btns) {
-    btn.addEventListener('click', function () {
-      console.info('klik');
-      currentDeviceId = btn.getAttribute('data-device_id');
-      socketio.emit('F2B_current_device', { device_id: currentDeviceId });
-      getHistory(currentDeviceId);
-      htmlSensorName.innerHTML = btn.innerHTML;
-    });
-  }
-};
+// const listenToBtns = function () {
+//   const htmlSensorName = document.querySelector('.js-sensor_name');
+//   const btns = document.querySelectorAll('.js-btn');
+//   for (const btn of btns) {
+//     btn.addEventListener('click', function () {
+//       console.info('klik');
+//       currentDeviceId = btn.getAttribute('data-device_id');
+//       socketio.emit('F2B_current_device', { device_id: currentDeviceId });
+//       getHistory(currentDeviceId);
+//       htmlSensorName.innerHTML = btn.innerHTML;
+//     });
+//   }
+// };
 
 const listenToSelector = function () {
   const selector = document.querySelector('.js-selector');
