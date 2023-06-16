@@ -409,15 +409,6 @@ input[type=password] {
   #COMPONENTS
 \*------------------------------------*/
 /*
-  Components: hidden
-  ---
-  The hidden component is used to hide a page when someone isn't logged in
-*/
-.hidden {
-  display: none;
-}
-
-/*
   Components: icon buttons
   ---
   The icon button component is used to display a button with an icon
@@ -578,6 +569,7 @@ input[type=password] {
 }
 .c-nav__action:hover {
   color: #e5dbff;
+  fill: #e5dbff;
 }
 .c-nav__action--shutdown {
   bottom: 1.5rem;
@@ -1041,12 +1033,12 @@ input[type=password] {
 }
 
 /*
-    Utilities: Colors
-    ---
-    Utility classes to set the color of an element
+  Components: hidden
+  ---
+  The hidden component is used to hide a page when someone isn't logged in
 */
-.u-color-text-lighter {
-  color: #868e96;
+.hidden {
+  display: none;
 }
 
 /*

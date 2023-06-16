@@ -121,6 +121,9 @@ const showLogin = function (jsonObject) {
     // console.info('login succes');
     localStorage.setItem('login', 1);
     localStorage.setItem('user', jsonObject.user_id);
+    if (jsonObject.admin == 1) {
+      localStorage.setItem('admin', 1);
+    }
     window.location.href = 'index.html';
   } else if (jsonObject.login_status == 0) {
     console.info('login failed');
@@ -559,28 +562,32 @@ const listenToMobileMenu = function () {
   });
 
   document.querySelector('.js-shutdown').addEventListener('click', function () {
-    document.body.innerHTML = `
-    <div class="o-row--np">
-        <div class="o-container">
-            <div class="c-popup o-layout o-layout--align-center o-layout--justify-center">
-                <section class="o-row c-popup__body c-card u-mb-clear">
-                    <h2>Are you sure you want to shut down the device?</h2>
-                    <div class="c-popup__btns o-layout">
-                        <button class="u-btn-outline o-button-reset js-cancel">Cancel</button>
-                        <button class="u-btn-fill o-button-reset js-shutdown-confirm">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
-                                <rect width="24" height="24" opacity="0" />
-                                <path d="M12 13a1 1 0 0 0 1-1V2a1 1 0 0 0-2 0v10a1 1 0 0 0 1 1z" />
-                                <path d="M16.59 3.11a1 1 0 0 0-.92 1.78 8 8 0 1 1-7.34 0 1 1 0 1 0-.92-1.78 10 10 0 1 0 9.18 0z" />
-                            </svg>
-                            Shut down
-                        </button>
-                    </div>
-                </section>
-            </div>
-        </div>
-    </div>
-    `;
+    if (localStorage.getItem('admin') == 1) {
+      document.body.innerHTML = `
+      <div class="o-row--np">
+          <div class="o-container">
+              <div class="c-popup o-layout o-layout--align-center o-layout--justify-center">
+                  <section class="o-row c-popup__body c-card u-mb-clear">
+                      <h2>Are you sure you want to shut down the device?</h2>
+                      <div class="c-popup__btns o-layout">
+                          <button class="u-btn-outline o-button-reset js-cancel">Cancel</button>
+                          <button class="u-btn-fill o-button-reset js-shutdown-confirm">
+                              <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                                  <rect width="24" height="24" opacity="0" />
+                                  <path d="M12 13a1 1 0 0 0 1-1V2a1 1 0 0 0-2 0v10a1 1 0 0 0 1 1z" />
+                                  <path d="M16.59 3.11a1 1 0 0 0-.92 1.78 8 8 0 1 1-7.34 0 1 1 0 1 0-.92-1.78 10 10 0 1 0 9.18 0z" />
+                              </svg>
+                              Shut down
+                          </button>
+                      </div>
+                  </section>
+              </div>
+          </div>
+      </div>
+      `;
+    } else {
+      location.reload();
+    }
   });
 
   document.querySelector('.js-change-lighting').addEventListener('click', function () {
@@ -630,15 +637,21 @@ const listenToMobileMenu = function () {
 
   document.body.addEventListener('click', function (event) {
     if (event.target.matches('.js-shutdown-confirm')) {
-      document.body.innerHTML = `
-    <div class='c-shutdown'>
-    <svg class='spin-animation' xmlns="http://www.w3.org/2000/svg" height="64" viewBox="0 0 24 24" width="64"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M12 2a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0V3a1 1 0 0 0-1-1z"/><path d="M21 11h-2a1 1 0 0 0 0 2h2a1 1 0 0 0 0-2z"/><path d="M6 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h2a1 1 0 0 0 1-1z"/><path d="M6.22 5a1 1 0 0 0-1.39 1.47l1.44 1.39a1 1 0 0 0 .73.28 1 1 0 0 0 .72-.31 1 1 0 0 0 0-1.41z"/><path d="M17 8.14a1 1 0 0 0 .69-.28l1.44-1.39A1 1 0 0 0 17.78 5l-1.44 1.42a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.31z"/><path d="M12 18a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0v-2a1 1 0 0 0-1-1z"/><path d="M17.73 16.14a1 1 0 0 0-1.39 1.44L17.78 19a1 1 0 0 0 .69.28 1 1 0 0 0 .72-.3 1 1 0 0 0 0-1.42z"/><path d="M6.27 16.14l-1.44 1.39a1 1 0 0 0 0 1.42 1 1 0 0 0 .72.3 1 1 0 0 0 .67-.25l1.44-1.39a1 1 0 0 0-1.39-1.44z"/></svg>
-    <h2 class='u-mb-clear'>Shutting down</h2>
-    </div>`;
-      socketio.emit('F2B_shutdown');
-      setTimeout(function () {
+      if (localStorage.getItem('admin') == 1) {
+        document.body.innerHTML = `
+      <div class='c-shutdown'>
+      <svg class='spin-animation' xmlns="http://www.w3.org/2000/svg" height="64" viewBox="0 0 24 24" width="64"><rect width="24" height="24" transform="rotate(180 12 12)" opacity="0"/><path d="M12 2a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0V3a1 1 0 0 0-1-1z"/><path d="M21 11h-2a1 1 0 0 0 0 2h2a1 1 0 0 0 0-2z"/><path d="M6 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h2a1 1 0 0 0 1-1z"/><path d="M6.22 5a1 1 0 0 0-1.39 1.47l1.44 1.39a1 1 0 0 0 .73.28 1 1 0 0 0 .72-.31 1 1 0 0 0 0-1.41z"/><path d="M17 8.14a1 1 0 0 0 .69-.28l1.44-1.39A1 1 0 0 0 17.78 5l-1.44 1.42a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.31z"/><path d="M12 18a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0v-2a1 1 0 0 0-1-1z"/><path d="M17.73 16.14a1 1 0 0 0-1.39 1.44L17.78 19a1 1 0 0 0 .69.28 1 1 0 0 0 .72-.3 1 1 0 0 0 0-1.42z"/><path d="M6.27 16.14l-1.44 1.39a1 1 0 0 0 0 1.42 1 1 0 0 0 .72.3 1 1 0 0 0 .67-.25l1.44-1.39a1 1 0 0 0-1.39-1.44z"/></svg>
+      <h2 class='u-mb-clear'>Shutting down</h2>
+      </div>`;
+      }
+      if (localStorage.getItem('admin') == 1) {
+        socketio.emit('F2B_shutdown');
+        setTimeout(function () {
+          location.reload();
+        }, 5000);
+      } else {
         location.reload();
-      }, 5000);
+      }
     } else if (event.target.matches('.js-cancel')) {
       location.reload();
     } else if (event.target.matches('.js-color-confirm')) {
@@ -679,6 +692,7 @@ const listenToMobileMenu = function () {
     } else if (event.target.matches('.js-logout-confirm')) {
       localStorage.removeItem('login');
       localStorage.removeItem('user');
+      localStorage.removeItem('admin');
       location.reload();
     }
   });
@@ -713,6 +727,15 @@ const init = function () {
       window.location.href = 'login.html';
       htmlDashboard.classList.add('hidden');
     }
+    if (localStorage.getItem('admin') == 1) {
+      document.querySelector('.js-user-page').classList.remove('hidden');
+      document.querySelector('.js-shutdown').classList.remove('hidden');
+    } else if (localStorage.getItem('admin') != 1) {
+      document.querySelector('.js-user-page').classList.add('hidden');
+      document.querySelector('.js-shutdown').classList.add('hidden');
+      document.querySelector('.c-nav__action--logout').style.bottom = '1.5rem';
+      document.querySelector('.c-nav__action--color').style.bottom = '4.5rem';
+    }
     listenToLogout();
     listenToMobileMenu();
     getMailStatus();
@@ -726,6 +749,15 @@ const init = function () {
       window.location.href = 'login.html';
       htmlHistory.classList.add('hidden');
     }
+    if (localStorage.getItem('admin') == 1) {
+      document.querySelector('.js-user-page').classList.remove('hidden');
+      document.querySelector('.js-shutdown').classList.remove('hidden');
+    } else if (localStorage.getItem('admin') != 1) {
+      document.querySelector('.js-user-page').classList.add('hidden');
+      document.querySelector('.js-shutdown').classList.add('hidden');
+      document.querySelector('.c-nav__action--logout').style.bottom = '1.5rem';
+      document.querySelector('.c-nav__action--color').style.bottom = '4.5rem';
+    }
     listenToLogout();
     listenToMobileMenu();
     listenToSelector();
@@ -736,6 +768,15 @@ const init = function () {
     } else if (localStorage.getItem('login') != 1) {
       window.location.href = 'login.html';
       htmlUsers.classList.add('hidden');
+    }
+    if (localStorage.getItem('admin') == 1) {
+      document.querySelector('.js-shutdown').classList.remove('hidden');
+      htmlUsers.classList.remove('hidden');
+    } else if (localStorage.getItem('admin') != 1) {
+      htmlUsers.classList.add('hidden');
+      window.location.href = 'index.html';
+      document.querySelector('.c-nav__action--logout').style.bottom = '1.5rem';
+      document.querySelector('.c-nav__action--color').style.bottom = '4.5rem';
     }
     listenToLogout();
     listenToMobileMenu();
