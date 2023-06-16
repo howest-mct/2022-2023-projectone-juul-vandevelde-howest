@@ -725,6 +725,7 @@ input[type=password] {
   flex-wrap: nowrap;
   padding: 1rem;
   border-bottom: solid #e9ecef 1px;
+  position: relative;
 }
 .c-user__name {
   font-weight: 600;
@@ -734,7 +735,9 @@ input[type=password] {
   cursor: pointer;
 }
 .c-user__add {
-  margin: 1rem 1rem 1rem auto;
+  position: absolute;
+  bottom: 1.5rem;
+  right: 2rem;
 }
 
 /*

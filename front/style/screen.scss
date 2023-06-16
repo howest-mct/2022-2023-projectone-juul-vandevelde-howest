@@ -887,6 +887,7 @@ input[type='password'] {
   flex-wrap: nowrap;
   padding: 1rem;
   border-bottom: solid $oc-gray-2 1px;
+  position: relative;
 
   &__name {
     font-weight: 600;
@@ -898,7 +899,9 @@ input[type='password'] {
   }
 
   &__add {
-    margin: 1rem 1rem 1rem auto;
+    position: absolute;
+    bottom: 1.5rem;
+    right: 2rem;
   }
 }
 
