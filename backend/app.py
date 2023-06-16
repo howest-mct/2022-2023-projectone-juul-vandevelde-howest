@@ -167,10 +167,10 @@ def get_devices():
         return jsonify(devices=data), 200
 
 
-@app.route(endpoint + '/users/', methods=['GET'])
-def get_users():
+@app.route(endpoint + '/user-names/', methods=['GET'])
+def get_user_names():
     if request.method == 'GET':
-        data = DataRepository.read_users()
+        data = DataRepository.read_user_names()
         return jsonify(users=data), 200
 
 

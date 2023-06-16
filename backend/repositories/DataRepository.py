@@ -11,8 +11,8 @@ class DataRepository:
         return gegevens
 
     @staticmethod
-    def read_users():
-        sql = "SELECT * FROM user"
+    def read_user_names():
+        sql = "SELECT first_name, last_name, user_id FROM user"
         return Database.get_rows(sql)
 
     @staticmethod

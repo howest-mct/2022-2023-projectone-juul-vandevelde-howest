@@ -12,19 +12,16 @@ const showError = function () {
   console.error('Oeps er ging iets mis');
 };
 
-const showUsers = function (jsonObject) {
-  const dataHtml = document.querySelector('.js-data');
+const showUserNames = function (jsonObject) {
+  console.info(jsonObject);
+  const dataHtml = document.querySelector('.js-users');
   let html = '';
   for (const user of jsonObject.users) {
     html += `
-    <tr>
-        <td>${user.first_name}</td>
-        <td>${user.last_name}</td>
-        <td>${user.email}</td>
-        <td>${user.password}</td>
-        <td>${user.admin}</td>
-        <td>${user.rfid_id}</td>
-    </tr>
+    <div class='c-user o-layout o-layout--justify-space-between o-layout--align-center'>
+        <div class='c-user__name'>${user.first_name} ${user.last_name}</div>
+        <button class='c-user__edit o-button-reset' data-userid='${user.user_id}'>edit user</button>
+    </div>
     `;
   }
   dataHtml.innerHTML = html;
@@ -424,8 +421,8 @@ const drawBarChart = function (labels, data) {
 
 // #region ***  Data Access - get___                     ***********
 const getUsers = function () {
-  const url = 'http://' + lanIP + `/api/v1/users/`;
-  handleData(url, showUsers, showError);
+  const url = 'http://' + lanIP + `/api/v1/user-names/`;
+  handleData(url, showUserNames, showError);
 };
 
 const getDevices = function () {
