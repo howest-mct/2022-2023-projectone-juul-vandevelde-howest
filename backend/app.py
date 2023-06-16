@@ -30,12 +30,13 @@ DS18B20_object = DS18B20()
 lcdObject = Lcd()
 
 reed_1 = Button(12)
-break_beam_1 = Button(20)
+break_beam_1 = Button(20, 400)
 shutdown_btn = Button(21)
 solenoid = 24
 
 printed = False
 first_iteration = True
+
 
 def hex_to_rgb(hex_code):
     hex_code = hex_code.lstrip('#')
@@ -47,7 +48,6 @@ def setup():
     GPIO.setup(solenoid, GPIO.OUT)
 
     lcdObject.init_LCD()
-    lcdObject.write_message('Nuttige info')
 
     shutdown_btn.on_press(shutdown)
     shutdown(shutdown_btn)
@@ -85,8 +85,7 @@ def read_beam(pin):
         print("letter/parcel detected")
         # de ene break beam zal voor pakketjes zijn de andere voor brieven
         DataRepository.add_device_history(4, None, 1, None)
-    else:
-        print("lege brievenbus")
+        socketio.emit('B2F_mail_status_changed')
 
 
 def read_ldr():
@@ -115,7 +114,9 @@ def read_rfid():
                 GPIO.output(solenoid, GPIO.HIGH)
                 time.sleep(1)
                 GPIO.output(solenoid, GPIO.LOW)
-                DataRepository.add_device_history(9, None, id, None)
+                DataRepository.add_device_history(
+                    9, None, DataRepository.get_user_id(id)['user_id'], None)
+                socketio.emit('B2F_mail_status_changed')
             else:
                 DataRepository.add_device_history(2, None, id, None)
                 print("You don't have access :(")
@@ -178,7 +179,8 @@ def get_history(device_id):
     if request.method == 'GET':
         data = DataRepository.read_device_history(device_id)
         return jsonify(history=data), 200
-    
+
+
 @app.route(endpoint + '/history/today/<device_id>/', methods=['GET'])
 def get_history_today(device_id):
     if request.method == 'GET':
@@ -191,6 +193,13 @@ def get_most_recent_history(device_id):
     if request.method == 'GET':
         data = DataRepository.read_most_recent_device_history(device_id)
         return jsonify(recent_history=data), 200
+
+
+@app.route(endpoint + '/mail-contents/', methods=['GET'])
+def get_mailbox_contents():
+    if request.method == 'GET':
+        data = DataRepository.check_mailbox_contents()
+        return jsonify(data), 200
 
 
 @app.route(endpoint + '/login/', methods=['POST'])
@@ -206,13 +215,22 @@ def get_mail_history():
     if request.method == 'GET':
         data = DataRepository.read_mail_history()
         return jsonify(history=data), 200
-    
+
+
 @app.route(endpoint + '/unlock-history/', methods=['GET'])
 def get_unlock_history():
     if request.method == 'GET':
         data = DataRepository.read_unlocks_per_user()
         return jsonify(history=data), 200
-    
+
+
+@app.route(endpoint + '/timeline/', methods=['GET'])
+def get_timeline():
+    if request.method == 'GET':
+        data = DataRepository.get_timeline()
+        return jsonify(timeline=data), 200
+
+
 @app.route(endpoint + '/current-color/', methods=['GET'])
 def get_current_color():
     if request.method == 'GET':
@@ -258,13 +276,15 @@ def shutdown_pi():
 
 
 @socketio.on('F2B_open_door')
-def open_door():
+def open_door(jsonobject):
     status = DataRepository.read_most_recent_device_history(6)
     if int(status['value']) == 0:
         print("Door unlocked by website")
         GPIO.output(solenoid, GPIO.HIGH)
         time.sleep(1)
         GPIO.output(solenoid, GPIO.LOW)
+        DataRepository.add_device_history(9, None, jsonobject['user_id'], None)
+        socketio.emit('B2F_mail_status_changed')
     else:
         print("Door already unlocked")
 
