@@ -1059,14 +1059,14 @@ input[type='password'] {
   }
 }
 
-.c-timeline__icon--advanced {
+.c-timeline__icon--colored {
   background-color: $color-primary-lightest;
   color: $color-primary-dark;
 }
 
-.c-timeline__icon--complete {
-  background-color: $color-succes-lightest;
-  color: $color-succes-darkest;
+.c-timeline__icon--warning {
+  background-color: $oc-red-1;
+  color: $oc-red-7;
 }
 
 .c-timeline__action {

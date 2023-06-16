@@ -160,7 +160,7 @@ const showTimeline = function (jsonObject) {
     if (notification.device_id == 3) {
       html += `
       <li class="c-timeline__item">
-      <div class="c-timeline__icon c-timeline__icon--complete">
+      <div class="c-timeline__icon c-timeline__icon--warning">
           <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
               <path d="M12 22a5 5 0 0 1-3-9V5a3 3 0 0 1 3-3 3 3 0 0 1 3 3v8a5 5 0 0 1-3 9zm0-18a1 1 0 0 0-1 1v8.54a1 1 0 0 1-.5.87A3 3 0 0 0 9 17a3 3 0 0 0 6 0 3 3 0 0 0-1.5-2.59 1 1 0 0 1-.5-.87V5a.93.93 0 0 0-.29-.69A1 1 0 0 0 12 4z" />
           </svg>
@@ -174,7 +174,7 @@ const showTimeline = function (jsonObject) {
     } else if (notification.device_id == 4) {
       html += `
     <li class="c-timeline__item">
-        <div class="c-timeline__icon">
+        <div class="c-timeline__icon c-timeline__icon--colored">
             <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
                 <path d="M20.66 7.26c0-.07-.1-.14-.15-.21l-.09-.1a2.5 2.5 0 0 0-.86-.68l-6.4-3a2.7 2.7 0 0 0-2.26 0l-6.4 3a2.6 2.6 0 0 0-.86.68L3.52 7a1 1 0 0 0-.15.2A2.39 2.39 0 0 0 3 8.46v7.06a2.49 2.49 0 0 0 1.46 2.26l6.4 3a2.7 2.7 0 0 0 2.27 0l6.4-3A2.49 2.49 0 0 0 21 15.54V8.46a2.39 2.39 0 0 0-.34-1.2zm-8.95-2.2a.73.73 0 0 1 .58 0l5.33 2.48L12 10.15 6.38 7.54zM5.3 16a.47.47 0 0 1-.3-.43V9.1l6 2.79v6.72zm13.39 0L13 18.61v-6.72l6-2.79v6.44a.48.48 0 0 1-.31.46z" />
             </svg>
@@ -188,7 +188,7 @@ const showTimeline = function (jsonObject) {
     } else if (notification.device_id == 5) {
       html += `
       <li class="c-timeline__item">
-      <div class="c-timeline__icon c-timeline__icon--advanced">
+      <div class="c-timeline__icon c-timeline__icon--colored">
           <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
               <path d="M19 4H5a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-.67 2L12 10.75 5.67 6zM19 18H5a1 1 0 0 1-1-1V7.25l7.4 5.55a1 1 0 0 0 .6.2 1 1 0 0 0 .6-.2L20 7.25V17a1 1 0 0 1-1 1z" />
           </svg>
@@ -202,7 +202,7 @@ const showTimeline = function (jsonObject) {
     } else if (notification.device_id == 9) {
       html += `
       <li class="c-timeline__item">
-      <div class="c-timeline__icon c-timeline__icon--advanced">
+      <div class="c-timeline__icon c-timeline__icon--colored">
           <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
               <path d="M17 8h-7V6a2 2 0 0 1 4 0 1 1 0 0 0 2 0 4 4 0 0 0-8 0v2H7a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-8a3 3 0 0 0-3-3zm1 11a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1z" />
               <path d="M12 12a3 3 0 1 0 3 3 3 3 0 0 0-3-3zm0 4a1 1 0 1 1 1-1 1 1 0 0 1-1 1z" />
@@ -497,12 +497,14 @@ const listenToSocket = function () {
   socketio.on('B2F_door_changed', function () {
     if (document.querySelector('.js-html-dashboard')) {
       getDoorStatus();
+      getTimeline();
     }
   });
 
   socketio.on('B2F_mail_status_changed', function () {
     if (document.querySelector('.js-html-dashboard')) {
       getMailStatus();
+      getTimeline();
     }
   });
 };
