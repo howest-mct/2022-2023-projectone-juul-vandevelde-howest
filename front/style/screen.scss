@@ -561,16 +561,6 @@ input[type='password'] {
 \*------------------------------------*/
 
 /*
-  Components: hidden
-  ---
-  The hidden component is used to hide a page when someone isn't logged in
-*/
-
-.hidden {
-  display: none;
-}
-
-/*
   Components: icon buttons
   ---
   The icon button component is used to display a button with an icon
@@ -579,6 +569,11 @@ input[type='password'] {
 .c-icon-button {
   display: flex;
   align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    color: $oc-violet-0;
+  }
 
   svg {
     fill: currentColor;
@@ -640,6 +635,10 @@ input[type='password'] {
 
 .c-header__menu-button {
   color: white;
+
+  &:hover {
+    color: $oc-violet-0;
+  }
 
   @include mq(bp1) {
     display: none;
@@ -726,6 +725,12 @@ input[type='password'] {
   font-size: $ms0;
   cursor: pointer;
   position: absolute;
+  transition: ease-in-out 0.1s;
+
+  &:hover {
+    color: $oc-violet-1;
+    fill: $oc-violet-1;
+  }
 
   &--shutdown {
     bottom: 1.5rem;
@@ -849,6 +854,11 @@ input[type='password'] {
   display: flow-root;
 }
 
+.c-card__body--np {
+  padding: 0;
+  display: flow-root;
+}
+
 /*
     Components: popup
     ---
@@ -864,6 +874,34 @@ input[type='password'] {
 
   &__btns {
     gap: 1rem;
+  }
+}
+
+/*
+    Components: User
+    ---
+    The user component is used to display the users
+*/
+
+.c-user {
+  flex-wrap: nowrap;
+  padding: 1rem;
+  border-bottom: solid $oc-gray-2 1px;
+  position: relative;
+
+  &__name {
+    font-weight: 600;
+  }
+
+  &__edit {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  &__add {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 2rem;
   }
 }
 
@@ -889,6 +927,12 @@ input[type='password'] {
     border-right: 0.5rem solid $color-primary;
     outline: none;
     background-color: $color-primary;
+    transition: ease-in-out 0.1s;
+
+    &:hover {
+      background-color: $color-primary-lighter;
+      border-color: $color-primary-lighter;
+    }
 
     &--item {
       font-size: $ms0;
@@ -1161,6 +1205,11 @@ input[type='password'] {
   gap: 0.5rem;
   font-weight: 600;
   font-size: $ms0;
+  transition: ease-in-out 0.1s;
+
+  &:hover {
+    background-color: $color-primary-lighter;
+  }
 }
 
 .u-btn-outline {
@@ -1176,15 +1225,20 @@ input[type='password'] {
   gap: 0.5rem;
   font-weight: 600;
   font-size: $ms0;
+
+  &:hover {
+    border-color: $color-primary-lighter;
+    color: $color-primary-lighter;
+  }
 }
 /*
-    Utilities: Colors
-    ---
-    Utility classes to set the color of an element
+  Components: hidden
+  ---
+  The hidden component is used to hide a page when someone isn't logged in
 */
 
-.u-color-text-lighter {
-  color: $color-text-lighter;
+.hidden {
+  display: none;
 }
 
 /*

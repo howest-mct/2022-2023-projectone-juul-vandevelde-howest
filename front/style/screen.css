@@ -409,15 +409,6 @@ input[type=password] {
   #COMPONENTS
 \*------------------------------------*/
 /*
-  Components: hidden
-  ---
-  The hidden component is used to hide a page when someone isn't logged in
-*/
-.hidden {
-  display: none;
-}
-
-/*
   Components: icon buttons
   ---
   The icon button component is used to display a button with an icon
@@ -425,6 +416,10 @@ input[type=password] {
 .c-icon-button {
   display: flex;
   align-items: center;
+  cursor: pointer;
+}
+.c-icon-button:hover {
+  color: #f3f0ff;
 }
 .c-icon-button svg {
   fill: currentColor;
@@ -484,6 +479,9 @@ input[type=password] {
 
 .c-header__menu-button {
   color: white;
+}
+.c-header__menu-button:hover {
+  color: #f3f0ff;
 }
 @media (min-width: 36.0625em) {
   .c-header__menu-button {
@@ -567,6 +565,11 @@ input[type=password] {
   font-size: 1rem;
   cursor: pointer;
   position: absolute;
+  transition: ease-in-out 0.1s;
+}
+.c-nav__action:hover {
+  color: #e5dbff;
+  fill: #e5dbff;
 }
 .c-nav__action--shutdown {
   bottom: 1.5rem;
@@ -692,6 +695,11 @@ input[type=password] {
   display: flow-root;
 }
 
+.c-card__body--np {
+  padding: 0;
+  display: flow-root;
+}
+
 /*
     Components: popup
     ---
@@ -706,6 +714,30 @@ input[type=password] {
 }
 .c-popup__btns {
   gap: 1rem;
+}
+
+/*
+    Components: User
+    ---
+    The user component is used to display the users
+*/
+.c-user {
+  flex-wrap: nowrap;
+  padding: 1rem;
+  border-bottom: solid #e9ecef 1px;
+  position: relative;
+}
+.c-user__name {
+  font-weight: 600;
+}
+.c-user__edit {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.c-user__add {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 2rem;
 }
 
 /*
@@ -728,6 +760,11 @@ input[type=password] {
   border-right: 0.5rem solid #7950f2;
   outline: none;
   background-color: #7950f2;
+  transition: ease-in-out 0.1s;
+}
+.c-history__selector:hover {
+  background-color: #9775fa;
+  border-color: #9775fa;
 }
 .c-history__selector--item {
   font-size: 1rem;
@@ -973,6 +1010,10 @@ input[type=password] {
   gap: 0.5rem;
   font-weight: 600;
   font-size: 1rem;
+  transition: ease-in-out 0.1s;
+}
+.u-btn-fill:hover {
+  background-color: #9775fa;
 }
 
 .u-btn-outline {
@@ -989,14 +1030,18 @@ input[type=password] {
   font-weight: 600;
   font-size: 1rem;
 }
+.u-btn-outline:hover {
+  border-color: #9775fa;
+  color: #9775fa;
+}
 
 /*
-    Utilities: Colors
-    ---
-    Utility classes to set the color of an element
+  Components: hidden
+  ---
+  The hidden component is used to hide a page when someone isn't logged in
 */
-.u-color-text-lighter {
-  color: #868e96;
+.hidden {
+  display: none;
 }
 
 /*
