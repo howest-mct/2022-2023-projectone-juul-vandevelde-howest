@@ -144,3 +144,32 @@ Lector: Dieter Roobrouck, Stijn Walcarius
 - feedback 1: Maak de history data niet gewoon een datadump, voeg nuttige info toe zoals of de gescande rfid card toegang had of niet.
 - feedback 2: Goed op schema, begin nu wel zeker aan de Instructables en de website.
 
+## Gesprek 10 (Datum: 07/06/2023)
+
+Lector: Claudia Eeckhout
+
+Vragen voor dit gesprek:
+
+- vraag 1: Mag je emoticons gebruiken in je UX?
+- vraag 2: Algemene feedback op mijn UX
+
+Dit is de feedback op mijn vragen.
+
+- feedback 1: Ja, dit is geen probleem.
+- feedback 2: Houd de character styles bij, en gebruik deze consistent. De 'Link NFC' knop heeft bijvoorbeeld een afwijkende character style.
+- feedback 3: Vul de History page met een leuk tekstje zodat deze wat aangekleed is.
+- feedback 4: Vervang de woorden 'DateTime' en 'User' in bv. 'When' en 'Who'. En pas het datetime formaat aan naar iets gebruiksvriendelijker bv. 'May 13, 19:24'
+- feedback 5: Een tijds filter op de grafiek zou leuk zijn, maar zorg eerst dat alles werkt.
+- feedback 6: Leuke stijl, en goed design. Enkel nog user testen.
+
+## Gesprek 11 (Datum: 13/06/2023)
+
+Lector: Dieter Roobrouck, Stijn Walcarius
+
+Dit is de feedback.
+
+- feedback 1: Zorg ervoor dat je zo snel mogelijk je behuizing af hebt.
+- feedback 2: Werk de essentiële delen van de website af, bv. de history page.
+- feedback 3: Begin aan de deliverables: instructables, poster, reflectie, ...
+- feedback 4: Zorg dat de website berekbaar is via 172.30.xx.xx
+- feedback 5: Maak het duidelijker dat de knop om de brievenbus te openen disabled is.
