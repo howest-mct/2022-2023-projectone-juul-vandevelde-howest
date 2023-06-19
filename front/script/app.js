@@ -729,10 +729,16 @@ const init = function () {
     }
     if (localStorage.getItem('admin') == 1) {
       document.querySelector('.js-user-page').classList.remove('hidden');
-      document.querySelector('.js-shutdown').classList.remove('hidden');
+      const shutdowns = document.querySelectorAll('.js-shutdown');
+      for (const shutdown of shutdowns) {
+        shutdown.classList.remove('hidden');
+      }
     } else if (localStorage.getItem('admin') != 1) {
       document.querySelector('.js-user-page').classList.add('hidden');
-      document.querySelector('.js-shutdown').classList.add('hidden');
+      const shutdowns = document.querySelectorAll('.js-shutdown');
+      for (const shutdown of shutdowns) {
+        shutdown.classList.add('hidden');
+      }
       document.querySelector('.c-nav__action--logout').style.bottom = '1.5rem';
       document.querySelector('.c-nav__action--color').style.bottom = '4.5rem';
     }
@@ -751,10 +757,16 @@ const init = function () {
     }
     if (localStorage.getItem('admin') == 1) {
       document.querySelector('.js-user-page').classList.remove('hidden');
-      document.querySelector('.js-shutdown').classList.remove('hidden');
+      const shutdowns = document.querySelectorAll('.js-shutdown');
+      for (const shutdown of shutdowns) {
+        shutdown.classList.remove('hidden');
+      }
     } else if (localStorage.getItem('admin') != 1) {
       document.querySelector('.js-user-page').classList.add('hidden');
-      document.querySelector('.js-shutdown').classList.add('hidden');
+      const shutdowns = document.querySelectorAll('.js-shutdown');
+      for (const shutdown of shutdowns) {
+        shutdown.classList.add('hidden');
+      }
       document.querySelector('.c-nav__action--logout').style.bottom = '1.5rem';
       document.querySelector('.c-nav__action--color').style.bottom = '4.5rem';
     }
@@ -770,10 +782,16 @@ const init = function () {
       htmlUsers.classList.add('hidden');
     }
     if (localStorage.getItem('admin') == 1) {
-      document.querySelector('.js-shutdown').classList.remove('hidden');
+      const shutdowns = document.querySelectorAll('.js-shutdown');
+      for (const shutdown of shutdowns) {
+        shutdown.classList.remove('hidden');
+      }
       htmlUsers.classList.remove('hidden');
     } else if (localStorage.getItem('admin') != 1) {
-      htmlUsers.classList.add('hidden');
+      const shutdowns = document.querySelectorAll('.js-shutdown');
+      for (const shutdown of shutdowns) {
+        shutdown.classList.add('hidden');
+      }
       window.location.href = 'index.html';
       document.querySelector('.c-nav__action--logout').style.bottom = '1.5rem';
       document.querySelector('.c-nav__action--color').style.bottom = '4.5rem';
