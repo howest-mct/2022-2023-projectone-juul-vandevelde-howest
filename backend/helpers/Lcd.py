@@ -70,7 +70,14 @@ class Lcd:
         str_ips = str_ips.replace("b'", "")
         str_ips = str_ips.replace(" \\n'", "")
         ips = str_ips.split(' ')
-        self.clear_screen()
-        self.write_message(ips[0])
-        self.go_to_second_row()
-        self.write_message(ips[1])
+        if len(ips) == 1:
+            self.clear_screen()
+            self.write_message(ips[0])
+        elif len(ips) >= 2:
+            self.clear_screen()
+            self.write_message(ips[0])
+            self.go_to_second_row()
+            self.write_message(ips[1])
+        else:
+            self.clear_screen()
+            self.write_message("No IP addresses found.")

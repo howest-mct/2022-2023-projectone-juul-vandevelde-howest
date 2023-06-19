@@ -333,6 +333,7 @@ const showMailStatus = function (jsonObject) {
 // #region ***  Callback-No Visualisation - callback___  ***********
 const setCurrentColor = function (jsonObject) {
   current_color = jsonObject.current_color.value;
+  console.info(current_color);
 };
 
 const formatDate = function (inputDate) {
