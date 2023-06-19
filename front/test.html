@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>users</title>
+    <link rel="stylesheet" href="style/screen.css">
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+    <script src="script/datahandler.js"></script>
+    <script src="script/app.js"></script>
+</head>
+
+<body>
+    <div class="o-row o-row--l">
+        <div class="o-container">
+            <div class="o-layout o-layout--gutter">
+                <aside class="o-layout__item u-1-of-3-bp3 js-card">
+                    <div class="c-card">
+                        <div class="c-card__body">
+                            <div class="js-users"></div>
+                            <button class="o-button-reset js-return">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                                    <path d="M19 11H7.14l3.63-4.36a1 1 0 1 0-1.54-1.28l-5 6a1.19 1.19 0 0 0-.09.15c0 .05 0 .08-.07.13A1 1 0 0 0 4 12a1 1 0 0 0 .07.36c0 .05 0 .08.07.13a1.19 1.19 0 0 0 .09.15l5 6A1 1 0 0 0 10 19a1 1 0 0 0 .64-.23 1 1 0 0 0 .13-1.41L7.14 13H19a1 1 0 0 0 0-2z" />
+                                </svg>
+                            </button>
+                            <div class="c-input">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" class="c-input__field">
+                            </div>
+                            <div class="c-input">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" class="c-input__field">
+                            </div>
+                            <div class="c-input">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" class="c-input__field">
+                            </div>
+                            <div class="c-input u-pb-m">
+                                <label for="password">Password</label>
+                                <input type="password" id="password" class="c-input__field">
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

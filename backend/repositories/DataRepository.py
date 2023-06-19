@@ -16,6 +16,12 @@ class DataRepository:
         return Database.get_rows(sql)
 
     @staticmethod
+    def read_user_details(user_id):
+        sql = "SELECT first_name, last_name, email FROM user WHERE user_id = %s"
+        params = [user_id]
+        return Database.get_rows(sql, params)
+
+    @staticmethod
     def get_user_id(rfid_id):
         sql = "SELECT user_id FROM user WHERE rfid_id = %s"
         params = [rfid_id]
@@ -58,7 +64,7 @@ class DataRepository:
 
     @staticmethod
     def check_login(username, password):
-        sql = "SELECT COUNT(*) AS 'login_status', user_id, admin FROM user WHERE username = %s AND BINARY password = %s"
+        sql = "SELECT COUNT(*) AS 'login_status', user_id, admin FROM user WHERE first_name = %s AND BINARY password = %s"
         params = [username, password]
         return Database.get_one_row(sql, params)
 
@@ -69,7 +75,7 @@ class DataRepository:
 
     @staticmethod
     def get_timeline():
-        sql = "SELECT h.device_id, h.datetime, CASE WHEN h.device_id = 9 THEN u.username ELSE h.value END AS value FROM history h LEFT JOIN user u ON h.device_id = 9 AND h.value = u.user_id WHERE h.device_id IN (3, 4, 5, 9) AND (h.device_id <> 3 OR (h.device_id = 3 AND h.value > 30 AND h.history_id = (SELECT MAX(history_id) FROM history WHERE device_id = 3 LIMIT 1))) ORDER BY h.history_id DESC LIMIT 5;"
+        sql = "SELECT h.device_id, h.datetime, CASE WHEN h.device_id = 9 THEN u.first_name ELSE h.value END AS value FROM history h LEFT JOIN user u ON h.device_id = 9 AND h.value = u.user_id WHERE h.device_id IN (3, 4, 5, 9) AND (h.device_id <> 3 OR (h.device_id = 3 AND h.value > 30 AND h.history_id = (SELECT MAX(history_id) FROM history WHERE device_id = 3 LIMIT 1))) ORDER BY h.history_id DESC LIMIT 5;"
         return Database.get_rows(sql)
 
     @staticmethod

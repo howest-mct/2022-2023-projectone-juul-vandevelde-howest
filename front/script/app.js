@@ -20,11 +20,60 @@ const showUserNames = function (jsonObject) {
     html += `
     <div class='c-user o-layout o-layout--justify-space-between o-layout--align-center'>
         <div class='c-user__name'>${user.first_name} ${user.last_name}</div>
-        <button class='c-user__edit o-button-reset' data-userid='${user.user_id}'>edit user</button>
+        <button class='c-user__edit o-button-reset js-edit-btn' data-userid='${user.user_id}'>edit user</button>
     </div>
     `;
   }
   dataHtml.innerHTML = html;
+  listenToUsers();
+  document.querySelector('.js-add-user').addEventListener('click', function () {
+    console.info('klik');
+    document.body.innerHTML = `
+    <div class="o-row--np">
+        <div class="o-container">
+            <div class="c-popup o-layout o-layout--align-center o-layout--justify-center">
+                <section class="o-row c-popup__body c-card u-mb-clear">
+                    <h2>Woops this page is still under construction</h2>
+                        <button class="u-btn-fill o-button-reset js-cancel">
+                            Return to Users page
+                        </button>
+                </section>
+            </div>
+        </div>
+    </div>
+    `;
+  });
+};
+
+const showUserDetails = function (jsonObject) {
+  console.info(jsonObject);
+  let html = `
+  <button class="c-return o-button-reset js-return">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+            <path d="M19 11H7.14l3.63-4.36a1 1 0 1 0-1.54-1.28l-5 6a1.19 1.19 0 0 0-.09.15c0 .05 0 .08-.07.13A1 1 0 0 0 4 12a1 1 0 0 0 .07.36c0 .05 0 .08.07.13a1.19 1.19 0 0 0 .09.15l5 6A1 1 0 0 0 10 19a1 1 0 0 0 .64-.23 1 1 0 0 0 .13-1.41L7.14 13H19a1 1 0 0 0 0-2z" />
+        </svg>
+    </button>
+    <div class="c-input">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" class="c-input__field" value="${jsonObject[0].first_name}" disabled>
+    </div>
+    <div class="c-input">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" class="c-input__field" value="${jsonObject[0].last_name}" disabled>
+    </div>
+    <div class="c-input">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" class="c-input__field" value="${jsonObject[0].email}" disabled>
+    </div>
+    <div class="c-input u-pb-m">
+        <label for="password">Password</label>
+        <input type="password" id="password" class="c-input__field" value="                " disabled>
+    </div>
+  `;
+  document.querySelector('.js-card').innerHTML = html;
+  document.querySelector('.js-return').addEventListener('click', function () {
+    location.reload();
+  });
 };
 
 const wipeData = function () {
@@ -428,6 +477,12 @@ const getUsers = function () {
   handleData(url, showUserNames, showError);
 };
 
+const getUserDetails = function (user_id) {
+  console.info(user_id);
+  const url = 'http://' + lanIP + `/api/v1/user-names/${user_id}/`;
+  handleData(url, showUserDetails, showError);
+};
+
 const getDevices = function () {
   const url = 'http://' + lanIP + `/api/v1/devices/`;
   handleData(url, showDevices, showError);
@@ -507,6 +562,15 @@ const listenToSocket = function () {
       getTimeline();
     }
   });
+};
+
+const listenToUsers = function () {
+  const editBtns = document.querySelectorAll('.js-edit-btn');
+  for (const editBtn of editBtns) {
+    editBtn.addEventListener('click', function () {
+      getUserDetails(editBtn.getAttribute('data-userid'));
+    });
+  }
 };
 
 const listenToLogin = function () {

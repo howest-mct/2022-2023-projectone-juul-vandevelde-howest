@@ -475,6 +475,10 @@ input[type=password] {
     display: flex;
   }
 }
+.c-header__icons__lighting:hover, .c-header__icons__shutdown:hover, .c-header__icons__logout:hover {
+  color: #f3f0ff;
+  fill: #f3f0ff;
+}
 .c-header__icons__lighting, .c-header__icons__shutdown {
   display: none;
 }
@@ -482,9 +486,6 @@ input[type=password] {
   .c-header__icons__lighting, .c-header__icons__shutdown {
     display: flex;
   }
-}
-.c-header__icons:hover {
-  color: #f3f0ff;
 }
 
 .c-header__menu-button {
@@ -504,6 +505,33 @@ input[type=password] {
 */
 .c-main {
   position: relative;
+}
+
+/*
+  Components: Return
+*/
+.c-return {
+  fill: #212529;
+  cursor: pointer;
+}
+.c-return:hover {
+  fill: #343a40;
+}
+
+/*
+  Components: Input
+*/
+.c-input {
+  padding-bottom: 1rem;
+}
+.c-input__field {
+  background-color: #e9ecef;
+  border: none;
+  outline: none;
+  height: 2.5rem;
+  width: 100%;
+  border-radius: 6px;
+  padding-left: 1rem;
 }
 
 /*

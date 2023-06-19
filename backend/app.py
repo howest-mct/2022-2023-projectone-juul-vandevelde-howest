@@ -174,6 +174,13 @@ def get_user_names():
         return jsonify(users=data), 200
 
 
+@app.route(endpoint + '/user-names/<user_id>/', methods=['GET'])
+def get_user_details(user_id):
+    if request.method == 'GET':
+        data = DataRepository.read_user_details(user_id)
+        return jsonify(data), 200
+
+
 @app.route(endpoint + '/history/<device_id>/', methods=['GET'])
 def get_history(device_id):
     if request.method == 'GET':
