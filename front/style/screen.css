@@ -465,15 +465,25 @@ input[type=password] {
   }
 }
 
-.c-header__logout {
+.c-header__icons {
   color: white;
+  gap: 1rem;
 }
 @media (min-width: 36.0625em) {
-  .c-header__logout {
+  .c-header__icons {
     margin-left: auto;
+    display: flex;
   }
 }
-.c-header__logout:hover {
+.c-header__icons__lighting, .c-header__icons__shutdown {
+  display: none;
+}
+@media (min-width: 36.0625em) {
+  .c-header__icons__lighting, .c-header__icons__shutdown {
+    display: flex;
+  }
+}
+.c-header__icons:hover {
   color: #f3f0ff;
 }
 

@@ -622,10 +622,19 @@ input[type='password'] {
   }
 }
 
-.c-header__logout {
+.c-header__icons {
   color: white;
+  gap: 1rem;
   @include mq(bp1) {
     margin-left: auto;
+    display: flex;
+  }
+
+  &__lighting, &__shutdown {
+    display: none;
+    @include mq(bp1) {
+      display: flex;
+    }
   }
 
   &:hover {
