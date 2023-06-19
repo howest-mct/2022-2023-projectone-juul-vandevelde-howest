@@ -19,10 +19,10 @@ import time
 GPIO.setmode(GPIO.BCM)
 
 pixel_pin = board.D18
-num_pixels = 8
+num_pixels = 16
 ORDER = neopixel.GRB
 pixels = neopixel.NeoPixel(pixel_pin, num_pixels,
-                           brightness=0.2, auto_write=False, pixel_order=ORDER)
+                           brightness=1, auto_write=False, pixel_order=ORDER)
 
 rfid_reader = SimpleMFRC522()
 mcp_object = Mcp()
