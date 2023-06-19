@@ -30,7 +30,9 @@ DS18B20_object = DS18B20()
 lcdObject = Lcd()
 
 reed_1 = Button(12)
-break_beam_1 = Button(20, 400)
+reed_2 = Button(25)
+break_beam_1 = Button(20, 1000)
+break_beam_2 = Button(16, 1000)
 shutdown_btn = Button(21)
 solenoid = 24
 
@@ -55,8 +57,14 @@ def setup():
     reed_1.on_both(read_switch)
     read_switch(reed_1)
 
+    reed_2.on_both(read_switch)
+    read_switch(reed_2)
+
     break_beam_1.on_both(read_beam)
     read_beam(break_beam_1)
+
+    break_beam_2.on_both(read_beam)
+    read_beam(break_beam_2)
 
 
 def shutdown(pin):
@@ -74,17 +82,26 @@ def read_switch(pin):
         print("door closed")
         DataRepository.add_device_history(6, None, 0, None)
         socketio.emit('B2F_door_changed')
-    else:
+    elif not reed_1.pressed:
         print("door open")
         DataRepository.add_device_history(6, None, 1, None)
         socketio.emit('B2F_door_changed')
+    if reed_2.pressed:
+        print("pakketjeslade closed")
+        DataRepository.add_device_history(7, None, 0, None)
+    elif not reed_2.pressed:
+        print("pakketjeslade open")
+        DataRepository.add_device_history(7, None, 1, None)
 
 
 def read_beam(pin):
     if break_beam_1.pressed:
-        print("letter/parcel detected")
-        # de ene break beam zal voor pakketjes zijn de andere voor brieven
+        print("parcel detected")
         DataRepository.add_device_history(4, None, 1, None)
+        socketio.emit('B2F_mail_status_changed')
+    elif break_beam_2.pressed:
+        print("letter detected")
+        DataRepository.add_device_history(5, None, 1, None)
         socketio.emit('B2F_mail_status_changed')
 
 
@@ -259,8 +276,6 @@ def update_color():
 @socketio.on('connect')
 def initial_connection():
     print('A new client connect')
-#     devices = DataRepository.read_devices()
-#     emit('B2F_devices', {'devices': devices}, broadcast=False)
 
 
 @socketio.on('F2B_color_changed')
@@ -296,16 +311,6 @@ def open_door(jsonobject):
         print("Door already unlocked")
 
 
-# # get realtime data from the sensor
-# @socketio.on('F2B_get_history')
-# def get_history(jsonObject):
-#     history = DataRepository.read_history_by_device(jsonObject["device_id"])
-#     print(history)
-#     for i in range(len(history)):
-#         history[i]['datetime'] = str(history[i]['datetime'])
-#     emit('B2F_history', {'history': history}, broadcast=False)
-
-
 def start_socketio():
     print("**** Starting APP ****")
     socketio.run(app, debug=False, host='0.0.0.0')
@@ -331,7 +336,6 @@ if __name__ == '__main__':
             if (time.time() - last_ip_runtime) > 15:
                 if printed == True:
                     lcdObject.show_ip()
-                    # show_ip nog dynamisch maken ipv 2 fixed ip adressen
                     printed = False
                 if (time.time() - last_ip_runtime) > (15 + 15):
                     last_ip_runtime = time.time()
@@ -341,7 +345,6 @@ if __name__ == '__main__':
                 lcdObject.write_message('<- Mail        |')
                 lcdObject.go_to_second_row()
                 lcdObject.write_message('       Parcels v')
-                # het schermpje nog nuttiger maken
                 printed = True
             time.sleep((0.001))
 
