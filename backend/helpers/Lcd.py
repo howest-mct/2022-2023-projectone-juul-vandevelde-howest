@@ -75,8 +75,6 @@ class Lcd:
             self.write_message(ips[0])
         elif len(ips) >= 2:
             self.clear_screen()
-            self.write_message(ips[0])
-            self.go_to_second_row()
             self.write_message(ips[1])
         else:
             self.clear_screen()
