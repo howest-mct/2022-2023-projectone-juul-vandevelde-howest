@@ -30,7 +30,7 @@ DS18B20_object = DS18B20()
 lcdObject = Lcd()
 
 reed_1 = Button(12)
-reed_2 = Button(25)
+reed_2 = Button(6)
 break_beam_1 = Button(20, 1000)
 break_beam_2 = Button(16, 1000)
 shutdown_btn = Button(21)
@@ -54,17 +54,17 @@ def setup():
     shutdown_btn.on_press(shutdown)
     shutdown(shutdown_btn)
 
-    reed_1.on_both(read_switch)
-    read_switch(reed_1)
+    reed_1.on_both(read_switch_1)
+    read_switch_1(reed_1)
 
-    reed_2.on_both(read_switch)
-    read_switch(reed_2)
+    reed_2.on_both(read_switch_2)
+    read_switch_2(reed_2)
 
-    break_beam_1.on_both(read_beam)
-    read_beam(break_beam_1)
+    break_beam_1.on_both(read_beam_1)
+    read_beam_1(break_beam_1)
 
-    break_beam_2.on_both(read_beam)
-    read_beam(break_beam_2)
+    break_beam_2.on_both(read_beam_2)
+    read_beam_2(break_beam_2)
 
 
 def shutdown(pin):
@@ -77,32 +77,41 @@ def shutdown(pin):
             shutdown_pi()
 
 
-def read_switch(pin):
+def read_switch_1(pin):
     if reed_1.pressed:
         print("door closed")
         DataRepository.add_device_history(6, None, 0, None)
         socketio.emit('B2F_door_changed')
-    elif not reed_1.pressed:
+    else:
         print("door open")
         DataRepository.add_device_history(6, None, 1, None)
         socketio.emit('B2F_door_changed')
+
+def read_switch_2(pin):
     if reed_2.pressed:
         print("pakketjeslade closed")
         DataRepository.add_device_history(7, None, 0, None)
-    elif not reed_2.pressed:
+    else:
         print("pakketjeslade open")
         DataRepository.add_device_history(7, None, 1, None)
 
-
-def read_beam(pin):
+def read_beam_1(pin):
     if break_beam_1.pressed:
         print("parcel detected")
         DataRepository.add_device_history(4, None, 1, None)
         socketio.emit('B2F_mail_status_changed')
-    elif break_beam_2.pressed:
+    else:
+        print("mailbox emptied")
+        DataRepository.add_device_history(4, None, 0, None)
+
+def read_beam_2(pin):
+    if break_beam_2.pressed:
         print("letter detected")
         DataRepository.add_device_history(5, None, 1, None)
         socketio.emit('B2F_mail_status_changed')
+    else:
+        print("mailbox emptied")
+        DataRepository.add_device_history(5, None, 0, None)
 
 
 def read_ldr():
