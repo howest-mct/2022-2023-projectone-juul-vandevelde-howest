@@ -20,11 +20,60 @@ const showUserNames = function (jsonObject) {
     html += `
     <div class='c-user o-layout o-layout--justify-space-between o-layout--align-center'>
         <div class='c-user__name'>${user.first_name} ${user.last_name}</div>
-        <button class='c-user__edit o-button-reset' data-userid='${user.user_id}'>edit user</button>
+        <button class='c-user__edit o-button-reset js-edit-btn' data-userid='${user.user_id}'>edit user</button>
     </div>
     `;
   }
   dataHtml.innerHTML = html;
+  listenToUsers();
+  document.querySelector('.js-add-user').addEventListener('click', function () {
+    console.info('klik');
+    document.body.innerHTML = `
+    <div class="o-row--np">
+        <div class="o-container">
+            <div class="c-popup o-layout o-layout--align-center o-layout--justify-center">
+                <section class="o-row c-popup__body c-card u-mb-clear">
+                    <h2>Woops this page is still under construction</h2>
+                        <button class="u-btn-fill o-button-reset js-cancel">
+                            Return to Users page
+                        </button>
+                </section>
+            </div>
+        </div>
+    </div>
+    `;
+  });
+};
+
+const showUserDetails = function (jsonObject) {
+  console.info(jsonObject);
+  let html = `
+  <button class="c-return o-button-reset js-return">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+            <path d="M19 11H7.14l3.63-4.36a1 1 0 1 0-1.54-1.28l-5 6a1.19 1.19 0 0 0-.09.15c0 .05 0 .08-.07.13A1 1 0 0 0 4 12a1 1 0 0 0 .07.36c0 .05 0 .08.07.13a1.19 1.19 0 0 0 .09.15l5 6A1 1 0 0 0 10 19a1 1 0 0 0 .64-.23 1 1 0 0 0 .13-1.41L7.14 13H19a1 1 0 0 0 0-2z" />
+        </svg>
+    </button>
+    <div class="c-input">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" class="c-input__field" value="${jsonObject[0].first_name}" disabled>
+    </div>
+    <div class="c-input">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" class="c-input__field" value="${jsonObject[0].last_name}" disabled>
+    </div>
+    <div class="c-input">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" class="c-input__field" value="${jsonObject[0].email}" disabled>
+    </div>
+    <div class="c-input u-pb-m">
+        <label for="password">Password</label>
+        <input type="password" id="password" class="c-input__field" value="                " disabled>
+    </div>
+  `;
+  document.querySelector('.js-card').innerHTML = html;
+  document.querySelector('.js-return').addEventListener('click', function () {
+    location.reload();
+  });
 };
 
 const wipeData = function () {
@@ -284,6 +333,7 @@ const showMailStatus = function (jsonObject) {
 // #region ***  Callback-No Visualisation - callback___  ***********
 const setCurrentColor = function (jsonObject) {
   current_color = jsonObject.current_color.value;
+  console.info(current_color);
 };
 
 const formatDate = function (inputDate) {
@@ -428,6 +478,12 @@ const getUsers = function () {
   handleData(url, showUserNames, showError);
 };
 
+const getUserDetails = function (user_id) {
+  console.info(user_id);
+  const url = 'http://' + lanIP + `/api/v1/user-names/${user_id}/`;
+  handleData(url, showUserDetails, showError);
+};
+
 const getDevices = function () {
   const url = 'http://' + lanIP + `/api/v1/devices/`;
   handleData(url, showDevices, showError);
@@ -509,6 +565,15 @@ const listenToSocket = function () {
   });
 };
 
+const listenToUsers = function () {
+  const editBtns = document.querySelectorAll('.js-edit-btn');
+  for (const editBtn of editBtns) {
+    editBtn.addEventListener('click', function () {
+      getUserDetails(editBtn.getAttribute('data-userid'));
+    });
+  }
+};
+
 const listenToLogin = function () {
   const fields = document.querySelectorAll('.js-login-field');
   for (const field of fields) {
@@ -532,6 +597,46 @@ const listenToLogin = function () {
 
 const listenToLogout = function () {
   document.querySelector('.js-logout-btn').addEventListener('click', function () {
+    document.body.innerHTML = `
+    <div class="o-row--np">
+        <div class="o-container">
+            <div class="c-popup o-layout o-layout--align-center o-layout--justify-center">
+                <section class="o-row c-popup__body c-card u-mb-clear">
+                    <h2>Are you sure you want to log out?</h2>
+                    <div class="c-popup__btns o-layout">
+                        <button class="u-btn-outline o-button-reset js-cancel">Cancel</button>
+                        <button class="u-btn-fill o-button-reset js-logout-confirm">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><rect width="24" height="24" transform="rotate(90 12 12)" opacity="0"/><path d="M7 6a1 1 0 0 0 0-2H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h2a1 1 0 0 0 0-2H6V6z"/><path d="M20.82 11.42l-2.82-4a1 1 0 0 0-1.39-.24 1 1 0 0 0-.24 1.4L18.09 11H10a1 1 0 0 0 0 2h8l-1.8 2.4a1 1 0 0 0 .2 1.4 1 1 0 0 0 .6.2 1 1 0 0 0 .8-.4l3-4a1 1 0 0 0 .02-1.18z"/></svg>
+                            Log out
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    `;
+  });
+  document.querySelector('.js-shutdown-btn').addEventListener('click', function () {
+    document.body.innerHTML = `
+    <div class="o-row--np">
+        <div class="o-container">
+            <div class="c-popup o-layout o-layout--align-center o-layout--justify-center">
+                <section class="o-row c-popup__body c-card u-mb-clear">
+                    <h2>Are you sure you want to log out?</h2>
+                    <div class="c-popup__btns o-layout">
+                        <button class="u-btn-outline o-button-reset js-cancel">Cancel</button>
+                        <button class="u-btn-fill o-button-reset js-logout-confirm">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><rect width="24" height="24" transform="rotate(90 12 12)" opacity="0"/><path d="M7 6a1 1 0 0 0 0-2H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h2a1 1 0 0 0 0-2H6V6z"/><path d="M20.82 11.42l-2.82-4a1 1 0 0 0-1.39-.24 1 1 0 0 0-.24 1.4L18.09 11H10a1 1 0 0 0 0 2h8l-1.8 2.4a1 1 0 0 0 .2 1.4 1 1 0 0 0 .6.2 1 1 0 0 0 .8-.4l3-4a1 1 0 0 0 .02-1.18z"/></svg>
+                            Log out
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    `;
+  });
+  document.querySelector('.js-change-lighting-btn').addEventListener('click', function () {
     document.body.innerHTML = `
     <div class="o-row--np">
         <div class="o-container">
@@ -729,10 +834,16 @@ const init = function () {
     }
     if (localStorage.getItem('admin') == 1) {
       document.querySelector('.js-user-page').classList.remove('hidden');
-      document.querySelector('.js-shutdown').classList.remove('hidden');
+      const shutdowns = document.querySelectorAll('.js-shutdown');
+      for (const shutdown of shutdowns) {
+        shutdown.classList.remove('hidden');
+      }
     } else if (localStorage.getItem('admin') != 1) {
       document.querySelector('.js-user-page').classList.add('hidden');
-      document.querySelector('.js-shutdown').classList.add('hidden');
+      const shutdowns = document.querySelectorAll('.js-shutdown');
+      for (const shutdown of shutdowns) {
+        shutdown.classList.add('hidden');
+      }
       document.querySelector('.c-nav__action--logout').style.bottom = '1.5rem';
       document.querySelector('.c-nav__action--color').style.bottom = '4.5rem';
     }
@@ -751,10 +862,16 @@ const init = function () {
     }
     if (localStorage.getItem('admin') == 1) {
       document.querySelector('.js-user-page').classList.remove('hidden');
-      document.querySelector('.js-shutdown').classList.remove('hidden');
+      const shutdowns = document.querySelectorAll('.js-shutdown');
+      for (const shutdown of shutdowns) {
+        shutdown.classList.remove('hidden');
+      }
     } else if (localStorage.getItem('admin') != 1) {
       document.querySelector('.js-user-page').classList.add('hidden');
-      document.querySelector('.js-shutdown').classList.add('hidden');
+      const shutdowns = document.querySelectorAll('.js-shutdown');
+      for (const shutdown of shutdowns) {
+        shutdown.classList.add('hidden');
+      }
       document.querySelector('.c-nav__action--logout').style.bottom = '1.5rem';
       document.querySelector('.c-nav__action--color').style.bottom = '4.5rem';
     }
@@ -770,10 +887,16 @@ const init = function () {
       htmlUsers.classList.add('hidden');
     }
     if (localStorage.getItem('admin') == 1) {
-      document.querySelector('.js-shutdown').classList.remove('hidden');
+      const shutdowns = document.querySelectorAll('.js-shutdown');
+      for (const shutdown of shutdowns) {
+        shutdown.classList.remove('hidden');
+      }
       htmlUsers.classList.remove('hidden');
     } else if (localStorage.getItem('admin') != 1) {
-      htmlUsers.classList.add('hidden');
+      const shutdowns = document.querySelectorAll('.js-shutdown');
+      for (const shutdown of shutdowns) {
+        shutdown.classList.add('hidden');
+      }
       window.location.href = 'index.html';
       document.querySelector('.c-nav__action--logout').style.bottom = '1.5rem';
       document.querySelector('.c-nav__action--color').style.bottom = '4.5rem';

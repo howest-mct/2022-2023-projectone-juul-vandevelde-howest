@@ -622,14 +622,29 @@ input[type='password'] {
   }
 }
 
-.c-header__logout {
+.c-header__icons {
   color: white;
+  gap: 1rem;
   @include mq(bp1) {
     margin-left: auto;
+    display: flex;
   }
 
-  &:hover {
-    color: $oc-violet-0;
+  &__lighting,
+  &__shutdown,
+  &__logout {
+    &:hover {
+      color: $oc-violet-0;
+      fill: $oc-violet-0;
+    }
+  }
+
+  &__lighting,
+  &__shutdown {
+    display: none;
+    @include mq(bp1) {
+      display: flex;
+    }
   }
 }
 
@@ -651,6 +666,37 @@ input[type='password'] {
 
 .c-main {
   position: relative;
+}
+
+/*
+  Components: Return
+*/
+
+.c-return {
+  fill: $oc-gray-9;
+  cursor: pointer;
+
+  &:hover {
+    fill: $oc-gray-8;
+  }
+}
+
+/*
+  Components: Input
+*/
+
+.c-input {
+  padding-bottom: 1rem;
+
+  &__field {
+    background-color: $oc-gray-2;
+    border: none;
+    outline: none;
+    height: 2.5rem;
+    width: 100%;
+    border-radius: $radius-m;
+    padding-left: 1rem;
+  }
 }
 
 /*
