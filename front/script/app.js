@@ -616,6 +616,46 @@ const listenToLogout = function () {
     </div>
     `;
   });
+  document.querySelector('.js-shutdown-btn').addEventListener('click', function () {
+    document.body.innerHTML = `
+    <div class="o-row--np">
+        <div class="o-container">
+            <div class="c-popup o-layout o-layout--align-center o-layout--justify-center">
+                <section class="o-row c-popup__body c-card u-mb-clear">
+                    <h2>Are you sure you want to log out?</h2>
+                    <div class="c-popup__btns o-layout">
+                        <button class="u-btn-outline o-button-reset js-cancel">Cancel</button>
+                        <button class="u-btn-fill o-button-reset js-logout-confirm">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><rect width="24" height="24" transform="rotate(90 12 12)" opacity="0"/><path d="M7 6a1 1 0 0 0 0-2H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h2a1 1 0 0 0 0-2H6V6z"/><path d="M20.82 11.42l-2.82-4a1 1 0 0 0-1.39-.24 1 1 0 0 0-.24 1.4L18.09 11H10a1 1 0 0 0 0 2h8l-1.8 2.4a1 1 0 0 0 .2 1.4 1 1 0 0 0 .6.2 1 1 0 0 0 .8-.4l3-4a1 1 0 0 0 .02-1.18z"/></svg>
+                            Log out
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    `;
+  });
+  document.querySelector('.js-change-lighting-btn').addEventListener('click', function () {
+    document.body.innerHTML = `
+    <div class="o-row--np">
+        <div class="o-container">
+            <div class="c-popup o-layout o-layout--align-center o-layout--justify-center">
+                <section class="o-row c-popup__body c-card u-mb-clear">
+                    <h2>Are you sure you want to log out?</h2>
+                    <div class="c-popup__btns o-layout">
+                        <button class="u-btn-outline o-button-reset js-cancel">Cancel</button>
+                        <button class="u-btn-fill o-button-reset js-logout-confirm">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><rect width="24" height="24" transform="rotate(90 12 12)" opacity="0"/><path d="M7 6a1 1 0 0 0 0-2H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h2a1 1 0 0 0 0-2H6V6z"/><path d="M20.82 11.42l-2.82-4a1 1 0 0 0-1.39-.24 1 1 0 0 0-.24 1.4L18.09 11H10a1 1 0 0 0 0 2h8l-1.8 2.4a1 1 0 0 0 .2 1.4 1 1 0 0 0 .6.2 1 1 0 0 0 .8-.4l3-4a1 1 0 0 0 .02-1.18z"/></svg>
+                            Log out
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    `;
+  });
 };
 
 const listenToMobileMenu = function () {
